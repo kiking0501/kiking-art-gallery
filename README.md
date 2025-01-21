@@ -1,7 +1,7 @@
 # kiking-art-gallery
 
 ### About
-An Art Gallery site for all my artworks
+An Art Gallery site for all my artworks!
 
 
 ### License

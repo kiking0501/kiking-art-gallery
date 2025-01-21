@@ -160,8 +160,8 @@ function load_navigation(path, page_album_name) {
 }
 
 function open_navigation() {
-	$("#main_content").css("margin-left", "25%");
-	$("#navigation_bar").css("width", "25%");
+	$("#main_content").css("margin-left", "30%");
+	$("#navigation_bar").css("width", "30%");
 	$("#navigation_bar").css("display", "block");
 	$("#nav_button").css("display", "none");
 }
@@ -199,3 +199,10 @@ function show_category_albums(cat) {
         }
     });
 }
+
+/** Toolings **/
+
+/* Prevent Right Clicks */
+document.addEventListener('contextmenu', function (event) {
+    event.preventDefault(); // Prevent right clicks
+});

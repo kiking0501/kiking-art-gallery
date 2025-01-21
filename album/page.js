@@ -150,13 +150,6 @@ function next_image_modal(indicator) {
   
 }
 
-/** Toolings **/
-
-/* Prevent Right Clicks */
-// document.addEventListener('contextmenu', function (event) {
-//     event.preventDefault(); // Prevent right clicks
-// });
-
 function magnify(imgID, zoom) {
   var img, glass, w, h, bw;
   img = document.getElementById(imgID);
