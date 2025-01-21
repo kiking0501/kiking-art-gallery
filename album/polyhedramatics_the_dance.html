@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FSED0HPBKR"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-FSED0HPBKR');
+        </script>
+        <meta charset="utf-8">
+        <title>Kiking's Art Gallery</title>
+        <meta property = "og:title" content = "Kiking's Art Gallery"/>
+        <meta property = "og:type" content = "website" />
+        <meta property = "og:url" content = "https://kiking0501.github.io/kiking-art-gallery" />
+        <meta property = "og:image" content = "../resource/og_image_preview.png" />
+
+        <link rel="icon" type="image/png" href="../resource/favicon.png"/>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../resource/w3.css">
+        
+        <link rel="stylesheet" href="../main.css">
+        <link rel="stylesheet" href="page.css">
+        <script src="../main.js"> </script>
+        <script src="page.js"> </script>
+
+        <style>
+            .mySlides {display: none}
+            img {vertical-align: middle;}
+
+            /* Slideshow container */
+            .slideshow-container {
+              max-width: 70%;
+              position: relative;
+              margin: auto;
+            }
+
+            /* The dots/bullets/indicators */
+            .dot {
+              cursor: pointer;
+              height: 15px;
+              width: 15px;
+              margin: 0 2px;
+              background-color: #bbb;
+              border-radius: 50%;
+              display: inline-block;
+              transition: background-color 0.6s ease;
+            }
+
+            .active, .dot:hover {
+              background-color: #717171;
+            }
+
+        </style>
+
+        <script type="text/javascript" charset="utf-8">
+            $( document ).ready(function() {
+                $("#year").text(new Date().getFullYear());
+                
+                 var album_name = location.pathname.split('/').slice(-1)[0].split('.')[0];
+                 
+                 load_banner(album_name);
+
+                 load_navigation("", album_name);
+            });
+
+
+            let slideIndex = 1;
+            showSlides(slideIndex);
+
+
+
+            function plusSlides(n) {
+              showSlides(slideIndex += n);
+            }
+
+            function currentSlide(n) {
+              showSlides(slideIndex = n);
+            }
+
+            function showSlides(n) {
+              var slides = $(".mySlides");
+              var dots = $(".dot");
+
+              if (n > slides.length) {slideIndex = 1}    
+              if (n < 1) {slideIndex = slides.length}
+
+              for (var i = 0; i < slides.length; i++) {
+                $(slides[i]).css("display", "none");
+              }
+              for (var i = 0; i < dots.length; i++) {
+                $(dots[i]).removeClass("active");
+              }
+
+              $(slides[slideIndex-1]).css("display", "block");
+              $(dots[slideIndex-1]).addClass("active");
+          }
+
+    </script>
+    </head>
+
+    <body>
+
+      <div id="navigation_block"> </div>
+
+        <div id="main_content">
+
+         <div class="banner-block"> </div>
+            <hr>
+
+            <div style="padding:0 20px 0 20px">
+              <h3 style="text-align:center"> Polyhedramatics - The Dance, 2018 </h3>
+              <h4> Music Animation, written in THREE.js </h4>
+            </div>
+
+            <div class="slideshow-container">
+
+                <div class="mySlides" style="display:block">
+                    <video style="width:100%" controls autoplay muted loop>
+                      <source src="polyhedramatics_the_dance/kiking_polyhedramatics_dance_cut1.mov" type="video/mp4">
+                    </video>
+                </div>
+
+                <div class="mySlides">
+    
+                    <video style="width:100%" controls autoplay muted loop>
+                      <source src="polyhedramatics_the_dance/kiking_polyhedramatics_dance_cut2.mov" type="video/mp4">
+                    </video>
+                </div>
+
+                <div class="mySlides">
+    
+                    <video style="width:100%" controls autoplay muted loop>
+                      <source src="polyhedramatics_the_dance/kiking_polyhedramatics_dance_cut3.mov" type="video/mp4">
+                    </video>
+                </div>
+
+                <a class="prev" onclick="plusSlides(-1)">❮</a>
+                <a class="next" onclick="plusSlides(1)">❯</a>
+            </div>
+
+            <br>
+
+            <div style="text-align:center">
+              <span class="dot active" onclick="currentSlide(1)"></span> 
+              <span class="dot" onclick="currentSlide(2)"></span> 
+              <span class="dot" onclick="currentSlide(3)"></span> 
+            </div>
+
+
+          <div style="padding:20px" align="center">
+              <br>
+                <a type="button" class="btn btn-primary btn-md"
+                  href="https://kiking0501.github.io/polyhedramatics-dance-2018/doc_html/doc/main.html"
+                  target="_blank">
+                    Artwork Full Details
+                </a>
+                <a href="https://github.com/kiking0501/polyhedramatics-dance-2018" target="_blank">
+                    <span id="social-media-icon">
+                        <img src="../resource/github_reverse.svg">
+                    </span>
+                </a>
+              <h4> Featured in the 
+                <a href="https://www.hkapa.edu/tch/event/academy-creative-collaboration-project-school-of-music-the-city-art-exhibition", target="blank"><i>City Art Exhibition</i></a>
+                , from 3 to 30 September 2018, at the Hong Kong Academy for Performing Arts </h4>
+          </div>
+
+      </div>
+
+    </body>
+
+    <footer>
+        &copy; <span id="year"></span> Kiking. All rights reserved.
+    </footer>
+</html>

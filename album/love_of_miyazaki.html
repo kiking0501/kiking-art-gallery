@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FSED0HPBKR"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-FSED0HPBKR');
+        </script>
+        <meta charset="utf-8">
+        <title>Kiking's Art Gallery</title>
+        <meta property = "og:title" content = "Kiking's Art Gallery"/>
+        <meta property = "og:type" content = "website" />
+        <meta property = "og:url" content = "https://kiking0501.github.io/kiking-art-gallery" />
+        <meta property = "og:image" content = "../resource/og_image_preview.png" />
+
+        <link rel="icon" type="image/png" href="../resource/favicon.png"/>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../resource/w3.css">
+        
+        <link rel="stylesheet" href="../main.css">
+        <link rel="stylesheet" href="page.css">
+        <script src="../main.js"> </script>
+        <script src="page.js"> </script>
+
+        <script type="text/javascript" charset="utf-8">
+            $( document ).ready(function() {
+                $("#year").text(new Date().getFullYear());
+                
+                var album_name = location.pathname.split('/').slice(-1)[0].split('.')[0];
+
+                load_banner(album_name);
+
+                $(".display-template-block").load("page_display_template.html", function() {
+                    $("#template_image_tile").removeClass("col-xs-4");
+                    $("#template_image_tile").addClass("col-xs-3");
+                    fill_in_image_tiles_in_rows(album_name);
+                });
+
+                load_navigation("", album_name);
+            });
+        </script>
+    </head>
+
+    <body>
+        <div id="navigation_block"> </div>
+
+        <div id="main_content">
+            <div class="banner-block"> </div>
+            <hr>
+            
+            <div align="center"> <h4> Watercolor & Fineliner on Paper </h4> </div>
+            <div class="page_board container-fluid">
+                  <div class="row"></div>
+            </div>
+        </div>
+        
+        <div class="display-template-block"> </div>
+    </body>
+
+    <footer>
+        &copy; <span id="year"></span> Kiking. All rights reserved.
+    </footer>
+</html>

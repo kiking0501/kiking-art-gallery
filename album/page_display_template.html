@@ -1,0 +1,38 @@
+  <div id="template_image_tile" class="image-tile col-xs-4" style="display:none"
+       data-image-url="" data-post-url="" data-social-media-icon=""
+       data-toggle="modal"  onclick="show_image_modal(this);" align="center"> 
+      <img src="">
+      <h4 class="imagetext"> </h4>
+      <h5 class="imagemeta"> </h5>
+  </div>
+
+  <div class="modal" id="image">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <a href="#" class="hanging-close" 
+          data-dismiss="close_image_modal(this);"
+          onclick="close_image_modal(this);"
+          aria-hidden="true"> 
+              <img src="../resource/close.png">
+        </a>
+        
+        <a id="social-media-link" href="" target="_blank">
+            <h3 id="imagetext"> 
+              <span id="social-media-icon"><img src=""> </span> 
+              <span class="text"> </span> 
+            </h3>
+            <h4 id="imagemeta" class="imagemeta"> 
+              <span class="text"> </span> 
+            </h4>
+
+        </a>
+        
+        <div class="img-magnifier-container row">
+          <img src="" id = "imageview" class="img-responsive">          
+        </div>
+      </div>
+    </div>
+
+    <a class="prev large" onclick="next_image_modal(-1)">❮</a>
+    <a class="next large" onclick="next_image_modal(1)">❯</a>
+  </div>

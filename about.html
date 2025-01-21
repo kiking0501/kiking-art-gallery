@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FSED0HPBKR"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-FSED0HPBKR');
+        </script>
+
+        <meta charset="utf-8">
+        <title>Kiking's Art Gallery</title>
+        <meta property = "og:title" content = "Kiking's Art Gallery"/>
+        <meta property = "og:type" content = "website" />
+        <meta property = "og:url" content = "https://kiking0501.github.io/kiking-art-gallery" />
+        <meta property = "og:image" content = "resource/og_image_preview.png" />
+        
+        <link rel="icon" type="image/png" href="resource/favicon.png"/>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="resource/w3.css">
+    	
+    	<link rel="stylesheet" href="main.css">
+        <link rel="stylesheet" href="album/page.css">
+    	<script src="main.js"> </script>
+        <script src="album/page.js"> </script>
+        <style>
+        </style>
+
+
+    	<script type="text/javascript" charset="utf-8">
+    		$( document ).ready(function() {
+    			     $("#year").text(new Date().getFullYear());
+                $(".banner-block").load("album/page_banner_template.html", function() {
+                    $("#nav_album_name").text(" About ");
+                    $(".page_banner").hide();
+
+                });
+                $(".display-template-block").load("album/page_display_template.html");
+
+                load_navigation("album/");
+            });
+    	</script>
+	</head>
+    <body>
+        <div id="navigation_block"> </div>
+
+        <div id="main_content">
+
+            <div class="banner-block"> </div>
+
+            <div class="row">
+                <div class="col-md-6 col-xs-12" style="padding:50px">
+                    <div align="center"> 
+                        <img src="album/self_portraits/kiking_profile.png" style="max-width: 40%">
+                        <h2> Kiking </h2>
+                        <h4 style="width:80%"> I create artworks for fun to bring my imagination to life, often inspired by the beauty of nature, mathematics, and cultural trends. </h4>
+
+                        <br>
+                        <a href="https://www.instagram.com/kikingproduction/" target="_blank">
+                            <h4> 
+                              <span ><img src="resource/instagram.png" height="40px"> </span> 
+                              <span> @kikingproduction </span> 
+                            </h4>
+                        </a>
+
+                        <a href="https://www.facebook.com/ShiningBeautyofMaths" target="_blank">
+                            <h4> 
+                              <span><img src="resource/facebook.png" height="40px"> </span> 
+                              <span > @ShiningBeautyofMaths</span> 
+                            </h4>
+                        </a>
+                        <br>
+
+
+                        <h4> Tech-savvy work: visit 
+                            <a href="https://kiking0501.github.io" target="_blank">
+                                  <span><img src="resource/github_reverse.svg" height="25px"> </span> 
+                                  <span > @kiking0501</span>
+                            </a>
+                        </h4>
+
+
+                    </div>
+                    
+                </div>
+
+                <div class="col-md-6 col-xs-12" style="padding:50px">
+                    <div class="page_board container-fluid" align="center"
+                    style="padding-top: 20px; border: .5px solid #979797; background-image: url('resource/blank-black-wooden-texture.jpg')">
+                                                 
+                            <div class="image-tile"
+                               data-image-url="album/self_portraits/kiking_201707_sailing.jpg" data-post-url="" data-social-media-icon=""
+                               data-toggle="modal" onclick="show_image_modal(this);"> 
+                               <div style="padding-bottom:20px">
+                               <h3 class="imagetext"> <i>A Girl sailing on Emptiness </i></h3>
+                               <h4> <i> / Melting clock in the Hyperboloid Sea, seeking for delta δ</i></h4>
+                                </div>
+                               
+                              <img src="album/self_portraits/kiking_201707_sailing.jpg" style="max-width: 50%; ">
+
+                              <div style="padding-top: 20px">
+                              <h4 > Self Portrait, 2017 </h4>
+                              <h4 class="imagemeta"> Marker on Paper, 11" x 17" </h4>
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="display-template-block"> </div>
+    </body>
+
+    <footer>
+        &copy; <span id="year"></span> Kiking. All rights reserved.
+    </footer>
+</html>

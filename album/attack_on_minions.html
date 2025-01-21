@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FSED0HPBKR"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-FSED0HPBKR');
+        </script>
+        <meta charset="utf-8">
+        <title>Kiking's Art Gallery</title>
+        <meta property = "og:title" content = "Kiking's Art Gallery"/>
+        <meta property = "og:type" content = "website" />
+        <meta property = "og:url" content = "https://kiking0501.github.io/kiking-art-gallery" />
+        <meta property = "og:image" content = "../resource/og_image_preview.png" />
+
+        <link rel="icon" type="image/png" href="../resource/favicon.png"/>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../resource/w3.css">
+        
+        <link rel="stylesheet" href="../main.css">
+        <link rel="stylesheet" href="page.css">
+        <script src="../main.js"> </script>
+        <script src="page.js"> </script>
+
+        <script type="text/javascript" charset="utf-8">
+            $( document ).ready(function() {
+                $("#year").text(new Date().getFullYear());
+
+                var album_name = location.pathname.split('/').slice(-1)[0].split('.')[0];
+
+                load_banner(album_name);
+                load_navigation("", album_name);
+            });
+        </script>
+    </head>
+
+    <body>
+    	<div id="navigation_block"> </div>
+
+    	<div id="main_content">
+	        <div class="banner-block"> </div>
+            <hr>
+            
+	        <div align="center"  style="padding-bottom: 80px">
+	        	<h3> 進撃の巨人 x Minions = 進撃のMinions! 
+	        	</h3>
+	        	<h4> 2013 </h4>
+	        </div>
+	        <div align="center">
+				<iframe width="1000" height="562" src="https://www.youtube.com/embed/UP1fBwaLLNs?si=EnNWeMTCxPDZNJ3m" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+			</div>
+			<br>
+	        <div align="center">
+	        	<h4> the video's first appearance: </h4>
+				<iframe src="https://www.facebook.com/plugins/video.php?height=420&href=https%3A%2F%2Fwww.facebook.com%2Fkiking0501%2Fvideos%2F10201829154157023%2F&show_text=false&width=560&t=0" width="560" height="420" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture;" allowFullScreen="true"></iframe>
+		    </div> 
+		 </div>
+
+    </body>
+
+    <footer>
+        &copy; <span id="year"></span> Kiking. All rights reserved.
+    </footer>
+</html>

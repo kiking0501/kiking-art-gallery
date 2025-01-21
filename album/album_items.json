@@ -1,0 +1,686 @@
+{
+    "surrealistic_paintings": [
+        {"kiking_202412_BanffSpiral.jpeg":
+            {
+                "title": "The Banff Spiral, 2024",
+                "meta": "Acrylic on Canvas, 12\" x 12\"",
+                "social_media": "ig",
+                "link": "https://www.instagram.com/p/DEQ4o8xJ3er/"
+            }
+        },
+        {"kiking_202410_LakeMoraine.jpeg":
+        	{
+        		"title": "Lake Moraine Senerity, 2024",
+                "meta": "Acrylic on Canvas, 12\" x 12\"",
+        		"social_media": "ig",
+        		"link": "https://www.instagram.com/p/DA876wZSwKw/"
+        	}
+        },
+
+        {"kiking_201711_Harbour.jpg": 
+            {
+                "title": "Gazing at the Horizon, 2017",
+                "meta": "Acrylic on Canvas, 12\" round",
+                "social_media": "fb",
+                "link": "https://www.facebook.com/photo/?fbid=10214778346158730&set=a.3072640821485"
+            }
+        }
+
+    ],
+    "topological_crochet": [
+        {"kiking_202406_KleinBottle.jpg":
+            {
+                "title": "Klein Bottle Crochet, 2024",
+                "meta": "Wire, 8\" tall",
+                "social_media": "ig",
+                "link": "https://www.instagram.com/p/C7vWgvvgbB3/"
+            }
+        },
+        {"kiking_202405_MobiusStrip.jpg":
+        	{
+        		"title": "Mobius Strip Crochet, 2024",
+                "meta": "Wire, 3\" wide",
+        		"social_media": "ig",
+        		"link": "https://www.instagram.com/p/C7N9OLAATDM/"
+        	}
+        },
+
+        {"kiking_202405_Hyperbolic.png":
+            {
+                "title": "Hyperbolic Plane Crochet, 2024",
+                "meta": "Wire, 7\" wide",
+                "social_media": "ig",
+                "link": "https://www.instagram.com/p/C6ssDw5O0Vc/"
+            }
+        }
+
+    ],
+    "polyhedramatics_the_dance": [
+    ],
+    "shining_beauty_of_mathematics": [
+        {"kiking_201606_night_view.jpg": 
+            {
+               "meta": "Night View",
+               "social_media": "fb",
+               "link": "https://www.facebook.com/photo/?fbid=383036860497146&set=a.383036833830482" 
+            }
+        },
+        {"kiking_201606_day_view.jpg": 
+            {
+               "meta": "Day View",
+               "social_media": "fb",
+               "link": "https://www.facebook.com/ShiningBeautyofMaths/photos/pb.100063725063284.-2207520000/145378065868849/?type=3" 
+            }
+        },
+        {"kiking_201606_top_view.jpg": 
+            {
+               "meta": "Tessellation, Top View",
+               "social_media": "fb",
+               "link": "https://www.facebook.com/ShiningBeautyofMaths/photos/pb.100063725063284.-2207520000/145378122535510/?type=3" 
+            }
+        },
+        {"kiking_201606_intro.jpg": 
+            {
+               "meta": "Introduction",
+               "social_media": "fb",
+               "link": "https://www.facebook.com/ShiningBeautyofMaths/photos/pb.100063725063284.-2207520000/145082149231774/?type=3" 
+            }
+        },
+        {"kiking_201606_blue_yellow_sculpture.jpg": 
+            {
+               "title": "Pentagonal Hexacontahedron",
+               "meta": "Balsa, approx. 21\" tall",
+               "social_media": "fb",
+               "link": "https://www.facebook.com/media/set/?set=a.147641578975831&type=3" 
+            }
+        },
+        {"kiking_201606_purple_green_sculpture.jpg": 
+            {
+               "title": "Rhombic Hexacontahedron",
+               "meta": "Foamboard, approx. 30\" tall",
+               "social_media": "fb",
+               "link": "https://www.facebook.com/media/set/?set=a.146357265770929&type=3" 
+            }
+        },
+        {"kiking_201606_pyramid.jpg": 
+            {
+               "title": "Sierpinski Triangle with Hilbert Curve",
+               "meta": "Wire, appox. 18\" tall",
+               "social_media": "fb",
+               "link": "https://www.facebook.com/ShiningBeautyofMaths/photos_albums" 
+            }
+        },
+        {"kiking_201606_explain_blue_yellow_sculpture.jpg": 
+            {
+               "title": "Details: Pentagonal Hexacontahedron",
+               "meta": "Marker on Paper,",
+               "social_media": "fb",
+               "link": "https://www.facebook.com/media/set/?set=a.147641578975831&type=3" 
+            }
+        },
+        {"kiking_201606_explain_purple_green_sculpture.jpg": 
+            {
+               "title": "Details: Rhombic Hexacontahedron",
+               "meta": "Marker on Paper",
+               "social_media": "fb",
+               "link": "https://www.facebook.com/media/set/?set=a.146357265770929&type=3" 
+            }
+        },
+        {"kiking_201606_explain_tessellation.jpg": 
+            {
+               "title": "Details: Tessellation",
+               "meta": "Marker on Paper",
+               "social_media": "fb",
+               "link": "https://www.facebook.com/ShiningBeautyofMaths/photos/pb.100063725063284.-2207520000/145378122535510/?type=3" 
+            }
+        },
+        {"kiking_201606_explain_pyramid.jpg": 
+            {
+               "title": "Details: Sierpinski Triangle with Hilbert Curve",
+               "meta": "Maker on Paper",
+               "social_media": "fb",
+               "link": "https://www.facebook.com/ShiningBeautyofMaths/photos_albums" 
+            }
+        },
+        {"kiking_201606_back_view.jpg": 
+            {
+               "meta": "Back View",
+               "title": "",
+               "social_media": "fb",
+               "link": "https://www.facebook.com/ShiningBeautyofMaths/photos_albums" 
+            }
+        },
+        {"kiking_201603_lamp.jpg": 
+            {
+               "title": "The Adam",
+               "meta": "Paper, approx. 6\"",
+               "social_media": "ig",
+               "link": "https://www.instagram.com/reel/BDoHbZZRAIf/" 
+            }
+        }
+    ],
+    "cuhk_math_website_revamp": [
+        {"kiking_201508_KleinBottle.jpg":
+            {
+                "title": "The Klein Bottle, 2015",
+                "meta": "Fineliner on Paper, 11\" x 17\"",
+                "social_media": "fb",
+                "link": "https://www.facebook.com/photo/?fbid=10207511450250874&set=a.10200991858385152"
+            }
+        },
+        
+        {"201508_MathWebsite.jpg":
+            {
+                "title": "Finish of the CUHK Math Website Revamp, 2015",
+                "social_media": "fb",
+                "link": "https://www.facebook.com/photo.php?fbid=10207510043615709&set=pb.1427585719.-2207520000&type=3"
+            }
+        }
+
+    ],
+    "IMOment_newsletter_for_IMO_2016": [
+
+        {"kiking_2016_Issue02.jpg":
+            {
+                "title": "The frustrated Mathematician, 2015",
+                "meta": "Pencil on Paper, 17\" x 11\"",
+                "social_media": "ig",
+                "link": "https://www.instagram.com/p/1yvRP-xAHo/",
+                "row": 0,
+                "issue": "2"
+            }
+        },
+
+        {"Cover-IMOment-2.png": 
+            {
+                "meta": "IMOment Issue 02, Cover",
+                "social_media": "website",
+                "link": "https://www.edb.gov.hk/attachment/en/curriculum-development/kla/ma/IMO/IMOment-2.pdf",
+                "row": 0,
+                "issue": "2"
+
+            }
+        },
+        {"Article-IMOment-2.png": 
+            {
+                "meta": "IMOment Issue 02, Article Page 1",
+                "social_media": "website",
+                "link": "https://www.edb.gov.hk/attachment/en/curriculum-development/kla/ma/IMO/IMOment-2.pdf",
+                "row": 0,
+                "issue": "2"
+
+            }
+        },
+
+        {"kiking_2016_Issue04_comb.png":
+            {
+                "title": "We are closer than we think, 2015",
+                "meta": "Digital",
+                "social_media": "fb",
+                "link": "https://www.facebook.com/photo/?fbid=10210663559331631&set=a.10210662978637114",
+                "row": 1,
+                "issue": "4"
+            }
+        },
+        {"Cover-IMOment-4.png": 
+            {
+                "meta": "IMOment Issue 04, Cover",
+                "social_media": "website",
+                "link": "https://www.edb.gov.hk/attachment/en/curriculum-development/kla/ma/IMO/IMOment-4.pdf",
+                "row": 1,
+                "issue": "4"
+
+            }
+        },
+        {"Article-IMOment-4.png": 
+            {
+                "meta": "IMOment Issue 04, Article Page 1",
+                "social_media": "website",
+                "link": "https://www.edb.gov.hk/attachment/en/curriculum-development/kla/ma/IMO/IMOment-4.pdf",
+                "row": 1,
+                "issue": "4"
+
+            }
+        },
+
+        {"kiking_2016_Issue05.jpg":
+            {
+                "title": "Chinese Remainder Theorem, 2015",
+                "meta": "Arcylic on Canvas, 17\" x 11\"",
+                "social_media": "fb",
+                "link": "https://www.facebook.com/photo/?fbid=10210662985277280&set=a.10210662978637114",
+                "row": 2,
+                "issue": "5"
+            }
+        },
+        {"Cover-IMOment-5.png": 
+            {
+                "meta": "IMOment Issue 05, Cover",
+                "social_media": "website",
+                "link": "https://www.edb.gov.hk/attachment/en/curriculum-development/kla/ma/IMO/Nov20155-4online.pdf",
+                "row": 2,
+                "issue": "5"
+
+            }
+        },
+        {"Article-IMOment-5.png": 
+            {
+                "meta": "IMOment Issue 05, Article Page 1",
+                "social_media": "website",
+                "link": "https://www.edb.gov.hk/attachment/en/curriculum-development/kla/ma/IMO/Nov20155-4online.pdf",
+                "row": 2,
+                "issue": "5"
+
+            }
+        },
+
+        {"kiking_2016_Issue08.jpg":
+            {
+                "title": "The Art of the Impossible, 2016",
+                "meta": "Marker on Paper",
+                "social_media": "fb",
+                "link": "https://www.facebook.com/photo/?fbid=10210662985277280&set=a.10210662978637114",
+                "row": 3,
+                "issue": "8"
+            }
+        },
+        {"Cover-IMOment-8.png": 
+            {
+                "meta": "IMOment Issue 08, Cover",
+                "social_media": "website",
+                "link": "https://www.edb.gov.hk/attachment/en/curriculum-development/kla/ma/IMO/Jun8-3_online.pdf",
+                "row": 3,
+                "issue": "8"
+
+            }
+        },
+        {"Article-IMOment-8.png": 
+            {
+                "meta": "IMOment Issue 08, Article Page 1",
+                "social_media": "website",
+                "link": "https://www.edb.gov.hk/attachment/en/curriculum-development/kla/ma/IMO/Jun8-3_online.pdf",
+                "row": 3,
+                "issue": "8"
+
+            }
+        },
+
+
+        {"kiking_2016_Issue03_cover.jpg":
+            {
+                "title": "Mathematical Induction (1), 2015",
+                "meta": "Marker on Paper",
+                "social_media": "fb",
+                "link": "https://www.facebook.com/photo/?fbid=10210662980477160&set=a.10210662978637114",
+                "row": 4,
+                "issue": "3"
+            }
+        },
+        {"kiking_2016_Issue03_article.jpg":
+            {
+                "title": "Mathematical Induction (2), 2015",
+                "meta": "Marker on Paper",
+                "social_media": "ig",
+                "link": "https://www.facebook.com/photo/?fbid=10210662980477160&set=a.10210662978637114",
+                "row": 4,
+                "issue": "3"
+            }
+        },
+
+        {"Cover-IMOment-3.png": 
+            {
+                "meta": "IMOment Issue 03, Cover",
+                "social_media": "website",
+                "link": "https://www.edb.gov.hk/attachment/en/curriculum-development/kla/ma/IMO/IMOment-3.pdf",
+                "row": 4,
+                "issue": "3"
+
+            }
+        },
+        {"Article-IMOment-3-p1.png": 
+            {
+                "meta": "IMOment Issue 03, Article Page 1",
+                "social_media": "website",
+                "link": "https://www.edb.gov.hk/attachment/en/curriculum-development/kla/ma/IMO/IMOment-3.pdf",
+                "row": 5,
+                "issue": "3"
+
+            }
+        },
+        {"Article-IMOment-3-p2.png": 
+            {
+                "meta": "IMOment Issue 03, Article Page 2",
+                "social_media": "website",
+                "link": "https://www.edb.gov.hk/attachment/en/curriculum-development/kla/ma/IMO/IMOment-3.pdf",
+                "row": 5,
+                "issue": "3"
+
+            }
+        }
+
+    ],
+    "major_ugf": [
+            {"kiking_201306_WhyMathIsFun.jpg": 
+                {
+                    "title": "Why Math Is Fun, 2013",
+                    "meta": "Fineliner on Paper",
+                    "social_media": "fb",
+                    "link": "https://www.facebook.com/photo/?fbid=10201369325901604&set=a.10200991858385152"
+                }
+            },
+            {"kiking_201310_RiemannSurface.jpg": 
+                {
+                    "title": "Riemann Surface, 2013",
+                    "meta": "Fineliner on Paper",
+                    "social_media": "fb",
+                    "link": "https://www.facebook.com/photo/?fbid=10202362469849582&set=a.10200991858385152"
+                }
+            },
+            {"kiking_201312_SingK.jpg": 
+                {
+                    "title": "EMAT Sing K, 2013",
+                    "meta": "Fineliner on Paper",
+                    "social_media": "fb",
+                    "link": "https://www.facebook.com/photo/?fbid=10202921469704229&set=a.10200991858385152"
+                }
+            },
+            {"kiking_201311_MobiusTrip.jpg": 
+                {
+                    "title": "Mobius Trip, 2013",
+                    "meta": "Fineliner on Paper",
+                    "social_media": "fb",
+                    "link": "https://www.facebook.com/photo/?fbid=10202518474509601&set=a.10200991858385152"
+                }
+            },
+            {"kiking_201410_Weiwei.jpg": 
+                {
+                    "title": "abab=id, 2014",
+                    "meta": "Marker on Paper",
+                    "social_media": "fb",
+                    "link": "https://www.facebook.com/photo/?fbid=10205257205696169&set=a.10200991858385152" 
+                }
+            },
+
+            {"kiking_201408_Angry.jpg": 
+                {
+                    "title": "Getting Angry, 2014",
+                    "meta": "Fineliner on Paper",
+                    "social_media": "fb",
+                    "link": "https://www.facebook.com/photo/?fbid=10204631666458079&set=a.10200991858385152"
+                }
+            },
+
+            {"kiking_201501_Waterloooo.jpg":
+                {
+                    "title": "Waterloooo, 2015",
+                    "meta": "Marker on Paper",
+                    "social_media": "ig",
+                    "link": "https://www.instagram.com/p/yVfFJARACd/"
+                }
+            }
+    ],
+    "purquoi_imaginary_in_my_week_of_finals": [
+        {"kiking_purquoi_imaginary_1.jpg": 
+            {
+                "title": "Pourquoi Imaginary (1), 2013",
+                "meta": "Watercolor & Fineliner on Paper",
+                "social_media": "fb",   
+                "link": "https://www.facebook.com/photo/?fbid=10202804161811605&set=a.10202795378552029",
+                "row": 0
+            }
+        },
+        {"kiking_purquoi_imaginary_2.jpg": 
+            {
+                "title": "Pourquoi Imaginary (2), 2013",
+                "meta": "Watercolor & Fineliner on Paper",
+                "social_media": "fb",
+                "link": "https://www.facebook.com/photo/?fbid=10202802842338619&set=a.10202795378552029",
+                "row": 0
+            }
+        },
+        {"kiking_purquoi_imaginary_3.jpg": 
+            {
+                "title": "Pourquoi Imaginary (3), 2013",
+                "meta": "Watercolor & Fineliner on Paper",
+                "social_media": "fb",
+                "link": "https://www.facebook.com/photo/?fbid=10202798640313571&set=a.10202795378552029",
+                "row": 0
+            }
+        },
+        {"kiking_purquoi_imaginary_4.jpg": 
+            {
+                "title": "Pourquoi Imaginary (4), 2013",
+                "meta": "Watercolor & Fineliner on Paper",
+                "social_media": "fb",
+                "link": "https://www.facebook.com/photo/?fbid=10202796457338998&set=a.10202795378552029",
+                "row": 0
+            }
+        },
+        {"kiking_purquoi_imaginary_5.jpg": 
+            {
+                "title": "Pourquoi Imaginary (5), 2013",
+                "meta": "Watercolor & Fineliner on Paper",
+                "social_media": "fb",
+                "link": "https://www.facebook.com/photo/?fbid=10202795378712033&set=a.10202795378552029",
+                "row": 1
+            }
+        },
+        {"kiking_purquoi_imaginary_6.jpg": 
+            {
+                "title": "Pourquoi Imaginary (6), 2013",
+                "meta": "Watercolor & Fineliner on Paper",
+                "social_media": "fb",
+                "link": "https://www.facebook.com/photo/?fbid=10202795379672057&set=a.10202795378552029",
+                "row": 1
+            }
+        },
+        {"kiking_purquoi_imaginary_empty.jpg": 
+            {
+                "title": "<我覺得自己係>, 2013",
+                "meta": "Fineliner on Paper",
+                "social_media": "fb",
+                "link": "https://www.facebook.com/photo/?fbid=10202820190212305&set=a.10202795378552029",
+                "row": 1
+            }
+        }
+    ],
+    "attack_on_minions": [
+    ],
+    "never_forget": [
+    ],
+    "lunch_time_escape": [
+        {"kiking_201610_Deer.jpg": {
+            "title": "Deer, 2016",
+            "meta": "Marker on Paper",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo?fbid=10211152157306275&set=a.3072640821485",
+            "row": 0
+        }},
+        {"kiking_201611_Cat.jpg": {
+            "title": "Cat, 2016",
+            "meta": "Marker on Paper",
+            "social_media": "ig",
+            "link": "https://www.instagram.com/p/BMjIWbXjxvx/",
+            "row": 0
+        }},
+        {"kiking_201706_Cat.jpg": {
+            "title": "Redundant array of independent disks, 2017",
+            "meta": "Marker on Paper",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo/?fbid=10213339152699793&set=a.3072640821485",
+            "row": 0
+        }},
+
+        {"kiking_201610_Cat.jpg": {
+            "title": "Cat (II), 2016",
+            "meta": "Marker on Paper",
+            "social_media": "ig",
+            "link": "https://www.instagram.com/p/BLv3cg2DClX/",
+            "row": 1
+        }},
+        {"kiking_201610_House.jpg": {
+            "title": "Houses, 2016",
+            "meta": "Marker on Paper",
+            "social_media": "ig",
+            "link": "https://www.instagram.com/p/BL8qxbhjwt3/",
+            "row": 1
+        }},
+
+
+        {"kiking_201708_July.jpg": {
+            "title": "< July! >, 2017",
+            "meta": "Fineliner on Paper",
+            "social_media": "ig",
+            "link": "https://www.instagram.com/p/BXrkLSTAOsd/",
+            "row": 1
+        }}     
+    ],
+
+    "if_pusheen_is_my_cat": [
+        {"kiking_pusheen_cat_2.jpg": {
+            "title": "If Pusheen is my cat (III), 2014",
+            "meta": "Pencil on Paper",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo/?fbid=10205402165720079&set=a.10205402163720029"
+        }},  
+
+        {"kiking_pusheen_cat_1.jpg": {
+            "title": "If Pusheen is my cat (II), 2014",
+            "meta": "Pencil on Paper",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo/?fbid=10205402167000111&set=a.10205402163720029"
+        }},
+        {"kiking_pusheen_cat_0.jpg": {
+            "title": "If Pusheen is my cat (I), 2014",
+            "meta": "Pen on Paper",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo/?fbid=10205402167000111&set=a.10205402163720029"
+        }}
+    ],
+    "because_its_cute": [
+        {"kiking_cute_I.jpg": {
+            "title": "Because It's Cute (I), 2014",
+            "meta": "Pen on Paper",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo/?fbid=10204642035477298&set=a.3072640821485"
+        }},  
+
+        {"kiking_cute_II.jpg": {
+            "title": "Because It's Cute (II), 2014",
+            "meta": "Pen on Paper",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo?fbid=10204642034917284&set=a.3072640821485"
+        }},
+        {"kiking_cute_III.jpg": {
+            "title": "Because It's Cute (III), 2014",
+            "meta": "Pen on Paper",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo?fbid=10204672599401377&set=a.3072640821485"
+        }}
+    ],
+    "love_of_miyazaki": [
+        {"kiking_miyazaki_1.jpg": {
+            "title": "Love on Miyazaki (1), 2013",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo/?fbid=10201399027804133&set=a.10201399026444099",
+            "row": 0
+        }},
+        {"kiking_miyazaki_2.jpg": {
+            "title": "Love on Miyazaki (2), 2013",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo/?fbid=10201399033924286&set=a.10201399026444099",
+            "row": 0
+        }},  
+        {"kiking_miyazaki_3.jpg": {
+            "title": "Love on Miyazaki (3), 2013",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo/?fbid=10201399029804183&set=a.10201399026444099",
+            "row": 0
+        }},
+        {"kiking_miyazaki_4.jpg": {
+            "title": "Love on Miyazaki (4), 2013",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo/?fbid=10201399078445399&set=a.10201399026444099",
+            "row": 0
+        }},  
+        {"kiking_miyazaki_5.jpg": {
+            "title": "Love on Miyazaki (5), 2013",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo/?fbid=10201399068805158&set=a.10201399026444099",
+            "row": 1
+        }},  
+        {"kiking_miyazaki_6.jpg": {
+            "title": "Love on Miyazaki (6), 2013",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo/?fbid=10201399053644779&set=a.10201399026444099",
+            "row": 1
+        }},
+         {"kiking_miyazaki_7.jpg": {
+            "title": "Love on Miyazaki (7), 2013",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo/?fbid=10201399035524326&set=a.10201399026444099",
+            "row": 1
+        }},
+         {"kiking_miyazaki_8.jpg": {
+            "title": "Love on Miyazaki (8), 2013",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo/?fbid=10201399037964387&set=a.10201399026444099",
+            "row": 1
+        }}
+    ],
+    "moments_of_delight": [
+        {"kiking_201212Pi.jpg": {
+            "title": "Life of Pi, 2012",
+            "meta": "Pen on Paper",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo/?fbid=10200260858910622&set=a.3072640821485",
+            "row": 0
+        }},
+        {"kiking_201201Chem.jpg": {
+            "title": "Chem Exam, 2012",
+            "meta": "Colored Pencil on Paper",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo/?fbid=3095884442561&set=a.3072640821485",
+            "row": 0
+        }},
+
+        {"kiking_201202Phi.jpg": {
+            "title": "360/Phi, 2012",
+            "meta": "Colored Pencil on Paper",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo/?fbid=3296179169804&set=a.3072640821485",
+            "row": 0
+        }},
+        {"kiking_201201Piggy.jpg": {
+            "title": "Piggy, 2012",
+            "meta": "Colored Pencil on Paper",
+            "social_media": "fb",
+            "link": "https://www.facebook.com/photo/?fbid=3072641541503&set=a.3072640821485",
+            "row": 0
+        }},
+
+        {"kiking_201304CUHK.jpg": {
+            "title": "CUHK, 2013",
+            "social_media": "fb",
+            "meta": "Fineliner on Paper",
+            "link": "https://www.facebook.com/photo/?fbid=10201019389313408&set=a.3072640821485",
+            "row": 1
+        }},
+        
+        {"kiking_201204PCMS.jpg": {
+            "title": "PCMS, 2012",
+            "social_media": "fb",
+            "meta": "Arcylic on Canvas",
+            "link": "https://www.facebook.com/photo/?fbid=3831720678007&set=a.3072640821485",
+            "row": 1
+        }},
+        {"kiking_2007HK.jpg": {
+            "title": "Patience, 2012",
+            "social_media": "fb",
+            "meta": "Colored Pencil on Paper",
+            "link": "https://www.facebook.com/photo.php?fbid=1056757191006039&set=t.1427585719&type=3",
+            "row": 1
+        }}
+        
+    ]
+}

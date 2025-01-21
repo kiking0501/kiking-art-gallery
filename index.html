@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FSED0HPBKR"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-FSED0HPBKR');
+        </script>
+
+		<meta charset="utf-8">
+		<title>Kiking's Art Gallery</title>
+		<meta property = "og:title" content = "Kiking's Art Gallery"/>
+    	<meta property = "og:type" content = "website" />
+    	<meta property = "og:url" content = "https://kiking0501.github.io/kiking-art-gallery" />
+        <meta property = "og:image" content = "resource/og_image_preview.png" />
+        
+    	<link rel="icon" type="image/png" href="resource/favicon.png"/>
+
+    	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    	<script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    	<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="resource/w3.css">
+    	
+    	<link rel="stylesheet" href="main.css">
+    	<script src="main.js"> </script>
+
+    	<script type="text/javascript" charset="utf-8">
+    		$( document ).ready(function() {
+                $("#year").text(new Date().getFullYear());
+    			display_album_covers();
+                load_navigation("album/");
+            });
+    	</script>
+	</head>
+
+	<body>
+        <div id="navigation_block"> </div>
+
+        <div id="main_content">
+
+    		<h1 class="title">
+                <button id="nav_button" class="w3-button w3-xlarge" onclick="open_navigation()" style="position:absolute; left:0">&#9776 </button>
+
+                <span  onclick='location.href="index.html"' style="cursor: pointer">
+                    <span style="color: #979797">δ&nbsp;</span> KIKING's ART GALLERY <span style="color: #979797"> &nbsp;δ</span>
+                </span>
+
+            </h1>
+            <div class="banner" onclick='location.href="about.html"' style="cursor: pointer">
+            	<img src="navigation/banner_selfie2017.gif" alt="Banner">
+            </div>
+
+        	
+        	<h2 class="title lined-text"> <span style="color: #979797">δ&nbsp;&nbsp; </span> Explore <span style="color: #979797"> &nbsp;&nbsp;δ</span> </h2>
+        	
+        	<div class="album_board">
+        		<h3 class="album_category"> ▼  Latest  ▼ </h3>
+        		<div id="cat_latest"></div>
+
+        		<h3 class="album_category"> ▼  Exhibitions  ▼ </h3>
+        		<div id="cat_exhibitions"></div>
+     
+        		<h3 class="album_category"> ▼  Publications  ▼ </h3>
+        		<div id="cat_publications"></div>
+
+        		
+    	    	<h3 class="album_category"> ▼  As a Mathematics Student  ▼ </h3>
+    	    	<div id="cat_math_student"></div>
+
+    		    <h3 class="album_category" > ▼  Featured  ▼ </h3>
+    		    <div id="cat_featured"></div>
+
+    		    <h3 class="album_category"> ▼  Early Work  ▼ </h3>
+    		    <div id="cat_sketches">
+        		</div>
+    		</div>
+
+        </div>
+
+
+
+        <footer>
+            &copy; <span id="year"></span> Kiking. All rights reserved.
+        </footer>
+
+	</body>
+</html>

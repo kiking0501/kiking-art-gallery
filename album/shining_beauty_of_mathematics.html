@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FSED0HPBKR"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-FSED0HPBKR');
+        </script>
+        <meta charset="utf-8">
+        <title>Kiking's Art Gallery</title>
+        <meta property = "og:title" content = "Kiking's Art Gallery"/>
+        <meta property = "og:type" content = "website" />
+        <meta property = "og:url" content = "https://kiking0501.github.io/kiking-art-gallery" />
+        <meta property = "og:image" content = "../resource/og_image_preview.png" />
+
+        <link rel="icon" type="image/png" href="../resource/favicon.png"/>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../resource/w3.css">
+        
+        <link rel="stylesheet" href="../main.css">
+        <link rel="stylesheet" href="page.css">
+        <script src="../main.js"> </script>
+        <script src="page.js"> </script>
+        <style>
+            .news_board {
+                padding-left: 80px;
+                padding-right: 80px;
+            }
+            .news_board .row {
+                justify-content: center;
+                align-items: center;
+                height: 400px;
+            }
+            .news_board .row img {
+                max-height: 400px;
+                width: 100%;
+                height: auto;
+                overflow: hidden;
+                object-fit: cover;
+            }
+        </style>
+
+        <script type="text/javascript" charset="utf-8">
+            $( document ).ready(function() {
+               $("#year").text(new Date().getFullYear());
+
+                var album_name = location.pathname.split('/').slice(-1)[0].split('.')[0];
+
+                load_banner(album_name);
+
+                $(".display-template-block").load("page_display_template.html", function() {
+                    $("#template_image_tile").removeClass("col-xs-4");
+                    $("#template_image_tile").addClass("col-xs-3");
+                    fill_in_image_tiles(album_name);
+                });
+
+                load_navigation("", album_name);
+            });
+
+        </script>
+    </head>
+
+    <body>
+        <div id="navigation_block"> </div>
+
+        <div id="main_content">
+            <div class="banner-block"> </div>
+            <hr>
+
+            <!-- Main Content -->
+            <div style="padding:0 20px 0 20px">
+              <h3 style="text-align:center"> The <i>Shining Beauty of Mathematics</i> Exhibition, 2016 </h3>
+              <h4> Sculptures and Installations</h4> 
+              <br>
+            </div>
+
+            <div align="center">
+                <iframe src="https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2FShiningBeautyofMaths%2Fvideos%2F147890912284231%2F&show_text=false&width=560&t=0&mute=1" width="1000" height="609" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" allowFullScreen="true"></iframe>
+
+            </div>
+
+            <a href="https://www.facebook.com/ShiningBeautyofMaths", target="_blank">
+                <h4>
+                    Displayed from 22 to 30 Jun 2016, at the Chinese University of Hong Kong
+                </h4>
+                <h4> 
+                    <span id="social-media-icon"><img src="../resource/facebook.png" style="width:40px"> </span> 
+                    璀璨數學之美 Shining Beauty of Mathematics
+                </h4>
+            </a>
+
+            <!-- Exhibition Photos -->
+            <div class="page_board container-fluid">
+              <div class="row"></div>
+
+            </div>
+
+
+             <!-- News Report -->
+            <h3 class="title lined-text"> <span style="color: #979797">δ&nbsp;&nbsp; </span> Media Coverage <span style="color: #979797"> &nbsp;&nbsp;δ</span> </h3>
+
+            <div class="news_board container-fluid">
+
+                <div class="row"> 
+                    <div class="image-tile col-xs-3"
+                       data-image-url="shining_beauty_of_mathematics/cuhk_newsletter_484_2016oct.png" data-post-url="https://www.iso.cuhk.edu.hk/english/publications/CUHKUPDates/article.aspx?articleid=1795&fbclid=IwZXh0bgNhZW0CMTEAAR2ke2NPoG8vclfnvwj950Y0O9eYMoorEzxf-x091X9pRE_Z6nbqoLT0KuY_aem_G8TSvQlXeEP_Eo0CpNoI1g" data-social-media-icon="website"
+                       data-toggle="modal" onclick="show_image_modal(this);"> 
+                      <img src="shining_beauty_of_mathematics/cuhk_newsletter_484_2016oct.png">
+                      <h4 class="imagetext"> Newsletter No. 484, CUHK </h5>
+                      <h5 class="imagemeta"> </h5>
+                    </div>
+
+                    <div class="image-tile col-xs-3"
+                       data-image-url="shining_beauty_of_mathematics/math_cuhk_201617_newsletter_report_cover.png" data-post-url="https://www.math.cuhk.edu.hk/sites/default/files/about-us/newsletter/newsletter1617.pdf" data-social-media-icon="website"
+                       data-toggle="modal" onclick="show_image_modal(this);"> 
+                      <img src="shining_beauty_of_mathematics/math_cuhk_201617_newsletter_report_cover.png">
+                      <h4 class="imagetext"> Newsletter 2016-17, Department of Mathematics, CUHK </h4>
+                      <h5 class="imagemeta">  </h5>
+                    </div>
+
+                    <div class="image-tile col-xs-3"
+                       data-image-url="shining_beauty_of_mathematics/MingPao.jpg" data-post-url="" data-social-media-icon=""
+                       data-toggle="modal" onclick="show_image_modal(this);"> 
+                      <img src="shining_beauty_of_mathematics/MingPao.jpg">
+                      <h4 class="imagetext"> Newsreport, Ming Pao </h4>
+                      <h5 class="imagemeta">  </h5>
+                    </div>
+
+                    <div class="image-tile col-xs-3"
+                       data-image-url="shining_beauty_of_mathematics/ShingDao.jpg" data-post-url="" data-social-media-icon=""
+                       data-toggle="modal" onclick="show_image_modal(this);"> 
+                      <img src="shining_beauty_of_mathematics/ShingDao.jpg">
+                      <h4 class="imagetext"> Newsreport, Shing Dao </h4>
+                      <h5 class="imagemeta">  </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="display-template-block"> </div>
+    </body>
+
+    <footer>
+        &copy; <span id="year"></span> Kiking. All rights reserved.
+    </footer>
+</html>
