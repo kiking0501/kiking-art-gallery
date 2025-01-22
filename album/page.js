@@ -24,29 +24,37 @@ function fill_in_header(album_name) {
     $(".center_banner").attr("src", "../navigation/album_cover_" + album_name + ".jpg"); 
 }
 
+function _fill_in_image_tile(album_name, item) {
+      var item_name = Object.keys(item)[0];
+
+      var image_tile = $("#template_image_tile").clone();
+
+      image_tile.removeAttr("id");
+      image_tile.attr("data-image-url", album_name + '/' + item_name);
+      image_tile.attr("data-social-media-icon", item[item_name]["social_media"]);
+      image_tile.attr("data-post-url", item[item_name]["link"]);
+
+
+      $(image_tile).find("img").attr("src", album_name + '/' + item_name);
+      $(image_tile).find(".imagetext").text(item[item_name]["title"]);
+      $(image_tile).find(".imagemeta").text(item[item_name]["meta"]);
+
+      if (item[item_name]["display"] == "full-width") {
+        $(image_tile).addClass("full-width");
+      }
+      
+      image_tile.show();
+      return image_tile;
+}
+
 function fill_in_image_tiles(album_name) {
     $.getJSON("album_items.json", function(data){
       var items = data[album_name];
 
       for (let i = 0; i < items.length; i++) {
         var item = items[i];
-          var item_name = Object.keys(item)[0];
-
-          var image_tile = $("#template_image_tile").clone();
-
-          image_tile.removeAttr("id");
-          image_tile.attr("data-image-url", album_name + '/' + item_name);
-          image_tile.attr("data-social-media-icon", item[item_name]["social_media"]);
-          image_tile.attr("data-post-url", item[item_name]["link"]);
-
-
-          $(image_tile).find("img").attr("src", album_name + '/' + item_name);
-          $(image_tile).find(".imagetext").text(item[item_name]["title"]);
-          $(image_tile).find(".imagemeta").text(item[item_name]["meta"]);
-          
-          image_tile.show();
-
-          $(".page_board .row").append(image_tile);
+        var image_tile = _fill_in_image_tile(album_name, item);
+        $(".page_board .row").append(image_tile);
       }
     
     })
@@ -66,21 +74,8 @@ function fill_in_image_tiles_in_rows(album_name) {
 
       for (let i = 0; i < items.length; i++) {
         var item = items[i];
-          var item_name = Object.keys(item)[0];
-
-          var image_tile = $("#template_image_tile").clone();
-
-          image_tile.removeAttr("id");
-          image_tile.attr("data-image-url", album_name + '/' + item_name);
-          image_tile.attr("data-social-media-icon", item[item_name]["social_media"]);
-          image_tile.attr("data-post-url", item[item_name]["link"]);
-
-
-          $(image_tile).find("img").attr("src", album_name + '/' + item_name);
-          $(image_tile).find(".imagetext").text(item[item_name]["title"]);
-          $(image_tile).find(".imagemeta").text(item[item_name]["meta"]);
-
-          image_tile.show();
+        var image_tile = _fill_in_image_tile(album_name, item);
+        var item_name = Object.keys(item)[0];
 
           // append a new row object
           if (item[item_name]["row"] != curr_idx) {
@@ -109,7 +104,13 @@ function show_image_modal(t) {
     $('#imagetext .text').text($(t).find('.imagetext').text());
     $('#imagemeta .text').text($(t).find('.imagemeta').text());
 
+    if ($(t).hasClass("full-width")) {
+      $("#image .modal-dialog").css("width", "1200px");
+      
+    } else {
+      $("#image .modal-dialog").css("width", "800px");
 
+    }
     $('#image').modal('show');
 
     // add magnify

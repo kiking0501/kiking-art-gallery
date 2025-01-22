@@ -51,6 +51,14 @@ a:hover, a:focus{
 	transform: scale(1.1);
 }
 
+.header-social-media-icons a img{
+	transition: transform .5s ease;
+}
+.header-social-media-icons a img:hover{
+	transform: scale(1.1);
+}
+
+
 
 /* Lined Text */
 .lined-text {

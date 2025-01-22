@@ -4,6 +4,7 @@
             {
                 "title": "The Banff Spiral, 2024",
                 "meta": "Acrylic on Canvas, 12\" x 12\"",
+                "display": "full-width",
                 "social_media": "ig",
                 "link": "https://www.instagram.com/p/DEQ4o8xJ3er/"
             }
@@ -12,6 +13,7 @@
         	{
         		"title": "Lake Moraine Senerity, 2024",
                 "meta": "Acrylic on Canvas, 12\" x 12\"",
+                "display": "full-width",
         		"social_media": "ig",
         		"link": "https://www.instagram.com/p/DA876wZSwKw/"
         	}
@@ -21,6 +23,7 @@
             {
                 "title": "Gazing at the Horizon, 2017",
                 "meta": "Acrylic on Canvas, 12\" round",
+                "display": "full-width",
                 "social_media": "fb",
                 "link": "https://www.facebook.com/photo/?fbid=10214778346158730&set=a.3072640821485"
             }
@@ -62,6 +65,7 @@
             {
                "meta": "Night View",
                "social_media": "fb",
+               "display": "full-width",
                "link": "https://www.facebook.com/photo/?fbid=383036860497146&set=a.383036833830482" 
             }
         },
@@ -69,6 +73,7 @@
             {
                "meta": "Day View",
                "social_media": "fb",
+               "display": "full-width",
                "link": "https://www.facebook.com/ShiningBeautyofMaths/photos/pb.100063725063284.-2207520000/145378065868849/?type=3" 
             }
         },
@@ -76,6 +81,7 @@
             {
                "meta": "Tessellation, Top View",
                "social_media": "fb",
+               "display": "full-width",
                "link": "https://www.facebook.com/ShiningBeautyofMaths/photos/pb.100063725063284.-2207520000/145378122535510/?type=3" 
             }
         },
@@ -83,6 +89,7 @@
             {
                "meta": "Introduction",
                "social_media": "fb",
+               "display": "full-width",
                "link": "https://www.facebook.com/ShiningBeautyofMaths/photos/pb.100063725063284.-2207520000/145082149231774/?type=3" 
             }
         },
@@ -113,7 +120,8 @@
         {"kiking_201606_explain_blue_yellow_sculpture.jpg": 
             {
                "title": "Details: Pentagonal Hexacontahedron",
-               "meta": "Marker on Paper,",
+               "meta": "Marker on Paper",
+               "display": "full-width",
                "social_media": "fb",
                "link": "https://www.facebook.com/media/set/?set=a.147641578975831&type=3" 
             }
@@ -122,6 +130,7 @@
             {
                "title": "Details: Rhombic Hexacontahedron",
                "meta": "Marker on Paper",
+               "display": "full-width",
                "social_media": "fb",
                "link": "https://www.facebook.com/media/set/?set=a.146357265770929&type=3" 
             }
@@ -130,6 +139,7 @@
             {
                "title": "Details: Tessellation",
                "meta": "Marker on Paper",
+               "display": "full-width",
                "social_media": "fb",
                "link": "https://www.facebook.com/ShiningBeautyofMaths/photos/pb.100063725063284.-2207520000/145378122535510/?type=3" 
             }
@@ -138,6 +148,7 @@
             {
                "title": "Details: Sierpinski Triangle with Hilbert Curve",
                "meta": "Maker on Paper",
+               "display": "full-width",
                "social_media": "fb",
                "link": "https://www.facebook.com/ShiningBeautyofMaths/photos_albums" 
             }
@@ -146,6 +157,7 @@
             {
                "meta": "Back View",
                "title": "",
+               "display": "full-width",
                "social_media": "fb",
                "link": "https://www.facebook.com/ShiningBeautyofMaths/photos_albums" 
             }
@@ -310,6 +322,7 @@
             {
                 "title": "Mathematical Induction (1), 2015",
                 "meta": "Marker on Paper",
+                "display": "full-width",
                 "social_media": "fb",
                 "link": "https://www.facebook.com/photo/?fbid=10210662980477160&set=a.10210662978637114",
                 "row": 4,
@@ -320,6 +333,7 @@
             {
                 "title": "Mathematical Induction (2), 2015",
                 "meta": "Marker on Paper",
+                "display": "full-width",
                 "social_media": "ig",
                 "link": "https://www.facebook.com/photo/?fbid=10210662980477160&set=a.10210662978637114",
                 "row": 4,
@@ -341,6 +355,7 @@
             {
                 "meta": "IMOment Issue 03, Article Page 1",
                 "social_media": "website",
+                "display": "full-width",
                 "link": "https://www.edb.gov.hk/attachment/en/curriculum-development/kla/ma/IMO/IMOment-3.pdf",
                 "row": 5,
                 "issue": "3"
@@ -351,6 +366,7 @@
             {
                 "meta": "IMOment Issue 03, Article Page 2",
                 "social_media": "website",
+                "display": "full-width",
                 "link": "https://www.edb.gov.hk/attachment/en/curriculum-development/kla/ma/IMO/IMOment-3.pdf",
                 "row": 5,
                 "issue": "3"
@@ -364,6 +380,7 @@
                 {
                     "title": "Why Math Is Fun, 2013",
                     "meta": "Fineliner on Paper",
+                    "display": "full-width",
                     "social_media": "fb",
                     "link": "https://www.facebook.com/photo/?fbid=10201369325901604&set=a.10200991858385152"
                 }
@@ -372,6 +389,7 @@
                 {
                     "title": "Riemann Surface, 2013",
                     "meta": "Fineliner on Paper",
+                    "display": "full-width",
                     "social_media": "fb",
                     "link": "https://www.facebook.com/photo/?fbid=10202362469849582&set=a.10200991858385152"
                 }
@@ -380,6 +398,7 @@
                 {
                     "title": "EMAT Sing K, 2013",
                     "meta": "Fineliner on Paper",
+                    "display": "full-width",
                     "social_media": "fb",
                     "link": "https://www.facebook.com/photo/?fbid=10202921469704229&set=a.10200991858385152"
                 }
@@ -396,6 +415,7 @@
                 {
                     "title": "abab=id, 2014",
                     "meta": "Marker on Paper",
+                    "display": "full-width",
                     "social_media": "fb",
                     "link": "https://www.facebook.com/photo/?fbid=10205257205696169&set=a.10200991858385152" 
                 }
@@ -405,6 +425,7 @@
                 {
                     "title": "Getting Angry, 2014",
                     "meta": "Fineliner on Paper",
+                    "display": "full-width",
                     "social_media": "fb",
                     "link": "https://www.facebook.com/photo/?fbid=10204631666458079&set=a.10200991858385152"
                 }
@@ -492,6 +513,7 @@
         {"kiking_201610_Deer.jpg": {
             "title": "Deer, 2016",
             "meta": "Marker on Paper",
+                "display": "full-width",
             "social_media": "fb",
             "link": "https://www.facebook.com/photo?fbid=10211152157306275&set=a.3072640821485",
             "row": 0
@@ -499,6 +521,7 @@
         {"kiking_201611_Cat.jpg": {
             "title": "Cat, 2016",
             "meta": "Marker on Paper",
+                "display": "full-width",
             "social_media": "ig",
             "link": "https://www.instagram.com/p/BMjIWbXjxvx/",
             "row": 0
@@ -506,6 +529,7 @@
         {"kiking_201706_Cat.jpg": {
             "title": "Redundant array of independent disks, 2017",
             "meta": "Marker on Paper",
+                "display": "full-width",
             "social_media": "fb",
             "link": "https://www.facebook.com/photo/?fbid=10213339152699793&set=a.3072640821485",
             "row": 0
@@ -514,6 +538,7 @@
         {"kiking_201610_Cat.jpg": {
             "title": "Cat (II), 2016",
             "meta": "Marker on Paper",
+                "display": "full-width",
             "social_media": "ig",
             "link": "https://www.instagram.com/p/BLv3cg2DClX/",
             "row": 1
@@ -581,48 +606,56 @@
     "love_of_miyazaki": [
         {"kiking_miyazaki_1.jpg": {
             "title": "Love on Miyazaki (1), 2013",
+                "display": "full-width",
             "social_media": "fb",
             "link": "https://www.facebook.com/photo/?fbid=10201399027804133&set=a.10201399026444099",
             "row": 0
         }},
         {"kiking_miyazaki_2.jpg": {
             "title": "Love on Miyazaki (2), 2013",
+                "display": "full-width",
             "social_media": "fb",
             "link": "https://www.facebook.com/photo/?fbid=10201399033924286&set=a.10201399026444099",
             "row": 0
         }},  
         {"kiking_miyazaki_3.jpg": {
             "title": "Love on Miyazaki (3), 2013",
+                "display": "full-width",
             "social_media": "fb",
             "link": "https://www.facebook.com/photo/?fbid=10201399029804183&set=a.10201399026444099",
             "row": 0
         }},
         {"kiking_miyazaki_4.jpg": {
             "title": "Love on Miyazaki (4), 2013",
+                "display": "full-width",
             "social_media": "fb",
             "link": "https://www.facebook.com/photo/?fbid=10201399078445399&set=a.10201399026444099",
             "row": 0
         }},  
         {"kiking_miyazaki_5.jpg": {
             "title": "Love on Miyazaki (5), 2013",
+                "display": "full-width",
             "social_media": "fb",
             "link": "https://www.facebook.com/photo/?fbid=10201399068805158&set=a.10201399026444099",
             "row": 1
         }},  
         {"kiking_miyazaki_6.jpg": {
             "title": "Love on Miyazaki (6), 2013",
+                "display": "full-width",
             "social_media": "fb",
             "link": "https://www.facebook.com/photo/?fbid=10201399053644779&set=a.10201399026444099",
             "row": 1
         }},
          {"kiking_miyazaki_7.jpg": {
             "title": "Love on Miyazaki (7), 2013",
+                "display": "full-width",
             "social_media": "fb",
             "link": "https://www.facebook.com/photo/?fbid=10201399035524326&set=a.10201399026444099",
             "row": 1
         }},
          {"kiking_miyazaki_8.jpg": {
             "title": "Love on Miyazaki (8), 2013",
+                "display": "full-width",
             "social_media": "fb",
             "link": "https://www.facebook.com/photo/?fbid=10201399037964387&set=a.10201399026444099",
             "row": 1
@@ -632,6 +665,7 @@
         {"kiking_201212Pi.jpg": {
             "title": "Life of Pi, 2012",
             "meta": "Pen on Paper",
+                "display": "full-width",
             "social_media": "fb",
             "link": "https://www.facebook.com/photo/?fbid=10200260858910622&set=a.3072640821485",
             "row": 0
@@ -647,6 +681,7 @@
         {"kiking_201202Phi.jpg": {
             "title": "360/Phi, 2012",
             "meta": "Colored Pencil on Paper",
+                "display": "full-width",
             "social_media": "fb",
             "link": "https://www.facebook.com/photo/?fbid=3296179169804&set=a.3072640821485",
             "row": 0
@@ -676,6 +711,7 @@
         }},
         {"kiking_2007HK.jpg": {
             "title": "Patience, 2012",
+                "display": "full-width",
             "social_media": "fb",
             "meta": "Colored Pencil on Paper",
             "link": "https://www.facebook.com/photo.php?fbid=1056757191006039&set=t.1427585719&type=3",
