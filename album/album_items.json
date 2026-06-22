@@ -1,12 +1,33 @@
 {
     "surrealistic_paintings": [
+        {"kiking_202606_NiagaraFalls.jpg":
+            {
+                "title": "Niagara Falls, 2026",
+                "meta": "Watercolor, 12\" x 9\"",
+                "display": "full-width",
+                "social_media": "ig",
+                "link": "https://www.instagram.com/p/DZlqTPMtm6J/",
+                "row": 0
+            }
+        },
+        {"kiking_202603_EscapismI.jpg":
+            {
+                "title": "Escapism I, 2026",
+                "meta": "Colored pencils, 8.5\" x 11\"",
+                "display": "full-width",
+                "social_media": "ig",
+                "link": "https://www.instagram.com/p/DWcqtrajb-_/",
+                "row": 0
+            }
+        },
         {"kiking_202506_CosmicPlatonic.jpg":
             {
                 "title": "Cosmic Platonic, 2025",
                 "meta": "Arcylic on Canvas, 12\" x 12\"",
                 "display": "full-width",
                 "social_media": "ig",
-                "link": "https://www.instagram.com/kikingproduction/reel/DO8mVDyDf-b/"
+                "link": "https://www.instagram.com/kikingproduction/reel/DO8mVDyDf-b/",
+                "row": 0
             }
         },
         {"kiking_202412_BanffSpiral.jpeg":
@@ -15,7 +36,8 @@
                 "meta": "Acrylic on Canvas, 12\" x 12\"",
                 "display": "full-width",
                 "social_media": "ig",
-                "link": "https://www.instagram.com/p/DEQ4o8xJ3er/"
+                "link": "https://www.instagram.com/p/DEQ4o8xJ3er/",
+                "row": 1
             }
         },
         {"kiking_202410_LakeMoraine.jpeg":
@@ -24,7 +46,8 @@
                 "meta": "Acrylic on Canvas, 12\" x 12\"",
                 "display": "full-width",
         		"social_media": "ig",
-        		"link": "https://www.instagram.com/p/DA876wZSwKw/"
+        		"link": "https://www.instagram.com/p/DA876wZSwKw/",
+                "row": 1
         	}
         },
 
@@ -34,7 +57,8 @@
                 "meta": "Acrylic on Canvas, 12\" round",
                 "display": "full-width",
                 "social_media": "fb",
-                "link": "https://www.facebook.com/photo/?fbid=10214778346158730&set=a.3072640821485"
+                "link": "https://www.facebook.com/photo/?fbid=10214778346158730&set=a.3072640821485",
+                "row": 1
             }
         }
 
