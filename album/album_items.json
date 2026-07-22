@@ -1,5 +1,15 @@
 {
     "surrealistic_paintings": [
+        {"kiking_202607_CloisterIllusion.jpg":
+            {
+                "title": "Cloister Illusion, 2026",
+                "meta": "Line and Wash, 9\" x 12\"",
+                "display": "full-width",
+                "social_media": "ig",
+                "link": "https://www.instagram.com/p/DbCxrDMFtqu/",
+                "row": 0
+            }
+        },
         {"kiking_202606_NiagaraFalls.jpg":
             {
                 "title": "Niagara Falls, 2026",
