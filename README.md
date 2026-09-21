@@ -1,7 +1,8 @@
-# kiking-art-gallery
+# Kiking's Art Gallery
 
 ### About
 An Art Gallery site for all my artworks!
+https://kiking0501.github.io/kiking-art-gallery/
 
 
 ### License
