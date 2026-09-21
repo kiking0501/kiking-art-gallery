@@ -24,10 +24,10 @@ function fill_in_header(album_name) {
     $(".center_banner").attr("src", "../navigation/album_cover_" + album_name + ".jpg"); 
 }
 
-function _fill_in_image_tile(album_name, item) {
+function _fill_in_image_tile(album_name, item, template_image_tile) {
       var item_name = Object.keys(item)[0];
 
-      var image_tile = $("#template_image_tile").clone();
+      var image_tile = $(template_image_tile? template_image_tile:"#template_image_tile").clone();
 
       image_tile.removeAttr("id");
       image_tile.attr("data-image-url", album_name + '/' + item_name);
@@ -65,27 +65,28 @@ function fill_in_image_tiles(album_name) {
     ;
 }
 
-function fill_in_image_tiles_in_rows(album_name) {
+function fill_in_image_tiles_in_rows(album_name, data_name, page_board_name, template_image_tile) {
     $.getJSON("album_items.json", function(data){
-      var items = data[album_name];
+      var items = data_name? data[data_name]:data[album_name];
+      var destination = page_board_name? page_board_name:".page_board";
 
       var curr_idx = -1;
-      var curr_obj = $("<div></div>");
+      var curr_obj = $(destination).find("div")[0]? $($(destination).find("div")[0]):$("<div></div>");
 
       for (let i = 0; i < items.length; i++) {
         var item = items[i];
-        var image_tile = _fill_in_image_tile(album_name, item);
+        var image_tile = _fill_in_image_tile(album_name, item, template_image_tile);
         var item_name = Object.keys(item)[0];
 
           // append a new row object
           if (item[item_name]["row"] != curr_idx) {
-            $(".page_board").append(curr_obj);
+            $(destination).append(curr_obj);
             curr_obj = $("<div class='row'></row>");
           }
           curr_obj.append(image_tile);
           curr_idx = item[item_name]["row"];
       }
-      $(".page_board").append(curr_obj);
+      $(destination).append(curr_obj);
     
     })
     .fail(function(jqXHR, textStatus, errorThrown) {

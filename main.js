@@ -12,11 +12,15 @@ const CATEGORY_MENU = {
 	'latest': [
 		{'surrealistic_paintings': {
 			"name": "Surrealistic Paintings",
-			"next": ["moments_of_delight", "topological_crochet"],
+			"next": ["moments_of_delight", "picturesque_world"],
+		}},
+		{'picturesque_world': {
+			"name": "Picturesque World",
+			"next": ["surrealistic_paintings", "topological_crochet"],
 		}},
 		{'topological_crochet': {
 			"name": "Topological Crochet",
-			"next": ["surrealistic_paintings", "polyhedramatics_the_dance"],
+			"next": ["picturesque_world", "polyhedramatics_the_dance"],
 		}},
 	],
 	'exhibitions': [
