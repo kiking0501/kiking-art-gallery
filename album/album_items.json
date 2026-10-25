@@ -64,6 +64,16 @@
 
     ],
     "picturesque_world": [
+        {"kiking_202610_18_Experimental.jpg":
+            {
+                "title": "18 (Experimental), 2026",
+                "meta": "Arrylic on Canvas, 24\" x 18\"",
+                "display": "full-width",
+                "social_media": "ig",
+                "link": "https://www.instagram.com/p/DensrsBjUPq/",
+                "row": -1 
+            }
+        },        
         {"kiking_202606_NiagaraFalls.jpg":
             {
                 "title": "Niagara Falls, 2026",
