@@ -6,14 +6,14 @@
   --ink:#f3eee5; --ink-dim:#b9b1a4;                    /* text on dark panels */
   --glass:rgba(22,19,16,.74); --line:rgba(255,255,255,.12);
   --gold:#cfae6c; --gold-ink:#1d1710; --radius:14px;
-  --serif:"Cormorant Garamond", Georgia, serif; --sans:Inter, system-ui, -apple-system, sans-serif;
+  --serif:Georgia, serif; --sans:"Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;overflow:hidden;background:#15120f;color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit}
 .glass{background:var(--glass);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 10px 40px rgba(0,0,0,.35)}
 .hidden{display:none!important}
-.btn{background:var(--gold);color:var(--gold-ink);border:0;padding:13px 26px;border-radius:999px;font-weight:600;font-size:14px;cursor:pointer;letter-spacing:.03em}
+.btn{background:var(--gold);color:var(--gold-ink);border:0;padding:13px 26px;border-radius:999px;font-weight:400;font-size:14px;cursor:pointer;letter-spacing:.03em}
 .btn:hover{filter:brightness(1.08)}
 .btn:disabled{opacity:.5;cursor:default}
 
@@ -26,7 +26,7 @@ button{font:inherit;color:inherit}
 
 /* ---------- top left: title and room ---------- */
 #hud{position:fixed;left:18px;top:16px;padding:12px 18px;pointer-events:none;max-width:min(60vw,420px)}
-#hud .t{font-family:var(--serif);font-size:22px;font-weight:600;letter-spacing:.02em;line-height:1.1}
+#hud .t{font-family:var(--serif);font-size:22px;font-weight:400;letter-spacing:-0.02em;line-height:1.1}
 #hud .r{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-top:5px}
 
 /* ---------- navigation bar ---------- */
@@ -43,7 +43,7 @@ button{font:inherit;color:inherit}
 #bTour .i-pause{display:none}
 #bTour.touring .i-play{display:none}
 #bTour.touring .i-pause{display:block}
-#bTour .cd{font-variant-numeric:tabular-nums;font-weight:600;min-width:1ch;color:var(--gold)}
+#bTour .cd{font-variant-numeric:tabular-nums;font-weight:400;min-width:1ch;color:var(--gold)}
 #bTour .cd:empty{display:none}
 #bTour::before{content:'';position:absolute;left:0;top:0;bottom:0;width:calc(var(--progress, 0) * 100%);background:rgba(207,174,108,.42);pointer-events:none}
 @media (max-width:720px){ #bar .lbl{display:none} #bar button,#bar a.barlink{padding:10px} #hud .t{font-size:18px} }
@@ -54,11 +54,11 @@ button{font:inherit;color:inherit}
 #info.off{opacity:0;transform:translateY(12px);pointer-events:none}
 /* the card's text in the museum's lettering (Cormorant Garamond), like the wall labels and the full-picture caption */
 #info .count,#info h2,#info .meta,#info .desc,#info a,#info .credit{font-family:var(--serif)}
-#info .count{font-size:13px;font-weight:600;letter-spacing:.16em;color:#9a7634;text-transform:uppercase;padding-right:24px}
-#info h2{font-weight:600;font-size:30px;line-height:1.05;margin:6px 0 4px}
+#info .count{font-size:13px;font-weight:400;letter-spacing:.16em;color:#9a7634;text-transform:uppercase;padding-right:24px}
+#info h2{font-weight:400;font-size:30px;line-height:1.05;margin:6px 0 4px}
 #info .meta{color:#6b6359;font-size:17px;font-style:italic;font-weight:500}
 #info .desc{font-size:17px;line-height:1.45;margin-top:10px;color:#3a342d;max-height:30vh;overflow:auto}
-#info a{display:inline-block;margin-top:12px;color:#8a6623;font-size:17px;font-weight:600;letter-spacing:.02em;text-decoration:none;border-bottom:1px solid rgba(138,102,35,.35)}
+#info a{display:inline-block;margin-top:12px;color:#8a6623;font-size:17px;font-weight:400;letter-spacing:-0.02em;text-decoration:none;border-bottom:1px solid rgba(138,102,35,.35)}
 #info .credit{font-size:14px;font-style:italic;color:#8a8278;margin-top:12px}
 #info .credit:empty{display:none}
 #info .x{position:absolute;right:10px;top:10px;background:none;border:0;color:#8a8278;cursor:pointer;font-size:18px;padding:4px 8px}
@@ -78,7 +78,7 @@ body.mapopen #info{bottom:calc(var(--mapH, 200px) + 88px)}
 #banner{position:fixed;left:50%;top:18%;transform:translate(-50%,0);text-align:center;pointer-events:none;transition:opacity .9s,transform .9s;z-index:5;text-shadow:0 2px 24px rgba(0,0,0,.6)}
 #banner.off{opacity:0;transform:translate(-50%,10px)}
 #banner .n{font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
-#banner .t{font-family:var(--serif);font-weight:600;font-size:clamp(34px,5vw,60px);line-height:1.05;margin-top:8px;max-width:80vw}
+#banner .t{font-family:var(--serif);font-weight:400;font-size:clamp(34px,5vw,60px);line-height:1.05;margin-top:8px;max-width:80vw}
 #banner .m{font-size:13px;color:#e8e1d5;margin-top:10px;letter-spacing:.06em}
 #tip{position:fixed;pointer-events:none;padding:6px 10px;font-size:12px;border-radius:8px;transform:translate(14px,14px);white-space:nowrap}
 #toast{position:fixed;top:18px;left:50%;transform:translateX(-50%);padding:10px 16px;font-size:13px;z-index:40;max-width:calc(100vw - 40px)}
@@ -89,7 +89,7 @@ body.mapopen #info{bottom:calc(var(--mapH, 200px) + 88px)}
 #lightbox .cap{text-align:center;margin-top:16px;max-width:80vw}
 /* caption in the museum's lettering (Cormorant Garamond), like the gold titles on the walls */
 #lightbox .cap{font-family:var(--serif)}
-#lightbox .t{font-size:30px;font-weight:600;letter-spacing:.01em}
+#lightbox .t{font-size:30px;font-weight:400;letter-spacing:.01em}
 #lightbox .m{color:var(--ink-dim);font-size:18px;font-style:italic;font-weight:500;margin-top:2px}
 #lightbox img{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none;transform-origin:50% 50%;will-change:transform}
 #lightbox img.linked{cursor:pointer}
@@ -97,11 +97,11 @@ body.mapopen #info{bottom:calc(var(--mapH, 200px) + 88px)}
 #lightbox.zoomed.panning img{cursor:grabbing}
 #lightbox .cap{position:relative;z-index:1;transition:opacity .2s}
 #lightbox.zoomed .cap{opacity:0;pointer-events:none}   /* out of the way while zoomed in */
-#lightbox .zh{font-size:14px;font-style:italic;color:var(--ink-dim);margin-top:6px;letter-spacing:.02em}
+#lightbox .zh{font-size:14px;font-style:italic;color:var(--ink-dim);margin-top:6px;letter-spacing:-0.02em}
 #lightbox .zoom{position:absolute;right:18px;bottom:18px;display:flex;gap:4px;z-index:2;background:rgba(30,26,22,.8);border:1px solid var(--line);border-radius:10px;padding:4px}
 #lightbox .zoom button{background:none;border:0;color:var(--ink);font:inherit;font-size:15px;min-width:34px;height:30px;border-radius:7px;cursor:pointer}
 #lightbox .zoom button:hover{background:rgba(255,255,255,.1)}
-#lightbox .go{display:inline-block;margin-top:10px;color:var(--gold);font-size:17px;font-weight:600;letter-spacing:.02em;text-decoration:none;border-bottom:1px solid rgba(207,174,108,.4)}
+#lightbox .go{display:inline-block;margin-top:10px;color:var(--gold);font-size:17px;font-weight:400;letter-spacing:-0.02em;text-decoration:none;border-bottom:1px solid rgba(207,174,108,.4)}
 #lightbox .x{position:absolute;right:18px;top:12px;background:none;border:0;color:#fff;font-size:26px;cursor:pointer}
 
 /* ---------- film player ---------- */
@@ -110,7 +110,7 @@ body.mapopen #info{bottom:calc(var(--mapH, 200px) + 88px)}
 #theater .frame{width:100%;aspect-ratio:16/9;background:#000;border-radius:6px;overflow:hidden;box-shadow:0 30px 120px rgba(0,0,0,.8)}
 #theater .frame iframe,#theater .frame video{width:100%;height:100%;border:0;display:block;background:#000}
 #theater .cap{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-top:14px;flex-wrap:wrap}
-#theater .t{font-family:var(--serif);font-size:26px;font-weight:600}
+#theater .t{font-family:var(--serif);font-size:26px;font-weight:400}
 #theater .m{color:var(--ink-dim);font-size:13px;margin-top:2px}
 #theater .links{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 #theater .links a{color:var(--gold);font-size:14px;text-decoration:none;border-bottom:1px solid rgba(207,174,108,.4)}
@@ -127,7 +127,7 @@ body.mapopen #info{bottom:calc(var(--mapH, 200px) + 88px)}
 /* ---------- link boxes (last room, kiosks) ---------- */
 #farewell,#linkbox{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);padding:16px 26px;text-align:center;z-index:6}
 #linkbox{z-index:8}
-#farewell .t,#linkbox .t{font-family:var(--serif);font-size:22px;font-weight:600;margin-bottom:10px}
+#farewell .t,#linkbox .t{font-family:var(--serif);font-size:22px;font-weight:400;margin-bottom:10px}
 #farewell .u,#linkbox .u{font-size:11px;color:var(--ink-dim);margin-top:8px;letter-spacing:.08em}
 #farewell .btn,#linkbox .btn{display:inline-block;text-decoration:none}
 #farewellBack{display:block;margin:12px auto 0;background:transparent;color:var(--ink);border:1px solid var(--line)}
@@ -141,7 +141,7 @@ body.mapopen #info{bottom:calc(var(--mapH, 200px) + 88px)}
 /* ---------- entry card and help ---------- */
 .overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(12,10,8,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:20;padding:20px}
 .card{max-width:520px;width:100%;padding:34px 34px 28px;text-align:center;max-height:calc(100vh - 40px);overflow:auto}
-.card h1{font-family:var(--serif);font-weight:600;font-size:clamp(34px,6vw,52px);line-height:1;margin:0 0 8px;text-wrap:balance}
+.card h1{font-family:var(--serif);font-weight:400;font-size:clamp(34px,6vw,52px);line-height:1;margin:0 0 8px;text-wrap:balance}
 .card h1 .l1,.card h1 .l2{display:block;white-space:nowrap}
 .card h1 .l2{font-size:.62em;font-weight:500;letter-spacing:.08em;margin-top:.22em}
 .card .sub{color:var(--ink-dim);letter-spacing:.12em;text-transform:uppercase;font-size:12px}
