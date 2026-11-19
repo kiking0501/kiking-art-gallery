@@ -11,7 +11,7 @@ export default {
   subtitle: 'Mathematical art, paintings & drawings by Kiking',
 
   // Small line under the entry card and under every artwork's info card.
-  credit: 'Artwork © Kiking (kiking0501.github.io/kiking-art-gallery)',
+  credit: 'Artwork © Kiking',
 
   // The original gallery. Used by the "Art Gallery" button, the entry card and the last room.
   galleryUrl: 'https://kiking0501.github.io/kiking-art-gallery/',

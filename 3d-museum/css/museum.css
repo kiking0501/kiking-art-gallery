@@ -58,8 +58,9 @@ button{font:inherit;color:inherit}
 #info h2{font-family:var(--serif);font-weight:400;font-size:26px;line-height:1.2;margin:8px 0 6px}
 #info .meta{color:#6b6359;font-size:14px}
 #info .desc{font-size:14px;line-height:1.65;margin-top:12px;color:#3a342d;max-height:30vh;overflow:auto}
-#info a{display:inline-block;margin-top:14px;color:#8a6623;font-size:14px;font-weight:500;text-decoration:none;border-bottom:1px solid rgba(138,102,35,.35)}
-#info .credit{font-size:12px;color:#8a8278;margin-top:14px}
+#info a{display:inline-block;color:#8a6623;font-size:14px;font-weight:500;text-decoration:none;border-bottom:1px solid rgba(138,102,35,.35)}
+#info .foot{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-top:14px}   /* the link left, the credit right, on one line */
+#info .credit{font-size:12px;color:#8a8278;margin-left:auto;white-space:nowrap}
 /* phones: as wide as the Map panel and low on the screen, with smaller text */
 @media (max-width:720px){
   #info{left:12px;right:12px;bottom:76px;width:auto;padding:12px 14px 12px;line-height:1.5}
@@ -67,8 +68,9 @@ button{font:inherit;color:inherit}
   #info h2{font-size:19px;margin:4px 0 2px}
   #info .meta{font-size:12px}
   #info .desc{font-size:12px;line-height:1.55;margin-top:6px;max-height:16vh}
-  #info a{font-size:12px;margin-top:8px}
-  #info .credit{font-size:11px;margin-top:6px}
+  #info a{font-size:12px}
+  #info .foot{margin-top:8px}
+  #info .credit{font-size:11px}
   #info .x{top:4px;right:4px}
 }
 #info .credit:empty{display:none}

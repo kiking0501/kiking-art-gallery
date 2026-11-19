@@ -17,6 +17,6 @@ export function showInfo(it) {
 export function hideInfo() { $('info').classList.add('off'); }
 
 export function initInfoCard(credit) {
-  $('infoCredit').textContent = credit || '';
+  $('infoCredit').textContent = String(credit || '').replace(/\s*\(.*\)\s*$/, '');   // "Artwork © Kiking", without the web address
   $('infoX').onclick = () => { stopTour(); hideInfo(); };
 }

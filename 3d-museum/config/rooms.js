@@ -183,7 +183,7 @@ export const ROOMS = {
     description: 'Graphic design for the website of the Department of Mathematics, The Chinese University of Hong Kong.',
     pictures: {
       'kiking_201508_KleinBottle.jpg': { frame: 'white', scale: 1.85 },
-      '201508_MathWebsite.jpg': { scale: 1.2 },
+      '201508_MathWebsite.jpg': { scale: 2.2 },   // a big display beside the Klein Bottle (2.2 is the largest size)
     },
     extras: [
       { src: 'album/cuhk_math_website_revamp/MathNewsletter1516.png', title: 'Newsletter 2015-16, Department of Mathematics, CUHK', meta: 'Publication',
@@ -211,7 +211,12 @@ export const ROOMS = {
   major_ugf: {
     wall: '#e6e1d6', frame: 'wood',
     description: 'Striving for survival. Maybe my major is University General Education, instead of Mathematics?',
-    swap: [['kiking_201311_MobiusTrip.jpg', 'kiking_201306_WhyMathIsFun.jpg']],   // these two trade places
+    pictureDefaults: { scale: 1.35 },
+    walls: {
+      left: ['kiking_201312_SingK.jpg', 'kiking_201311_MobiusTrip.jpg', 'kiking_201410_Weiwei.jpg', 'kiking_201310_RiemannSurface.jpg'],
+      right: ['kiking_201501_Waterloooo.jpg', 'kiking_201408_Angry.jpg'],       // one each side of the doorway
+      front: ['kiking_201306_WhyMathIsFun.jpg'],
+    },
   },
 
   purquoi_imaginary_in_my_week_of_finals: {
