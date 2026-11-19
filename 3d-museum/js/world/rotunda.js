@@ -3,8 +3,8 @@
 import * as THREE from 'three';
 import { mk, inkFor, spacing, SERIF } from '../util.js';
 import { canvasTex } from './renderer.js';
-import { SURF } from './textures.js';
-import { stdMat, wallMat, floorMat, skySunMat, sunPatchMat, box, plane, wbox } from './materials.js';
+import { SURF, generateMarble } from './textures.js';
+import { stdMat, wallMat, floorMat, box, plane, wbox } from './materials.js';
 import { toW } from './layout.js';
 import { sideLabel, exhibitionPanel } from './rooms.js';
 import { exNo, two, roomTag } from '../data/room-info.js';
@@ -12,7 +12,7 @@ import { D, WALL_H, WALL_T, DOOR_W, DOOR_H, ROT_R, ROT_RC, ROT_H, ROT_Y1, ROT_Y2
 
 function makeCofferTexture() {   // coffered dome, shaded as if lit from the oculus
   const W = 2048, H = 1024, c = mk(W, H), g = c.getContext('2d'), cols = 28, rows = 5, top = .1, bot = .86;
-  g.fillStyle = '#efebe4'; g.fillRect(0, 0, W, H);
+  g.fillStyle = '#f7f5f0'; g.fillRect(0, 0, W, H);
   for (let j = 0; j < rows; j++) {
     const y0 = H * (top + (bot - top) * j / rows), y1 = H * (top + (bot - top) * (j + 1) / rows), ch = y1 - y0, cw = W / cols;
     for (let i = 0; i < cols; i++) {
@@ -28,19 +28,40 @@ function makeCofferTexture() {   // coffered dome, shaded as if lit from the ocu
   }
   const t = canvasTex(c, true); t.wrapS = THREE.RepeatWrapping; return t;
 }
-let COFFER = null;
+let COFFER = null, SKYGLASS = null;
+// blue sky seen through the chamber's glass (oculus and windows), and the cool light it throws on the floor
+function makeSkyGlass() {
+  const rnd = (s => () => (s = (s * 16807) % 2147483647) / 2147483647)(7);
+  const sky = mk(512, 1024), g = sky.getContext('2d'), grd = g.createLinearGradient(0, 0, 0, 1024);
+  grd.addColorStop(0, '#9cc4ea'); grd.addColorStop(.55, '#bcd8f1'); grd.addColorStop(1, '#e0ecf7');   // pale noon sky
+  g.fillStyle = grd; g.fillRect(0, 0, 512, 1024);
+  g.filter = 'blur(18px)';                                             // a few soft fair-weather clouds
+  for (let i = 0; i < 16; i++) { const x = rnd() * 512, y = 250 + rnd() * 700, rx = 40 + rnd() * 90; g.fillStyle = `rgba(255,255,255,${.25 + rnd() * .35})`; g.beginPath(); g.ellipse(x, y, rx, rx * .38, 0, 0, Math.PI * 2); g.fill(); }
+  g.filter = 'none'; g.fillStyle = 'rgba(255,255,255,.12)'; g.fillRect(0, 0, 512, 1024);   // seen through glass
+  const win = mk(512, 1024), w = win.getContext('2d'); w.drawImage(sky, 0, 0);   // window: glazing bars over the sky
+  w.fillStyle = '#4a3d2c'; w.fillRect(250, 0, 12, 1024); for (const y of [340, 680]) w.fillRect(0, y - 6, 512, 12);
+  const pool = mk(256, 256), p = pool.getContext('2d');                // floor light: a soft pane-shaped pool
+  p.filter = 'blur(14px)'; p.fillStyle = '#fff'; p.fillRect(34, 34, 188, 188);
+  p.filter = 'blur(5px)'; p.fillStyle = '#000'; p.fillRect(124, 20, 8, 216); p.fillRect(20, 124, 216, 8); p.filter = 'none';
+  const oc = mk(512, 512), o = oc.getContext('2d'), og = o.createRadialGradient(256, 256, 10, 256, 256, 300);   // straight up: deeper blue, a wisp or two
+  og.addColorStop(0, '#93bfe8'); og.addColorStop(1, '#aacdee'); o.fillStyle = og; o.fillRect(0, 0, 512, 512);
+  o.filter = 'blur(22px)'; for (const [x, y, rx, a] of [[150, 170, 110, .45], [330, 360, 140, .35], [400, 120, 70, .3]]) { o.fillStyle = `rgba(255,255,255,${a})`; o.beginPath(); o.ellipse(x, y, rx, rx * .5, -.4, 0, Math.PI * 2); o.fill(); } o.filter = 'none';
+  return { oc: canvasTex(oc, true), sky: canvasTex(sky, true), win: canvasTex(win, true), pool: canvasTex(pool, true) };
+}
 const rotMats = new Map();
 function rotMat(key, make) { if (!rotMats.has(key)) { const m = make(); m.userData.keep = true; rotMats.set(key, m); } return rotMats.get(key); }
-const skirtM = () => rotMat('sk', () => new THREE.MeshStandardMaterial({ color: '#bdb7ad', roughness: .5, side: THREE.BackSide }));
+const skirtM = () => rotMat('sk', () => new THREE.MeshStandardMaterial({ color: '#c9c6c0', map: SURF.marbleV, roughness: .3, side: THREE.BackSide }));
 
 export function buildRotunda(r, wallGroup, floorGroup, extraPick) {
   const cx = r.cx, gap = Math.asin((DOOR_W / 2) / ROT_R);
-  const wallM = rotMat('w' + r.data.wall, () => { const m = wallMat(r.data.wall).clone(); m.side = THREE.BackSide; return m; });
-  const plasterB = rotMat('pb', () => { const m = wallMat('#efebe4', .95).clone(); m.side = THREE.BackSide; return m; });
-  const plasterD = rotMat('pd', () => { const m = wallMat('#efebe4', .95).clone(); m.side = THREE.DoubleSide; return m; });
-  // columns in the same pale stone as the walls, so the exhibits stay the focus
-  const stone = rotMat('st', () => new THREE.MeshStandardMaterial({ color: '#e6e1d8', roughness: .55, map: SURF.plasterA, normalMap: SURF.plasterN, normalScale: new THREE.Vector2(.4, .4), envMapIntensity: .6 }));
-  const stoneD = rotMat('sd', () => new THREE.MeshStandardMaterial({ color: '#d9d3c8', roughness: .6, map: SURF.plasterA, envMapIntensity: .6 }));
+  // white marble throughout: the wall in large stone blocks, veined columns and mouldings, a polished floor
+  generateMarble();
+  const wallM = rotMat('wm', () => new THREE.MeshStandardMaterial({ map: SURF.ashlarA, normalMap: SURF.ashlarN, normalScale: new THREE.Vector2(.7, .7), roughness: .42, envMapIntensity: .7, side: THREE.BackSide }));
+  const plasterB = rotMat('pb', () => new THREE.MeshStandardMaterial({ color: '#fbfaf7', map: SURF.marbleV, roughness: .5, envMapIntensity: .6, side: THREE.BackSide }));
+  const plasterD = rotMat('pd', () => new THREE.MeshStandardMaterial({ color: '#f3f1ec', map: SURF.marbleV, roughness: .55, envMapIntensity: .6, side: THREE.DoubleSide }));
+  const stone = rotMat('st', () => new THREE.MeshStandardMaterial({ map: SURF.marbleV, roughness: .28, envMapIntensity: .85 }));
+  const stoneD = rotMat('sd', () => new THREE.MeshStandardMaterial({ color: '#f1eee8', map: SURF.marbleV, roughness: .36, envMapIntensity: .8 }));
+  const floorM = rotMat('fm', () => new THREE.MeshStandardMaterial({ color: '#8a8a88', map: SURF.floorMS, roughness: .3, envMapIntensity: .35, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 }));   // seamless, in the grey of the other rooms' stone floor
   const bronze = rotMat('br', () => new THREE.MeshStandardMaterial({ color: '#2b2621', roughness: .45, metalness: .5 }));
   const cyl = (rad, h, y, t0, tl, mat, segs) => {
     const geo = new THREE.CylinderGeometry(rad, rad, h, segs || Math.max(8, Math.round(120 * tl / (Math.PI * 2))), 1, true, t0, tl), uv = geo.attributes.uv;
@@ -50,11 +71,11 @@ export function buildRotunda(r, wallGroup, floorGroup, extraPick) {
   const ring = (r0, r1, y, up, mat) => { const m = new THREE.Mesh(new THREE.RingGeometry(r0, r1, 120), mat); m.rotation.x = up ? -Math.PI / 2 : Math.PI / 2; m.position.set(cx, y, 0); return m; };
 
   // floor: stone disc with quiet inlays
-  const disc = new THREE.Mesh(new THREE.CircleGeometry(ROT_R + .3, 120), floorMat), duv = disc.geometry.attributes.uv;
-  for (let i = 0; i < duv.count; i++) duv.setXY(i, duv.getX(i) * 2 * (ROT_R + .3) / FLOOR_TILE, duv.getY(i) * 2 * (ROT_R + .3) / FLOOR_TILE);
-  disc.rotation.x = -Math.PI / 2; disc.position.set(cx, .0015, 0); disc.userData.kind = 'floor'; floorGroup.add(disc); extraPick.push(disc);
-  const inlay = stdMat('#55595a', .22);
-  for (const [a, b] of [[ROT_R * .66 - .07, ROT_R * .66 + .06], [ROT_RC - .55, ROT_RC - .45]]) floorGroup.add(ring(a, b, .003, true, inlay));
+  const disc = new THREE.Mesh(new THREE.CircleGeometry(ROT_R + .3, 120), floorM), duv = disc.geometry.attributes.uv;
+  for (let i = 0; i < duv.count; i++) duv.setXY(i, duv.getX(i) * 2 * (ROT_R + .3) / 8, duv.getY(i) * 2 * (ROT_R + .3) / 8);   // marble repeats every 8 m
+  disc.rotation.x = -Math.PI / 2; disc.position.set(cx, .003, 0); /* above the main floor, below the sculptures' shadows */ disc.userData.kind = 'floor'; floorGroup.add(disc); extraPick.push(disc);
+  const inlay = rotMat('inl', () => new THREE.MeshStandardMaterial({ color: '#55595a', roughness: .22, polygonOffset: true, polygonOffsetFactor: -6, polygonOffsetUnits: -6 }));   // drawn over the floor disc
+  for (const [a, b] of [[ROT_R * .66 - .07, ROT_R * .66 + .06], [ROT_RC - .55, ROT_RC - .45]]) floorGroup.add(ring(a, b, .008, true, inlay));
 
   // curved wall, broken by the doorways
   const thetas = r.doors.list.map(dg => ((Math.PI / 2 - THREE.MathUtils.degToRad(dg)) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2)).sort((a, b) => a - b);
@@ -96,7 +117,7 @@ export function buildRotunda(r, wallGroup, floorGroup, extraPick) {
   const eR = ROT_RC - .3;
   wallGroup.add(cyl(eR, ROT_Y2 - ROT_Y1, ROT_Y1, 0, Math.PI * 2, plasterB, 120));
   wallGroup.add(ring(eR, ROT_R + .15, ROT_Y1, false, plasterD));
-  wallGroup.add(ring(eR, ROT_R + .15, ROT_Y2, true, stdMat('#d8d3ca', .5)));
+  wallGroup.add(ring(eR, ROT_R + .15, ROT_Y2, true, plasterD));
   { const c = mk(4096, 128), g = c.getContext('2d'); g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.font = `400 92px ${SERIF}`; spacing(g, '26px');
     g.fillText(`${r.data.name.toUpperCase()}   ·   EXHIBITION ${two(exNo(r.ri))}`, 2048, 70, 4000);
     const tx = canvasTex(c); tx.wrapS = THREE.RepeatWrapping; tx.repeat.x = -2;
@@ -115,19 +136,23 @@ export function buildRotunda(r, wallGroup, floorGroup, extraPick) {
   const dome = new THREE.Mesh(new THREE.SphereGeometry(RD, 112, 32, 0, Math.PI * 2, th0, Math.PI / 2 - th0), domeM); dome.scale.y = .72; dome.position.set(cx, ROT_H, 0); wallGroup.add(dome);
   const rimY = ROT_H + .72 * RD * Math.cos(th0); r.rimY = rimY;
   wallGroup.add(cyl(OC, .8, rimY, 0, Math.PI * 2, plasterB, 48));
-  const sky = new THREE.Mesh(new THREE.CircleGeometry(OC, 48), skySunMat); sky.rotation.x = Math.PI / 2; sky.position.set(cx, rimY + .79, 0); wallGroup.add(sky);
-  { const c = mk(4, 256), g = c.getContext('2d'), grd = g.createLinearGradient(0, 0, 0, 256); grd.addColorStop(0, 'rgba(255,244,222,.9)'); grd.addColorStop(.7, 'rgba(255,240,215,.35)'); grd.addColorStop(1, 'rgba(255,240,215,0)'); g.fillStyle = grd; g.fillRect(0, 0, 4, 256);
+  if (!SKYGLASS) SKYGLASS = makeSkyGlass();
+  const skyM = rotMat('sky', () => new THREE.MeshBasicMaterial({ map: SKYGLASS.oc, color: new THREE.Color(1.05, 1.05, 1.05) }));
+  const winM = rotMat('win', () => new THREE.MeshBasicMaterial({ map: SKYGLASS.win, color: new THREE.Color(1.02, 1.02, 1.02) }));
+  const poolM = rotMat('pool', () => new THREE.MeshBasicMaterial({ map: SKYGLASS.pool, color: new THREE.Color(.13, .145, .17), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -3 }));
+  const sky = new THREE.Mesh(new THREE.CircleGeometry(OC, 48), skyM); sky.rotation.x = Math.PI / 2; sky.position.set(cx, rimY + .79, 0); wallGroup.add(sky);
+  { const c = mk(4, 256), g = c.getContext('2d'), grd = g.createLinearGradient(0, 0, 0, 256); grd.addColorStop(0, 'rgba(214,232,255,.9)'); grd.addColorStop(.7, 'rgba(205,226,255,.35)'); grd.addColorStop(1, 'rgba(205,226,255,0)'); g.fillStyle = grd; g.fillRect(0, 0, 4, 256);
     const bm = new THREE.MeshBasicMaterial({ map: canvasTex(c), transparent: true, opacity: .07, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide });
     const beam = new THREE.Mesh(new THREE.CylinderGeometry(OC * .95, 2.3, rimY, 48, 1, true), bm); beam.position.set(cx + 1.1, rimY / 2, .7); beam.rotation.z = -.09; beam.raycast = () => {} /* light only: clicks pass through it */; wallGroup.add(beam); }
   // tall windows on the upper storey, between the upper columns
   for (const deg of (r.upperWins || [-60, -90, -120, 60, 90, 120]).filter(dg => !r.doors.list.some(d => Math.abs(((dg - d + 540) % 360) - 180) < 14))) {
     const phi = THREE.MathUtils.degToRad(deg), ry = Math.atan2(-Math.cos(phi), -Math.sin(phi)), wy = (ROT_Y2 + ROT_Y3) / 2 + .1;
     const fr = box(1.36, 2.46, .05, bronze); fr.position.set(cx + (ROT_R + .13) * Math.cos(phi), wy, (ROT_R + .13) * Math.sin(phi)); fr.rotation.y = ry; wallGroup.add(fr);
-    const win = plane(1.25, 2.35, skySunMat); win.position.set(cx + (ROT_R + .1) * Math.cos(phi), wy, (ROT_R + .1) * Math.sin(phi)); win.rotation.y = ry; wallGroup.add(win);
+    const win = plane(1.25, 2.35, winM); win.position.set(cx + (ROT_R + .1) * Math.cos(phi), wy, (ROT_R + .1) * Math.sin(phi)); win.rotation.y = ry; wallGroup.add(win);
   }
-  // sunlight on the floor
+  // cool daylight from the glass, pooled on the floor
   for (const [dx, dz, w, h, ry] of [[2.3, 3.2, 2.2, 1.5, .5], [-3.1, -2.6, 2.4, 1.6, -.4], [1.1, .7, 3, 3, 0]]) {
-    const sp = plane(w, h, sunPatchMat); sp.rotation.set(-Math.PI / 2, 0, ry); sp.position.set(cx + dx, .007, dz); floorGroup.add(sp);
+    const sp = plane(w, h, poolM); sp.rotation.set(-Math.PI / 2, 0, ry); sp.position.set(cx + dx, .007, dz); floorGroup.add(sp);
   }
   // the exhibition's gold title on the curved wall
   for (const deg of r.panels || [-30, 30]) {

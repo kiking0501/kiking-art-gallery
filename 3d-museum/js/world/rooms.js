@@ -28,9 +28,13 @@ export function exhibitionPanel(r) {
   g.font = `500 50px ${SANS}`; spacing(g, '16px'); g.globalAlpha = .85;
   const cat = r.cat ? r.cat.toUpperCase() + '  ·  ' : '';
   g.fillText(r.data.kind === 'intro' ? 'WELCOME' : r.data.kind === 'annex' ? `${cat}${annexLabel(r.data).toUpperCase()}` : `${cat}EXHIBITION ${two(exNo(r.ri))} / ${two(exTotal())}`, L, 150, 2048 - L * 2);
-  g.globalAlpha = 1; g.font = `400 236px ${SERIF}`; spacing(g, '6px');
-  const lines = wrapText(g, r.data.name, L - 6, 400, 2048 - L * 2, 222, 3);
-  let y = 400 + (lines - 1) * 222 + 96;
+  g.globalAlpha = 1; spacing(g, '6px');
+  // the room's name, as large as fits in three lines (smaller for long names, never cut short)
+  const maxW = 2048 - L * 2, count = sz => { g.font = `400 ${sz}px ${SERIF}`; let n = 1, line = ''; for (const w of r.data.name.split(/\s+/)) { const t = line ? line + ' ' + w : w; if (g.measureText(t).width > maxW && line) { n++; line = w; } else line = t; } return n; };
+  let size = 236; while (size > 120 && count(size) > 3) size -= 8;
+  const lh = Math.round(size * .94), top = 400 - Math.round((236 - size) * .45);
+  const lines = wrapText(g, r.data.name, L - 6, top, maxW, lh, 3);
+  let y = top + (lines - 1) * lh + 96;
   g.fillRect(L, y, 240, 6); y += 116;
   if (r.data.kind !== 'intro' && r.data.kind !== 'annex') { g.font = `400 46px ${SANS}`; spacing(g, '10px'); g.globalAlpha = .85; g.fillText(roomStats(r.data).toUpperCase(), L, y); y += 122; }
   if (r.data.description) { g.font = `400 78px ${SERIF}`; spacing(g, '1px'); g.globalAlpha = .95; wrapText(g, r.data.description, L, y, 2048 - L * 2.5, 96, Math.max(1, Math.floor((1762 - 60 - y) / 96) + 1)); }

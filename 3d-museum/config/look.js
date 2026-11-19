@@ -67,4 +67,6 @@ export const RENDER = {
   spotlights: 8,          // how many works are spotlit at once (the nearest ones)
   spotIntensity: 30,
   background: '#141210',
+  // distance haze: far rooms soften into this colour, from `near` metres to `far` metres (null = off)
+  haze: { color: '#d3cdc3', near: 40, far: 230 },
 };

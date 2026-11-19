@@ -19,6 +19,7 @@ export const MAX_ANISO = renderer.capabilities.getMaxAnisotropy();
 
 export const scene = new THREE.Scene();
 scene.background = new THREE.Color(RENDER.background);
+if (RENDER.haze) scene.fog = new THREE.Fog(RENDER.haze.color, RENDER.haze.near, RENDER.haze.far);   // far rooms soften instead of ending in a dark block
 scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
 scene.environmentIntensity = 0.32;
 

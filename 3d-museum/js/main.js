@@ -56,7 +56,8 @@ async function start() {
   $('farewellBack').onclick = () => backToEntrance(() => { S.walk = null; S.look = null; me.vx = me.vz = 0; spawn(); });
   setLoading(`${n} works in ${S.museum.rooms.length} rooms`);
   ready(site.enterButton || 'Enter the museum', () => {
-    stopAttract(); S.walk = null; S.look = null; spawn();               // back to the start
+    stopAttract(); S.walk = null; S.look = null; spawn();               // back to the start, and stay there
+    S.enteredAt = performance.now();                                     // (a quick second click must not walk you off)
   });
 
   // 4. every frame

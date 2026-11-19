@@ -42,7 +42,8 @@ function wallStandPoint(hit) {
 }
 
 function handleClick(cx, cy) {
-  if (!S.layout) return;
+  if (!S.layout || !$('intro').classList.contains('hidden')) return;
+  if (performance.now() - (S.enteredAt || 0) < 900) return;   // a double-click on "Enter the museum" lands here: ignore it
   const hit = pickAt(cx, cy); if (!hit) return;
   stopTour(); $('linkbox').classList.add('hidden');
   const o = hitTarget(hit), kind = o?.userData.kind;
@@ -94,6 +95,7 @@ export function updateHover(t = 0) {
 export function initInput() {
   addEventListener('keydown', e => {
     if (e.target.closest('input,textarea,select,[contenteditable]')) return;
+    if (!$('intro').classList.contains('hidden')) return;   // the entry card is up: keys belong to its button
     const k = e.key.toLowerCase();
     if (!$('lightbox').classList.contains('hidden') && k !== 'escape') { lightboxKey(k); return; }   // full picture open: only zoom keys
     keys[k] = true;

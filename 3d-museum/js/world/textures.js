@@ -199,13 +199,18 @@ P floorAt(vec2 uv){
   float h1 = hash12(id + 3.1), h2 = hash12(id + 7.7), h3 = hash12(id + 1.3);
   vec2 NP = vec2(1e4), q = m + vec2(h1 * 40., h2 * 40.);
   float ang = h3 * 3.1416; vec2 pr = mat2(cos(ang), -sin(ang), sin(ang), cos(ang)) * q;
-  float w = fbm(pr * 1.1, NP), cloud = fbm(q * 2.2, NP), fine = fbm(q * 18., NP);
-  float vein = 1. - smoothstep(0., .07, abs(sin(pr.x * 1.7 + w * 5.5)));
-  float vein2 = 1. - smoothstep(0., .03, abs(sin(pr.y * 3.1 + w * 7.)));
+  float cloud = fbm(q * 2.2, NP), fine = fbm(q * 18., NP);
+  // long, gently curving veins that taper and fade (not the tight squiggles of a water stain)
+  float w = fbm(pr * .35, NP) * 3.2 + fbm(pr * 1.4, NP) * .35;
+  float s = abs(sin(pr.x * .9 + w)), wid = .025 + .06 * fbm(pr * .8 + 3., NP);
+  float along = smoothstep(.35, .65, fbm(pr * .5 + 9., NP));
+  float vein = ((1. - smoothstep(0., wid, s)) + (1. - smoothstep(0., wid * 6., s)) * .3) * along;
+  float s2 = abs(sin(pr.y * 1.6 + fbm(pr * .6 + 5., NP) * 3.));
+  float vein2 = (1. - smoothstep(0., .015, s2)) * smoothstep(.5, .7, fbm(pr * .7 + 2., NP));
   float speck = smoothstep(.72, .96, vnoise(q * 120., NP));
-  vec3 base = mix(vec3(.55, .55, .545), vec3(.47, .47, .465), clamp(h2 * .6 + (cloud - .5) * .9, 0., 1.));
+  vec3 base = mix(vec3(.55, .55, .545), vec3(.47, .47, .465), clamp(h2 * .6 + (cloud - .5) * .5, 0., 1.));
   base *= .985 + (fine - .5) * .05;
-  vec3 col = base * (1. - vein * .14 * (.4 + h1)) * (1. - vein2 * .06) * (1. - speck * .1);
+  vec3 col = base * (1. - vein * .17 * (.5 + h1)) * (1. - vein2 * .07) * (1. - speck * .1);
   float e = min(min(f.x, 1. - f.x), min(f.y, 1. - f.y)) * TS;
   float grout = 1. - smoothstep(.0008, .0022, e);
   col = mix(col, vec3(.3, .3, .295), grout);
@@ -240,6 +245,66 @@ void main(){
     gl_FragColor = vec4(n * .5 + .5, 1.);
   }
 }`;
+/* White marble for the round room. KIND 0: veined marble; 3: the same for a floor, finer veins, one repeat = 8 m; 1: wall laid in stone blocks
+   (one repeat = 3 m: 2 blocks of 1.5 m x 5 courses of 0.6 m, running bond); 2: floor of 1 m
+   squares, white and pale grey (one repeat = 4 m). The veins repeat seamlessly. */
+const MARBLE_FS = kind => `
+uniform int uMode; uniform float uTexel; uniform float uStrength; varying vec2 vUv;
+${GLSL_NOISE}
+const int KIND = ${kind};
+float veins(vec2 uv, float s, float k){                // k: whole number, more and finer veins per repeat
+  vec2 o = vec2(floor(s * 61.), floor(s * 17.));
+  float w1 = fbm(uv * 4. * k + o, vec2(4. * k)), w2 = fbm(uv * 8. * k + o.yx, vec2(8. * k));
+  float v1 = 1. - smoothstep(0., .06, abs(sin(6.2832 * k * (1. * uv.x + 2. * uv.y) + w1 * 7. + s * 6.28)));
+  float v2 = 1. - smoothstep(0., .03, abs(sin(6.2832 * k * (3. * uv.x - 1. * uv.y) + w2 * 9. + s * 3.1)));
+  float v3 = 1. - smoothstep(0., .015, abs(sin(6.2832 * k * (5. * uv.x + 3. * uv.y) + w2 * 12. + s)));
+  return v1 * .7 + v2 * .32 + v3 * .14;
+}
+struct P { vec3 col; float h; };
+P marbleAt(vec2 uv){
+  vec2 cells = KIND == 1 ? vec2(2., 5.) : (KIND == 2 ? vec2(4., 4.) : vec2(1.));
+  float R = KIND == 2 ? 4. : 3.;
+  vec2 m = uv * cells;
+  if (KIND == 1) m.x += mod(floor(m.y), 2.) * .5;
+  vec2 id = mod(floor(m), cells), f = fract(m);
+  float h1 = (KIND == 0 || KIND == 3) ? .37 : hash12(id + 2.3), h2 = (KIND == 0 || KIND == 3) ? .5 : hash12(id + 9.1);
+  vec2 o = vec2(floor(h1 * 40.), floor(h2 * 40.));
+  float cloud = fbm(uv * 3. + o, vec2(3.)), fine = fbm(uv * 40. + o, vec2(40.));
+  float v = veins(uv, h1, 1.);
+  if (KIND == 3) {                                       // floor: a clean white with a few long, flowing veins (Calacatta-like)
+    float t = fbm(uv * 2. + vec2(3., 1.), vec2(2.)) * 1.5 + fbm(uv * 5. + vec2(8., 4.), vec2(5.)) * .3;
+    float s1 = sin(6.2832 * (uv.x + uv.y) + t * 6.2832);                            // the main veins, on a diagonal
+    float s1b = sin(6.2832 * (2. * uv.x + uv.y) + t * 5.5 + 2.1);                    // a second, fainter family
+    float wid = .015 + .06 * pow(fbm(uv * 4. + vec2(2., 7.), vec2(4.)), 2.);         // they thicken and taper
+    float along = smoothstep(.42, .6, fbm(uv * 2. + vec2(5., 5.), vec2(2.)));        // and come and go along their length
+    float alongB = smoothstep(.5, .66, fbm(uv * 3. + vec2(4., 1.), vec2(3.)));
+    float core = (1. - smoothstep(0., wid, abs(s1))) * along + (1. - smoothstep(0., wid * .7, abs(s1b))) * alongB * .6;
+    float halo = (1. - smoothstep(0., wid * 8., abs(s1))) * along + (1. - smoothstep(0., wid * 6., abs(s1b))) * alongB * .5;
+    float t2 = fbm(uv * 4. + vec2(1., 6.), vec2(4.)) * 1.2;
+    float s2 = sin(6.2832 * (3. * uv.x - 1. * uv.y) + t2 * 6.2832);                 // fine branching veins across them
+    float fineV = (1. - smoothstep(0., .012, abs(s2))) * smoothstep(.5, .7, fbm(uv * 3. + vec2(9., 3.), vec2(3.)));
+    v = core * .9 + halo * .22 + fineV * .4;
+  }
+  bool dark = KIND == 2 && mod(id.x + id.y, 2.) > .5;
+  vec3 base = dark ? vec3(.83, .835, .84) : vec3(.965, .96, .95);
+  base *= .99 + (cloud - .5) * (KIND == 3 ? .035 : .06) + (fine - .5) * .02 + (h2 - .5) * .025;
+  vec3 col = mix(base, dark ? vec3(.55, .56, .58) : (KIND == 3 ? vec3(.52, .52, .54) : vec3(.64, .65, .67)), clamp(v, 0., 1.) * (dark ? .36 : (KIND == 3 ? .6 : .32)));
+  float e = 1.;
+  if (KIND == 1 || KIND == 2) e = min(min(f.x, 1. - f.x) * R / cells.x, min(f.y, 1. - f.y) * R / cells.y);
+  float joint = 1. - smoothstep(.0015, .005, e);
+  col = mix(col, vec3(.74, .73, .71), joint * .85);
+  return P(pow(col, vec3(2.2)), smoothstep(0., .006, e) + (cloud - .5) * .002);
+}
+void main(){
+  P p = marbleAt(vUv);
+  if (uMode == 0) gl_FragColor = vec4(p.col, 1.);
+  else {
+    float hx = marbleAt(vUv + vec2(uTexel, 0.)).h - marbleAt(vUv - vec2(uTexel, 0.)).h;
+    float hy = marbleAt(vUv + vec2(0., uTexel)).h - marbleAt(vUv - vec2(0., uTexel)).h;
+    vec3 n = normalize(vec3(-hx * uStrength, -hy * uStrength, 1.));
+    gl_FragColor = vec4(n * .5 + .5, 1.);
+  }
+}`;
 const genTexture = (() => {
   const sc = new THREE.Scene(), cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1), quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2)); quad.frustumCulled = false; sc.add(quad);
   return (frag, size, mode, srgb, strength = 1) => {
@@ -256,7 +321,16 @@ const genTexture = (() => {
   };
 })();
 
-export const SURF = {};   // floorA/N/R (colour, bumps, roughness), plasterA/N
+export const SURF = {};   // floorA/N/R (colour, bumps, roughness), plasterA/N; marble* (made when the round room is built)
+export function generateMarble() {
+  if (SURF.marbleV) return SURF;
+  const big = !MOBILE && !LOWTEX && renderer.capabilities.maxTextureSize >= 8192, sz = big ? 2048 : 1024;
+  SURF.marbleV = genTexture(MARBLE_FS(0), sz, 0, true);                 // veined, for columns and mouldings
+  SURF.ashlarA = genTexture(MARBLE_FS(1), sz, 0, true);                 // the wall, in stone blocks
+  SURF.ashlarN = genTexture(MARBLE_FS(1), sz, 1, false, 2.2 * sz / 2048);
+  SURF.floorMS = genTexture(MARBLE_FS(3), sz, 0, true);                 // the floor: one continuous sheet of white marble, no tiles
+  return SURF;
+}
 export function generateSurfaces() {
   const big = !MOBILE && !LOWTEX && renderer.capabilities.maxTextureSize >= 8192;
   const fs = big ? 4096 : (LOWTEX ? 1024 : 2048), ps = big ? 2048 : 1024;
