@@ -41,6 +41,11 @@
      groupBy:       function(fileName) → group key, used with keepOrder
      hangReverse:   true = run the sequence the other way along the wall
      scatter:       true = stand the sculptures in an informal group (up to 3)
+     fillInner:     false = keep everything on the outer wall (otherwise pictures of much the same size are
+                    shared with the doorway wall and enlarged a little to use the space)
+     walls:         { left: [files], right: [files], front: [file], back: [file] } — choose the wall for
+                    each picture. Left and right are as you face along the row, from the welcome-room end
+                    toward the far end; front is the end wall ahead (beside its doorway), back the one behind.
 
    ── Settings for single pictures ─────────────────────────────────────
      pictureDefaults: { ... }   applied to every picture of the room
@@ -73,28 +78,41 @@ const SB = 'album/shining_beauty_of_mathematics/';
 export const ROOMS = {
   /* ---------------- Latest ---------------- */
   surrealistic_paintings: {
-    wall: '#2d3a4f', frame: 'none', hangReverse: true,
+    wall: '#2d3a4f', frame: 'none',
     description: 'Paintings and drawings in acrylic, coloured pencil and line and wash.',
+    // every wall in use, so each work can be large (see `walls` in the notes at the top)
+    walls: {
+      left: ['kiking_202412_BanffSpiral.jpeg', 'kiking_202506_CosmicPlatonic.jpg'],
+      right: ['kiking_202410_LakeMoraine.jpeg', 'kiking_201711_Harbour.jpg'],     // one each side of the doorway to Picturesque World
+      front: ['kiking_202603_EscapismI.jpg'],
+      back: ['kiking_202607_CloisterIllusion.jpg'],
+    },
     pictures: {
-      'kiking_202607_CloisterIllusion.jpg': { frame: 'white' },
-      'kiking_202603_EscapismI.jpg': { frame: 'white' },
-      'kiking_202506_CosmicPlatonic.jpg': { scale: 1.15 },
-      'kiking_202412_BanffSpiral.jpeg': { scale: 1.15 },
-      'kiking_202410_LakeMoraine.jpeg': { frame: 'black' },
-      'kiking_201711_Harbour.jpg': { frame: 'black' },
+      'kiking_202607_CloisterIllusion.jpg': { frame: 'white', scale: 1.45 },   // about 3.4 m tall, like the museum's other large portraits
+      'kiking_202603_EscapismI.jpg': { frame: 'white', scale: 1.45 },
+      'kiking_202506_CosmicPlatonic.jpg': { scale: 1.8 },
+      'kiking_202412_BanffSpiral.jpeg': { scale: 1.8 },
+      'kiking_202410_LakeMoraine.jpeg': { frame: 'black', scale: 1.6 },
+      'kiking_201711_Harbour.jpg': { frame: 'black', scale: 1.6 },
     },
   },
 
   picturesque_world: {
-    wall: '#ece7dd', frame: 'white', hangReverse: true,
+    wall: '#ece7dd', frame: 'white',
     alsoInclude: ['picturesque_world_reykjavík'],
     description: 'Places painted from life and memory: Niagara Falls, Reykjavík and more, in watercolour, line and wash, and acrylic.',
     pictures: {
-      'kiking_202610_18_Experimental.jpg': { frame: 'none', scale: 1.3, entryWall: true },
-      'kiking_202609_ReykjavíkFjögur_I.jpg': { scale: .85 },
-      'kiking_202609_ReykjavíkFjögur_II.jpg': { scale: .85 },
-      'kiking_202609_ReykjavíkFjögur_III.jpg': { scale: .85 },
-      'kiking_202609_ReykjavíkFjögur_IV.jpg': { scale: .85 },
+      'kiking_202610_18_Experimental.jpg': { frame: 'none', scale: 1.8 },
+      'kiking_202606_NiagaraFalls.jpg': { scale: 1.8 },
+      'kiking_202609_ReykjavíkFjögur_I.jpg': { scale: 1.25 },
+      'kiking_202609_ReykjavíkFjögur_II.jpg': { scale: 1.25 },
+      'kiking_202609_ReykjavíkFjögur_III.jpg': { scale: 1.25 },
+      'kiking_202609_ReykjavíkFjögur_IV.jpg': { scale: 1.25 },
+    },
+    walls: {
+      right: ['kiking_202610_18_Experimental.jpg', 'kiking_202606_NiagaraFalls.jpg'],   // the outer wall
+      left: ['kiking_202609_ReykjavíkFjögur_I.jpg', 'kiking_202609_ReykjavíkFjögur_II.jpg',   // the inner wall, two each side of the doorway
+             'kiking_202609_ReykjavíkFjögur_III.jpg', 'kiking_202609_ReykjavíkFjögur_IV.jpg'],
     },
     extras: [
       { src: 'album/picturesque_world/kiking_202606_NiagaraFalls.jpg', title: 'How Great Thou Art', meta: 'Video · YouTube',
@@ -223,8 +241,9 @@ export const ROOMS = {
 
   /* ---------------- Early Work ---------------- */
   lunch_time_escape: { wall: '#4a3f5c', frame: 'white', description: 'Drawings in marker and fineliner.' },
-  if_pusheen_is_my_cat: { wall: '#e6e1d6', frame: 'black', description: 'Pen and pencil drawings, 2014.' },
-  because_its_cute: { wall: '#d9cdb8', frame: 'black', description: 'Pen drawings, 2014.' },
+  // all on the outer wall, each picture a third larger than the standard size
+  if_pusheen_is_my_cat: { wall: '#e6e1d6', frame: 'black', description: 'Pen and pencil drawings, 2014.', fillInner: false, pictureDefaults: { scale: 1.35 } },
+  because_its_cute: { wall: '#d9cdb8', frame: 'black', description: 'Pen drawings, 2014.', fillInner: false, pictureDefaults: { scale: 1.35 } },
   love_of_miyazaki: {
     wall: '#34493f', frame: 'white', description: 'Watercolor & fineliner on paper.',
     pictureDefaults: { meta: 'Watercolor & Fineliner on Paper' },   // album_items.json has no medium for these

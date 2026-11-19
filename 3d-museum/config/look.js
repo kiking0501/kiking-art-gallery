@@ -4,6 +4,15 @@
    All sizes are in metres. Changing them reshapes every room at once.
 */
 
+// Lettering used everywhere: walls, labels, maps and the pop-ups.
+// Georgia with a modern sans-serif beside it. Georgia isn't on Linux or Android, so Gelasio
+// (a free font with Georgia's exact proportions) stands in there. index.html loads Gelasio and
+// Plus Jakarta Sans from Google Fonts: change that line too if you pick other web fonts.
+export const FONTS = {
+  serif: 'Georgia, Gelasio, "Times New Roman", serif',     // titles, names, labels
+  sans: '"Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif',   // small print, buttons
+};
+
 // The rooms: two parallel rows of galleries joined by doorways.
 export const BUILDING = {
   eyeHeight: 1.62,        // how high the visitor's eyes are

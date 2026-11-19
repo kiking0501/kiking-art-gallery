@@ -101,10 +101,18 @@ function layoutRoomLocal(room, ri, sideDoor, outer, forceInner, inRow) {
   const rows = { '-1': [], '1': [] };
   const G = +room.gap || GAP, rowW = row => row.reduce((t, it) => t + it.ow, 0) + G * Math.max(0, row.length - 1);
   const yearOf = it => { const m = `${it.a.title || ''} ${it.a.meta || ''}`.match(/\b(?:19|20)\d{2}\b/g); return m ? Math.max(...m.map(Number)) : -1; };
+  // `walls` in config/rooms.js: chosen pictures on chosen walls (left / right / front / back)
+  let entryIt = null, backIt = null; const forced = { '-1': [], '1': [] };
+  if (room.walls && !vid) {
+    const take = f => { const i = items.findIndex(it => it.a.file === f); return i >= 0 ? items.splice(i, 1)[0] : null; };
+    forced['-1'] = (room.walls.left || []).map(take).filter(Boolean);
+    forced['1'] = (room.walls.right || []).map(take).filter(Boolean);
+    const fr = (room.walls.front || []).map(take).filter(Boolean), bk = (room.walls.back || []).map(take).filter(Boolean);
+    entryIt = fr.shift() || null; backIt = bk.shift() || null; items.push(...fr, ...bk);   // one picture fits beside each end doorway
+  }
   // one picture may go on the wall facing the entrance, beside the far doorway
-  let entryIt = null;
-  if (!vid && !['intro', 'closing', 'annex'].includes(room.kind) && room.entryWall !== false && !room.keepOrder) {
-    const fits = it => it.ow <= 4.1 && it.oh <= 4.4 && (+it.a.scale || 1) <= 1.3;
+  if (!room.walls && !vid && !['intro', 'closing', 'annex'].includes(room.kind) && room.entryWall !== false && !room.keepOrder) {
+    const fits = it => it.ow <= 4.1 && it.oh <= 4.4 && (+it.a.scale || 1) <= 1.4;
     entryIt = items.find(it => it.a.entryWall && it.ow <= 4.3) || (items.length >= 3 ? items.filter(fits).sort((p, q) => yearOf(p) - yearOf(q) || q.ai - p.ai)[0] : null) || null;
     if (entryIt) items.splice(items.indexOf(entryIt), 1);
   }
@@ -119,6 +127,25 @@ function layoutRoomLocal(room, ri, sideDoor, outer, forceInner, inRow) {
     for (const it of sorted) (rowW([...out, it]) <= cap || !out.length ? out : rest).push(it);
     rows[outer] = out; rows[sideDoor] = rest;
   } else { const nN = Math.ceil(items.length / 2); rows['-1'] = items.slice(0, nN); rows['1'] = items.slice(nN); }
+  for (const sd of ['-1', '1']) rows[sd] = [...forced[sd], ...rows[sd]];   // chosen pictures first, in the order given
+  // Pictures of much the same size all on the outer wall, the doorway wall bare: share them between the
+  // two walls and use the space for larger pictures, within the room's present length (at most 35% larger).
+  if (sideDoor && !vid && !room.keepOrder && !room.walls && room.fillInner !== false && !sculpts.length && !kiosks.length && !monitors.length
+      && !rows[sideDoor].length && rows[outer].length >= 2) {
+    const all = rows[outer], areas = all.map(it => it.w * it.h);
+    if (Math.max(...areas) / Math.min(...areas) <= 2.5) {
+      const L0 = Math.max(MIN_ROOM_W, rowW(all) + 2 * MARGIN, forceInner || 0), nO = Math.ceil(all.length / 2);
+      const O = all.slice(0, nO), I = all.slice(nO), h1 = I.slice(0, Math.ceil(I.length / 2)), h2 = I.slice(Math.ceil(I.length / 2));
+      const sum = row => row.reduce((t, it) => t + it.ow, 0);
+      let k = Math.min(1.35, (L0 - 2 * MARGIN - G * (O.length - 1)) / sum(O), 3.6 / Math.max(...all.map(it => it.oh)));
+      for (const h of [h1, h2]) if (h.length) k = Math.min(k, ((L0 - DOOR_W - 1.6 - 2 * MARGIN) / 2 - G * (h.length - 1)) / sum(h));
+      if (k > 1.02) {
+        all.forEach(it => resizeTo(it, k));
+        if (entryIt && entryIt.ow * k <= 3.8 && entryIt.oh * k <= 4.2) resizeTo(entryIt, k);   // the one beside the far doorway, if it still fits
+      }
+      rows[outer] = O; rows[sideDoor] = I;
+    }
+  }
   // `swap` in config/rooms.js: pairs of pictures that trade places
   for (const [f1, f2] of room.swap || []) {
     const where = f => { if (entryIt?.a.file === f) return ['entry']; for (const sd of ['-1', '1']) { const i = rows[sd].findIndex(it => it.a.file === f); if (i >= 0) return [sd, i]; } return null; };
@@ -165,6 +192,10 @@ function layoutRoomLocal(room, ri, sideDoor, outer, forceInner, inRow) {
   if (entryIt) {                                         // on the wall facing you as you come in: beside the doorway, across from the gold title
     const it = entryIt, y = Math.max(1.6, it.oh / 2 + .6), z = DOOR_W / 2 + (D - DOOR_W) / 4, dist = clamp(Math.max(it.oh, it.ow * .8) * 1.25 + .6, 2.1, 4.6);
     local.push({ ...it, x: ix1, y, z, side: 0, nx: -1, nz: 0, rotY: -Math.PI / 2, entryWall: true, view: { x: ix1 - dist, z, yaw: -Math.PI / 2, pitch: Math.atan2(y - EYE, dist) } });
+  }
+  if (backIt) {                                          // on the wall behind you as you come in: beside the doorway, across from the gold title there
+    const it = backIt, y = Math.max(1.6, it.oh / 2 + .6), z = -(DOOR_W / 2 + (D - DOOR_W) / 4), dist = clamp(Math.max(it.oh, it.ow * .8) * 1.25 + .6, 2.1, 4.6);
+    local.push({ ...it, x: ix0, y, z, side: 0, nx: 1, nz: 0, rotY: Math.PI / 2, entryWall: true, view: { x: ix0 + dist, z, yaw: Math.PI / 2, pitch: Math.atan2(y - EYE, dist) } });
   }
   // freestanding displays
   const plinths = [];

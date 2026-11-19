@@ -6,7 +6,7 @@
   --ink:#f3eee5; --ink-dim:#b9b1a4;                    /* text on dark panels */
   --glass:rgba(22,19,16,.74); --line:rgba(255,255,255,.12);
   --gold:#cfae6c; --gold-ink:#1d1710; --radius:14px;
-  --serif:Georgia, serif; --sans:"Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --serif:Georgia, Gelasio, serif; --sans:"Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;overflow:hidden;background:#15120f;color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
@@ -52,14 +52,25 @@ button{font:inherit;color:inherit}
 #info{position:fixed;left:18px;bottom:84px;width:min(380px,calc(100vw - 36px));padding:18px 20px 16px;transition:opacity .35s, transform .35s;
   background:rgba(252,250,246,.97);color:#1f1b17;border-color:rgba(0,0,0,.08);box-shadow:0 12px 40px rgba(0,0,0,.28)}
 #info.off{opacity:0;transform:translateY(12px);pointer-events:none}
-/* the card's text in the museum's lettering (Cormorant Garamond), like the wall labels and the full-picture caption */
-#info .count,#info h2,#info .meta,#info .desc,#info a,#info .credit{font-family:var(--serif)}
-#info .count{font-size:13px;font-weight:400;letter-spacing:.16em;color:#9a7634;text-transform:uppercase;padding-right:24px}
-#info h2{font-weight:400;font-size:30px;line-height:1.05;margin:6px 0 4px}
-#info .meta{color:#6b6359;font-size:17px;font-style:italic;font-weight:500}
-#info .desc{font-size:17px;line-height:1.45;margin-top:10px;color:#3a342d;max-height:30vh;overflow:auto}
-#info a{display:inline-block;margin-top:12px;color:#8a6623;font-size:17px;font-weight:400;letter-spacing:-0.02em;text-decoration:none;border-bottom:1px solid rgba(138,102,35,.35)}
-#info .credit{font-size:14px;font-style:italic;color:#8a8278;margin-top:12px}
+/* Two styles only: the title in the serif, everything else in the sans-serif, with room to breathe */
+#info{font-family:var(--sans);line-height:1.6}
+#info .count{font-size:12px;color:#9a7634;padding-right:24px}
+#info h2{font-family:var(--serif);font-weight:400;font-size:26px;line-height:1.2;margin:8px 0 6px}
+#info .meta{color:#6b6359;font-size:14px}
+#info .desc{font-size:14px;line-height:1.65;margin-top:12px;color:#3a342d;max-height:30vh;overflow:auto}
+#info a{display:inline-block;margin-top:14px;color:#8a6623;font-size:14px;font-weight:500;text-decoration:none;border-bottom:1px solid rgba(138,102,35,.35)}
+#info .credit{font-size:12px;color:#8a8278;margin-top:14px}
+/* phones: as wide as the Map panel and low on the screen, with smaller text */
+@media (max-width:720px){
+  #info{left:12px;right:12px;bottom:76px;width:auto;padding:12px 14px 12px;line-height:1.5}
+  #info .count{font-size:11px}
+  #info h2{font-size:19px;margin:4px 0 2px}
+  #info .meta{font-size:12px}
+  #info .desc{font-size:12px;line-height:1.55;margin-top:6px;max-height:16vh}
+  #info a{font-size:12px;margin-top:8px}
+  #info .credit{font-size:11px;margin-top:6px}
+  #info .x{top:4px;right:4px}
+}
 #info .credit:empty{display:none}
 #info .x{position:absolute;right:10px;top:10px;background:none;border:0;color:#8a8278;cursor:pointer;font-size:18px;padding:4px 8px}
 #info .x:hover{color:#1f1b17}

@@ -1,7 +1,7 @@
 /* The round room (layout: 'rotunda'): curved wall with doorways, two storeys of
    slender columns, a balcony, a coffered dome with an open oculus, tall windows. */
 import * as THREE from 'three';
-import { mk, inkFor, spacing } from '../util.js';
+import { mk, inkFor, spacing, SERIF } from '../util.js';
 import { canvasTex } from './renderer.js';
 import { SURF } from './textures.js';
 import { stdMat, wallMat, floorMat, skySunMat, sunPatchMat, box, plane, wbox } from './materials.js';
@@ -97,7 +97,7 @@ export function buildRotunda(r, wallGroup, floorGroup, extraPick) {
   wallGroup.add(cyl(eR, ROT_Y2 - ROT_Y1, ROT_Y1, 0, Math.PI * 2, plasterB, 120));
   wallGroup.add(ring(eR, ROT_R + .15, ROT_Y1, false, plasterD));
   wallGroup.add(ring(eR, ROT_R + .15, ROT_Y2, true, stdMat('#d8d3ca', .5)));
-  { const c = mk(4096, 128), g = c.getContext('2d'); g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.font = '600 92px "Cormorant Garamond", Georgia, serif'; spacing(g, '26px');
+  { const c = mk(4096, 128), g = c.getContext('2d'); g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.font = `400 92px ${SERIF}`; spacing(g, '26px');
     g.fillText(`${r.data.name.toUpperCase()}   ·   EXHIBITION ${two(exNo(r.ri))}`, 2048, 70, 4000);
     const tx = canvasTex(c); tx.wrapS = THREE.RepeatWrapping; tx.repeat.x = -2;
     const gm = new THREE.MeshStandardMaterial({ map: tx, color: '#b8954f', emissive: '#b8954f', emissiveIntensity: .15, metalness: .55, roughness: .32, transparent: true, depthWrite: false, side: THREE.BackSide });

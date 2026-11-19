@@ -22,7 +22,7 @@ import { checkRoomChange, setTitle } from './ui/hud.js';
 import { initInfoCard } from './ui/info-card.js';
 import { initTheater } from './ui/theater.js';
 import { initOverlays, setFarewell, toast, backToEntrance } from './ui/overlays.js';
-import { $ } from './util.js';
+import { $, SERIF, SANS } from './util.js';
 import { initMap, drawMapBase, drawMap, toggleMap } from './ui/map-panel.js';
 import { initNavbar } from './ui/navbar.js';
 import { fillIntro, setLoading, showError, ready } from './ui/intro.js';
@@ -39,7 +39,7 @@ async function start() {
   const n = S.museum.rooms.reduce((s, r) => s + r.artworks.length, 0);
 
   // 2. textures and pictures (wait briefly for the fonts used on the walls)
-  try { await Promise.race([Promise.all([document.fonts.load('600 64px "Cormorant Garamond"'), document.fonts.load('400 20px Inter')]), new Promise(r => setTimeout(r, 2500))]); } catch (e) {}
+  try { await Promise.race([Promise.all([document.fonts.load('400 64px ' + SERIF), document.fonts.load('400 20px ' + SANS)]), new Promise(r => setTimeout(r, 2500))]); } catch (e) {}
   setLoading('Preparing floors and plaster…');
   await new Promise(r => setTimeout(r, 30));
   generateSurfaces(); applySurfaces();
@@ -57,7 +57,6 @@ async function start() {
   setLoading(`${n} works in ${S.museum.rooms.length} rooms`);
   ready(site.enterButton || 'Enter the museum', () => {
     stopAttract(); S.walk = null; S.look = null; spawn();               // back to the start
-    if (site.enterHint) setTimeout(() => toast(site.enterHint), 400);
   });
 
   // 4. every frame

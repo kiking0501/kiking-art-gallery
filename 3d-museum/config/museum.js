@@ -27,7 +27,6 @@ export default {
   enterButton: 'Enter the museum',
   galleryLinkText: 'or visit the original Art Gallery ↗',
   // One-line hint shown briefly after entering ('' for none).
-  enterHint: 'Click a picture to step up to it — or press Tour for a guided walk.',
 
   // Guided tour: seconds spent at each work before walking on (the Tour button fills up meanwhile).
   tourSecondsPerStop: 6,

@@ -3,7 +3,7 @@
    or a work to walk up to it. */
 import * as THREE from 'three';
 import { S, me } from '../state.js';
-import { $, mk, spacing } from '../util.js';
+import { $, mk, spacing, SANS } from '../util.js';
 import { camera, onResize } from '../world/renderer.js';
 import { toW } from '../world/layout.js';
 import { exNo, two, annexLabel } from '../data/room-info.js';
@@ -67,13 +67,13 @@ export function drawMapBase() {
     const [bx0, by0, bx1, by1] = labelBox(r), w = bx1 - bx0 - 10, h = by1 - by0 - 8, cxp = (bx0 + bx1) / 2, cyp = (by0 + by1) / 2;
     const k = r.data.kind, tag = k === 'intro' ? 'WELCOME' : k === 'closing' ? 'FAREWELL' : k === 'annex' ? annexLabel(r.data).toUpperCase() : `NO. ${two(exNo(r.ri))}`;
     let fs = 13, lines = [];
-    const wrap = size => { g.font = `600 ${size}px Inter, sans-serif`; const out = []; let cur = ''; for (const wd of r.data.name.split(/\s+/)) { const t = cur ? cur + ' ' + wd : wd; if (g.measureText(t).width <= w || !cur) cur = t; else { out.push(cur); cur = wd; } } if (cur) out.push(cur); return out; };
+    const wrap = size => { g.font = `600 ${size}px ${SANS}`; const out = []; let cur = ''; for (const wd of r.data.name.split(/\s+/)) { const t = cur ? cur + ' ' + wd : wd; if (g.measureText(t).width <= w || !cur) cur = t; else { out.push(cur); cur = wd; } } if (cur) out.push(cur); return out; };
     for (; fs >= 8; fs--) { lines = wrap(fs); if (lines.length <= 4 && lines.length * fs * 1.18 + 13 <= h && lines.every(l => g.measureText(l).width <= w + 1)) break; }
     const tagH = 11, total = tagH + lines.length * fs * 1.18; let y = cyp - total / 2 + 8;
     g.textAlign = 'center'; g.textBaseline = 'middle';
-    g.font = '600 8.5px Inter, sans-serif'; spacing(g, '1.5px'); g.fillStyle = '#d9b871'; g.fillText(tag, cxp, y, w); spacing(g, '0px');
+    g.font = `600 8.5px ${SANS}`; spacing(g, '1.5px'); g.fillStyle = '#d9b871'; g.fillText(tag, cxp, y, w); spacing(g, '0px');
     y += tagH;
-    g.font = `600 ${fs}px Inter, sans-serif`; g.fillStyle = '#f3ede2'; g.shadowColor = 'rgba(0,0,0,.6)'; g.shadowBlur = 3;
+    g.font = `600 ${fs}px ${SANS}`; g.fillStyle = '#f3ede2'; g.shadowColor = 'rgba(0,0,0,.6)'; g.shadowBlur = 3;
     for (const l of lines) { g.fillText(l, cxp, y + fs * .45, w + 2); y += fs * 1.18; }
     g.shadowBlur = 0;
   }

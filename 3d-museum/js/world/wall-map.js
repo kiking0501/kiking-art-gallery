@@ -3,7 +3,7 @@
    leader lines to each room. Clicking a room or a name walks you there. */
 import * as THREE from 'three';
 import { S } from '../state.js';
-import { mk, spacing } from '../util.js';
+import { mk, spacing, SERIF, SANS } from '../util.js';
 import { canvasTex } from './renderer.js';
 import { stdMat, box, plane } from './materials.js';
 import { toW } from './layout.js';
@@ -16,9 +16,9 @@ export function buildWallMap(hereL) {
   const gold = '#d9b871', ink = '#f1ebe0', dim = 'rgba(241,235,224,.62)';
   g.fillStyle = '#10151f'; g.fillRect(0, 0, W, H);
   g.strokeStyle = 'rgba(217,184,113,.6)'; g.lineWidth = 4; g.strokeRect(24, 24, W - 48, H - 48);
-  g.textAlign = 'center'; g.fillStyle = gold; g.font = '600 92px "Cormorant Garamond", Georgia, serif'; spacing(g, '6px');
+  g.textAlign = 'center'; g.fillStyle = gold; g.font = `400 92px ${SERIF}`; spacing(g, '6px');
   g.fillText('δ  Museum Map  δ', W / 2, 130);
-  g.font = '400 28px Inter, sans-serif'; g.fillStyle = dim; spacing(g, '6px');
+  g.font = `400 28px ${SANS}`; g.fillStyle = dim; spacing(g, '6px');
   g.fillText('LEFT ROW  ·  ▲ AHEAD  ·  RIGHT ROW', W / 2, 184); spacing(g, '0px');
   const { x0, x1 } = layout.bbox, top = 250, bot = H - 120;
   let zMin = 0, zMax = 0;
@@ -84,10 +84,10 @@ export function buildWallMap(hereL) {
       const line1 = tag + (info ? '  ·  ' + info.toUpperCase() : '');
       const tx = left ? planL - gapL : planR + gapL, maxW = left ? tx - 70 : W - 70 - tx;
       g.textAlign = left ? 'right' : 'left';
-      g.font = '500 24px Inter, sans-serif'; spacing(g, '4px'); g.fillStyle = gold; g.fillText(line1, tx, y - 44, maxW); spacing(g, '0px');
-      g.font = `600 ${kind === 'intro' ? 50 : 46}px "Cormorant Garamond", Georgia, serif`; g.fillStyle = ink;
+      g.font = `500 24px ${SANS}`; spacing(g, '4px'); g.fillStyle = gold; g.fillText(line1, tx, y - 44, maxW); spacing(g, '0px');
+      g.font = `400 ${kind === 'intro' ? 50 : 46}px ${SERIF}`; g.fillStyle = ink;
       g.fillText(r.data.name, tx, y, maxW);
-      const nameW = g.measureText(r.data.name).width; g.font = '500 24px Inter, sans-serif';
+      const nameW = g.measureText(r.data.name).width; g.font = `500 24px ${SANS}`;
       const tw = Math.min(maxW, Math.max(nameW, g.measureText(line1).width * 1.15));
       uvRect(left ? tx - tw - 10 : tx - 10, y - 74, left ? tx + 10 : tx + tw + 10, y + 18, r.ri);
       const ly = y - 14, sx = tx + (left ? 18 : -18), ex = left ? planL - 18 : planR + 18;
@@ -96,7 +96,7 @@ export function buildWallMap(hereL) {
       g.beginPath(); g.arc(sx, ly, 4, 0, 7); g.fill();
     });
   }
-  g.fillStyle = dim; g.font = '400 24px Inter, sans-serif'; spacing(g, '4px'); g.textAlign = 'center';
+  g.fillStyle = dim; g.font = `400 24px ${SANS}`; spacing(g, '4px'); g.textAlign = 'center';
   g.fillText('CLICK A ROOM OR A NAME TO GO THERE', W / 2, H - 56); spacing(g, '0px');
   const grp = new THREE.Group(), bw = 3.7, bh = bw * H / W;
   const frame = box(bw + .15, bh + .15, .06, stdMat('#1b1712', .45, .3)); frame.position.z = .03; grp.add(frame);

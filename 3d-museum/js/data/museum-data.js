@@ -5,7 +5,7 @@ import { albumPageText } from './gallery.js';
 import { DEFAULT_WALLS } from '../../config/look.js';
 
 const ROOM_KEYS = ['name', 'kind', 'description', 'wall', 'frame', 'mood', 'ceiling', 'gap', 'pairWithPrev', 'newRow',
-  'keepOrder', 'hangReverse', 'scatter', 'entryWall', 'link', 'linkLabel', 'label', 'stackHeight', 'swap'];
+  'keepOrder', 'hangReverse', 'scatter', 'entryWall', 'link', 'linkLabel', 'label', 'stackHeight', 'swap', 'walls', 'fillInner'];
 
 export async function buildMuseum(gallery, site, roomsConfig) {
   const { ROOMS = {}, EXTRA_ROOMS = [], WELCOME_ROOM, CLOSING_ROOM } = roomsConfig;

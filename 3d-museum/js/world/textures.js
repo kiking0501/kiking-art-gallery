@@ -2,7 +2,7 @@
    and the generated surfaces — stone floor, plaster, skylight, soft shadows. */
 import * as THREE from 'three';
 import { renderer, canvasTex, MAX_ANISO, MOBILE, LOWTEX } from './renderer.js';
-import { mk, wrapText } from '../util.js';
+import { mk, wrapText, SERIF, SANS } from '../util.js';
 
 /* ---------------- Artwork pictures ---------------- */
 export const texCache = new Map();          // src → { tex, full, small, aspect, ok, loaded }
@@ -11,9 +11,9 @@ export function artKey(a) { return 'src:' + (a.src || ''); }
 function paintMissing(a, why) {
   const c = mk(800, 600), g = c.getContext('2d');
   g.fillStyle = '#d8d2c6'; g.fillRect(0, 0, 800, 600); g.strokeStyle = '#a49c8f'; g.lineWidth = 3; g.setLineDash([14, 10]); g.strokeRect(30, 30, 740, 540);
-  g.fillStyle = '#4b453c'; g.textAlign = 'center'; g.font = '600 46px "Cormorant Garamond", Georgia, serif'; g.fillText('Picture unavailable', 400, 260);
-  g.font = '24px Inter, sans-serif'; g.fillStyle = '#6b6357'; wrapText(g, why, 400, 320, 640, 34, 3);
-  g.font = '18px Inter, sans-serif'; g.fillText(decodeURI(String(a.src || '')).slice(-60), 400, 470);
+  g.fillStyle = '#4b453c'; g.textAlign = 'center'; g.font = `400 46px ${SERIF}`; g.fillText('Picture unavailable', 400, 260);
+  g.font = `24px ${SANS}`; g.fillStyle = '#6b6357'; wrapText(g, why, 400, 320, 640, 34, 3);
+  g.font = `18px ${SANS}`; g.fillText(decodeURI(String(a.src || '')).slice(-60), 400, 470);
   return c;
 }
 

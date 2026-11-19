@@ -2,7 +2,7 @@
    gold lettering (exhibition titles, names over doorways). */
 import * as THREE from 'three';
 import { S } from '../state.js';
-import { mk, lum, shade, inkFor, wrapText, spacing } from '../util.js';
+import { mk, lum, shade, inkFor, wrapText, spacing, SERIF, SANS } from '../util.js';
 import { TEX } from './textures.js';
 import { stdMat, wallMat, skyMat, skySunMat, sunPatchMat, shadowMat, box, plane, wbox, mplane, textPlane, goldMat } from './materials.js';
 import { buildWallMap } from './wall-map.js';
@@ -15,9 +15,9 @@ const SIDE_Z = DOOR_W / 2 + (D - DOOR_W) / 4;   // centre of the wall beside a d
 // The name of the room you are about to enter, above a doorway.
 export function sideLabel(text, sub, ink) {
   return textPlane((g, cw, ch) => {
-    g.fillStyle = ink; g.textAlign = 'center'; g.textBaseline = 'middle'; g.font = '600 88px "Cormorant Garamond", Georgia, serif';
+    g.fillStyle = ink; g.textAlign = 'center'; g.textBaseline = 'middle'; g.font = `400 88px ${SERIF}`;
     spacing(g, '4px'); g.fillText(text, cw / 2, ch / 2 - 8, cw - 40);
-    g.globalAlpha = .55; g.font = '400 30px Inter, sans-serif'; spacing(g, '8px'); g.fillText(sub, cw / 2, ch - 22, cw - 40);
+    g.globalAlpha = .55; g.font = `400 30px ${SANS}`; spacing(g, '8px'); g.fillText(sub, cw / 2, ch - 22, cw - 40);
   }, 1536, 200, 3.8, .495);
 }
 // The exhibition's title, statistics and description in gold leaf, straight on the wall.
@@ -25,15 +25,15 @@ export function exhibitionPanel(r) {
   const lightWall = lum(r.data.wall) > .32;
   const c = mk(2048, 1762), g = c.getContext('2d'), L = 40;
   g.fillStyle = '#fff'; g.textAlign = 'left';
-  g.font = '500 50px Inter, sans-serif'; spacing(g, '16px'); g.globalAlpha = .85;
+  g.font = `500 50px ${SANS}`; spacing(g, '16px'); g.globalAlpha = .85;
   const cat = r.cat ? r.cat.toUpperCase() + '  ·  ' : '';
   g.fillText(r.data.kind === 'intro' ? 'WELCOME' : r.data.kind === 'annex' ? `${cat}${annexLabel(r.data).toUpperCase()}` : `${cat}EXHIBITION ${two(exNo(r.ri))} / ${two(exTotal())}`, L, 150, 2048 - L * 2);
-  g.globalAlpha = 1; g.font = '600 236px "Cormorant Garamond", Georgia, serif'; spacing(g, '6px');
+  g.globalAlpha = 1; g.font = `400 236px ${SERIF}`; spacing(g, '6px');
   const lines = wrapText(g, r.data.name, L - 6, 400, 2048 - L * 2, 222, 3);
   let y = 400 + (lines - 1) * 222 + 96;
   g.fillRect(L, y, 240, 6); y += 116;
-  if (r.data.kind !== 'intro' && r.data.kind !== 'annex') { g.font = '400 46px Inter, sans-serif'; spacing(g, '10px'); g.globalAlpha = .85; g.fillText(roomStats(r.data).toUpperCase(), L, y); y += 122; }
-  if (r.data.description) { g.font = '500 78px "Cormorant Garamond", Georgia, serif'; spacing(g, '1px'); g.globalAlpha = .95; wrapText(g, r.data.description, L, y, 2048 - L * 2.5, 96, Math.max(1, Math.floor((1762 - 60 - y) / 96) + 1)); }
+  if (r.data.kind !== 'intro' && r.data.kind !== 'annex') { g.font = `400 46px ${SANS}`; spacing(g, '10px'); g.globalAlpha = .85; g.fillText(roomStats(r.data).toUpperCase(), L, y); y += 122; }
+  if (r.data.description) { g.font = `400 78px ${SERIF}`; spacing(g, '1px'); g.globalAlpha = .95; wrapText(g, r.data.description, L, y, 2048 - L * 2.5, 96, Math.max(1, Math.floor((1762 - 60 - y) / 96) + 1)); }
   const gold = lightWall ? '#b8913f' : '#dcb86a';
   const mat = goldMat(c, gold, lightWall ? .16 : .24); mat.envMapIntensity = 2.2;
   const pn = plane(4.3, 3.7, mat); pn.userData.kind = 'wall';
@@ -128,9 +128,13 @@ export function buildCrossWalls(r, rg, rfg) {
   const bigText = (lines, x, rotY, y, size) => {
     const t = textPlane((g, cw) => {
       g.fillStyle = wallInk; g.textAlign = 'center';
-      g.font = `600 ${size}px "Cormorant Garamond", Georgia, serif`; wrapText(g, lines[0], cw / 2, 210, cw - 120, size, 2);
-      g.globalAlpha = .9; g.fillStyle = '#b8955a'; g.fillRect(cw / 2 - 70, 330, 140, 3);
-      g.fillStyle = wallInk; g.globalAlpha = .75; g.font = '300 42px Inter, sans-serif'; spacing(g, '10px');
+      const parts = String(lines[0] || '').split(/\s+·\s+/);
+      if (parts.length === 2) {                          // "Kiking's Art · Online Museum": two lines, each kept whole
+        g.font = `400 ${size}px ${SERIF}`; g.fillText(parts[0], cw / 2, 175, cw - 120);
+        g.font = `400 ${Math.round(size * .62)}px ${SERIF}`; spacing(g, '6px'); g.fillText(parts[1], cw / 2, 290, cw - 120); spacing(g, '0px');
+      } else { g.font = `400 ${size}px ${SERIF}`; wrapText(g, lines[0], cw / 2, 210, cw - 120, size, 2); }
+      g.globalAlpha = .9; g.fillStyle = '#b8955a'; g.fillRect(cw / 2 - 70, 336, 140, 3);
+      g.fillStyle = wallInk; g.globalAlpha = .75; g.font = `300 42px ${SANS}`; spacing(g, '10px');
       wrapText(g, String(lines[1] || '').toUpperCase(), cw / 2, 420, cw - 120, 56, 2);
     }, 2048, 560, 8, 2.19);
     t.position.set(x, y, 0); t.rotation.y = rotY; t.userData.kind = 'wall'; rg.add(t);
@@ -146,8 +150,8 @@ export function buildCrossWalls(r, rg, rfg) {
       const sg = new THREE.Group(); sg.position.set(fx, 1.75, 0); sg.rotation.y = -Math.PI / 2;
       const bd = box(3.9, 1.15, .05, stdMat('#1a1714', .5)); bd.position.z = .025; sg.add(bd);
       const tc = mk(2048, 604), tg = tc.getContext('2d'); tg.fillStyle = '#fff'; tg.textAlign = 'center';
-      tg.font = '600 128px "Cormorant Garamond", Georgia, serif'; tg.fillText(r.data.linkLabel || 'Continue to the gallery', 1024, 270, 1900);
-      tg.font = '400 46px Inter, sans-serif'; spacing(tg, '8px'); tg.globalAlpha = .8; tg.fillText(String(r.data.link).replace(/^https?:\/\//, '').replace(/\/$/, '').toUpperCase() + '   →', 1024, 420, 1900);
+      tg.font = `400 128px ${SERIF}`; tg.fillText(r.data.linkLabel || 'Continue to the gallery', 1024, 270, 1900);
+      tg.font = `400 46px ${SANS}`; spacing(tg, '8px'); tg.globalAlpha = .8; tg.fillText(String(r.data.link).replace(/^https?:\/\//, '').replace(/\/$/, '').toUpperCase() + '   →', 1024, 420, 1900);
       const tp = plane(3.9, 1.15, goldMat(tc, '#dcb86a', .35)); tp.position.z = .052; sg.add(tp);
       sg.traverse(o => { o.userData.kind = 'link'; }); rg.add(sg);
     }
@@ -156,7 +160,7 @@ export function buildCrossWalls(r, rg, rfg) {
     const b = exhibitionPanel(r); b.position.set(r.ix0 + .012, 2.3, SIDE_Z); b.rotation.y = Math.PI / 2; rg.add(b);
     if (r.vid && !r.data.theatre) {                      // screening room: the title in gold above the screen
       const c = mk(2048, 200), g = c.getContext('2d'); g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle';
-      g.font = '600 104px "Cormorant Garamond", Georgia, serif'; spacing(g, '4px'); g.fillText(r.data.name, 1024, 92, 1960);
+      g.font = `400 104px ${SERIF}`; spacing(g, '4px'); g.fillText(r.data.name, 1024, 92, 1960);
       const t = plane(6.4, .625, goldMat(c)); t.position.set(r.cx, 5.75, r.outer * (FACE - .012)); t.rotation.y = r.outer < 0 ? 0 : Math.PI; rg.add(t);
     }
   }

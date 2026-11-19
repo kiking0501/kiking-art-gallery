@@ -5,7 +5,7 @@
      buildMonitor   flat screen on a wall (a video that isn't in a theatre)
      buildKiosk     freestanding screen that opens a website or social media */
 import * as THREE from 'three';
-import { clamp, mk, wrapText, spacing } from '../util.js';
+import { clamp, mk, wrapText, spacing, SERIF, SANS } from '../util.js';
 import { canvasTex, renderer } from './renderer.js';
 import { TEX, contactShadow } from './textures.js';
 import { stdMat, lensMat, box, plane, textPlane } from './materials.js';
@@ -45,10 +45,10 @@ export function buildArtwork(it) {
   // wall label
   const pl = textPlane((c, cw, ch) => {
     c.fillStyle = '#f8f5ef'; c.fillRect(0, 0, cw, ch);
-    c.fillStyle = '#1f1b17'; c.font = '600 50px "Cormorant Garamond", Georgia, serif';
+    c.fillStyle = '#1f1b17'; c.font = `400 50px ${SERIF}`;
     const n = wrapText(c, a.title || 'Untitled', 34, 74, cw - 68, 50, 2);
-    c.fillStyle = '#5e574d'; c.font = '400 25px Inter, sans-serif'; wrapText(c, a.meta || '', 34, 74 + n * 50 + 6, cw - 68, 32, 2);
-    c.fillStyle = '#9b9286'; c.font = '500 20px Inter, sans-serif'; c.fillText(`No. ${it.index + 1}`, 34, ch - 28);
+    c.fillStyle = '#5e574d'; c.font = `400 25px ${SANS}`; wrapText(c, a.meta || '', 34, 74 + n * 50 + 6, cw - 68, 32, 2);
+    c.fillStyle = '#9b9286'; c.font = `500 20px ${SANS}`; c.fillText(`No. ${it.index + 1}`, 34, ch - 28);
   }, 640, 360, .34, .19125, false);
   pl.position.set(it.labelX ?? ow / 2 + .42, (it.labelY ?? 1.32) - it.y, .012); pl.visible = !it.upper; g.add(pl);
   g.traverse(o => { o.userData.art = it.index; });
@@ -91,10 +91,10 @@ export function buildSculpture(it) {
     const reveal = new THREE.Mesh(new THREE.CylinderGeometry(rb - .035, rb - .035, .04, 72), stdMat('#0e0d0c', .6)); reveal.position.y = .02; g.add(reveal);
     photo.position.y = plinthH + .02 + h / 2;
     const lb = textPlane((c, cw, ch) => {
-      c.fillStyle = '#f8f5ef'; c.fillRect(0, 0, cw, ch); c.fillStyle = '#1f1b17'; c.font = '600 46px "Cormorant Garamond", Georgia, serif';
+      c.fillStyle = '#f8f5ef'; c.fillRect(0, 0, cw, ch); c.fillStyle = '#1f1b17'; c.font = `400 46px ${SERIF}`;
       const n = wrapText(c, a.title || 'Untitled', 30, 66, cw - 60, 46, 2);
-      c.fillStyle = '#5e574d'; c.font = '400 23px Inter, sans-serif'; wrapText(c, a.meta || '', 30, 66 + n * 46 + 4, cw - 60, 30, 2);
-      c.fillStyle = '#9b9286'; c.font = '500 19px Inter, sans-serif'; c.fillText(`No. ${it.index + 1}`, 30, ch - 24);
+      c.fillStyle = '#5e574d'; c.font = `400 23px ${SANS}`; wrapText(c, a.meta || '', 30, 66 + n * 46 + 4, cw - 60, 30, 2);
+      c.fillStyle = '#9b9286'; c.font = `500 19px ${SANS}`; c.fillText(`No. ${it.index + 1}`, 30, ch - 24);
     }, 640, 320, .44, .22, false);
     lb.position.set(0, plinthH * .55, rb + .004); g.add(lb);
   }
@@ -127,8 +127,8 @@ function posterCanvas(entry, title, external) {
   const grd = g.createLinearGradient(0, 0, 0, 900); grd.addColorStop(0, 'rgba(0,0,0,.1)'); grd.addColorStop(1, 'rgba(0,0,0,.75)'); g.fillStyle = grd; g.fillRect(0, 0, 1600, 900);
   g.fillStyle = 'rgba(255,255,255,.92)'; g.beginPath(); g.arc(800, 400, 92, 0, 7); g.fill();
   g.fillStyle = '#111'; g.beginPath(); g.moveTo(772, 350); g.lineTo(772, 450); g.lineTo(852, 400); g.closePath(); g.fill();
-  g.fillStyle = '#fff'; g.textAlign = 'center'; g.font = '600 64px "Cormorant Garamond", Georgia, serif'; g.fillText(title || '', 800, 620, 1400);
-  g.font = '500 28px Inter, sans-serif'; spacing(g, '8px'); g.globalAlpha = .8; g.fillText(external ? 'CLICK TO WATCH' : 'CLICK FOR THE FULL SCREENING', 800, 690);
+  g.fillStyle = '#fff'; g.textAlign = 'center'; g.font = `400 64px ${SERIF}`; g.fillText(title || '', 800, 620, 1400);
+  g.font = `500 28px ${SANS}`; spacing(g, '8px'); g.globalAlpha = .8; g.fillText(external ? 'CLICK TO WATCH' : 'CLICK FOR THE FULL SCREENING', 800, 690);
   return c;
 }
 export function buildScreen(it) {
@@ -189,17 +189,17 @@ export function buildKiosk(it) {
     x.strokeStyle = 'rgba(220,184,106,.6)'; x.lineWidth = 4; x.strokeRect(30, 30, 1540, 940);
     if (img) { x.save(); x.beginPath(); x.arc(800, 230, 130, 0, 7); x.clip(); try { x.drawImage(img, 670, 100, 260, 260); } catch (e) {} x.restore(); x.strokeStyle = '#dcb86a'; x.lineWidth = 6; x.beginPath(); x.arc(800, 230, 133, 0, 7); x.stroke(); }
     x.textAlign = 'center'; x.textBaseline = 'middle';
-    x.fillStyle = '#dcb86a'; x.font = '600 74px "Cormorant Garamond", Georgia, serif'; x.fillText(it.a.title || 'Follow', 800, 432, 1400);
-    x.fillStyle = 'rgba(241,235,224,.7)'; x.font = '400 30px Inter, sans-serif'; x.fillText(it.a.kiosk.tagline || 'Find new work online', 800, 492);
+    x.fillStyle = '#dcb86a'; x.font = `400 74px ${SERIF}`; x.fillText(it.a.title || 'Follow', 800, 432, 1400);
+    x.fillStyle = 'rgba(241,235,224,.7)'; x.font = `400 30px ${SANS}`; x.fillText(it.a.kiosk.tagline || 'Find new work online', 800, 492);
     links.forEach((ln, k) => {
       const y = 600 + k * 150, gx = 330;
       x.fillStyle = 'rgba(255,255,255,.07)'; pill(250, y - 58, 1100, 116, 58);
       x.strokeStyle = '#f1ebe0'; x.lineWidth = 7; x.lineJoin = 'round';
       if (/insta/i.test(ln.label)) { x.beginPath(); x.roundRect ? x.roundRect(gx - 34, y - 34, 68, 68, 20) : x.rect(gx - 34, y - 34, 68, 68); x.stroke(); x.beginPath(); x.arc(gx, y, 16, 0, 7); x.stroke(); x.fillStyle = '#f1ebe0'; x.beginPath(); x.arc(gx + 21, y - 21, 5, 0, 7); x.fill(); }
-      else { x.beginPath(); x.arc(gx, y, 36, 0, 7); x.stroke(); x.fillStyle = '#f1ebe0'; x.font = '700 52px Inter, sans-serif'; x.fillText('f', gx + 2, y + 4); }
-      x.textAlign = 'left'; x.fillStyle = '#f1ebe0'; x.font = '600 44px Inter, sans-serif'; x.fillText(ln.label, 410, y - 14);
-      x.fillStyle = 'rgba(241,235,224,.7)'; x.font = '400 32px Inter, sans-serif'; x.fillText(ln.handle || '', 410, y + 30);
-      x.textAlign = 'right'; x.fillStyle = '#dcb86a'; x.font = '600 40px Inter, sans-serif'; x.fillText('↗', 1300, y); x.textAlign = 'center';
+      else { x.beginPath(); x.arc(gx, y, 36, 0, 7); x.stroke(); x.fillStyle = '#f1ebe0'; x.font = `700 52px ${SANS}`; x.fillText('f', gx + 2, y + 4); }
+      x.textAlign = 'left'; x.fillStyle = '#f1ebe0'; x.font = `600 44px ${SANS}`; x.fillText(ln.label, 410, y - 14);
+      x.fillStyle = 'rgba(241,235,224,.7)'; x.font = `400 32px ${SANS}`; x.fillText(ln.handle || '', 410, y + 30);
+      x.textAlign = 'right'; x.fillStyle = '#dcb86a'; x.font = `600 40px ${SANS}`; x.fillText('↗', 1300, y); x.textAlign = 'center';
     });
     x.textAlign = 'left';
   };
@@ -209,11 +209,11 @@ export function buildKiosk(it) {
     x.fillStyle = '#26282c'; x.fillRect(0, 0, 1600, 84);
     ['#ff5f57', '#febc2e', '#28c840'].forEach((cl, k) => { x.fillStyle = cl; x.beginPath(); x.arc(40 + k * 34, 42, 11, 0, 7); x.fill(); });
     x.fillStyle = '#3a3d42'; pill(170, 20, 1260, 44, 22);
-    x.fillStyle = '#e8e8e8'; x.font = '400 26px Inter, sans-serif'; x.textBaseline = 'middle'; x.fillText('🔒  ' + host, 200, 43);
+    x.fillStyle = '#e8e8e8'; x.font = `400 26px ${SANS}`; x.textBaseline = 'middle'; x.fillText('🔒  ' + host, 200, 43);
     const grd = x.createLinearGradient(0, 760, 0, 1000); grd.addColorStop(0, 'rgba(10,12,16,0)'); grd.addColorStop(1, 'rgba(10,12,16,.82)'); x.fillStyle = grd; x.fillRect(0, 700, 1600, 300);
     x.fillStyle = '#dcb86a'; pill(520, 860, 560, 92, 46);
-    x.fillStyle = '#1c1710'; x.textAlign = 'center'; x.font = '600 38px Inter, sans-serif'; x.fillText('Visit the website  ↗', 800, 907); x.textAlign = 'left';
-    x.fillStyle = '#fff'; x.font = '600 50px "Cormorant Garamond", Georgia, serif'; x.fillText(it.a.title || host, 60, 800, 1480);
+    x.fillStyle = '#1c1710'; x.textAlign = 'center'; x.font = `600 38px ${SANS}`; x.fillText('Visit the website  ↗', 800, 907); x.textAlign = 'left';
+    x.fillStyle = '#fff'; x.font = `400 50px ${SERIF}`; x.fillText(it.a.title || host, 60, 800, 1480);
   };
   const draw = img => links ? drawSocial(img) : drawSite(img);
   draw(null);

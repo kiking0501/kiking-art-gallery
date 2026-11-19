@@ -1,4 +1,10 @@
 /* Small helpers used everywhere. */
+import { FONTS } from '../config/look.js';
+
+// the two fonts (config/look.js), for text drawn in 3D and for the page's CSS
+export const SERIF = FONTS.serif, SANS = FONTS.sans;
+document.documentElement.style.setProperty('--serif', SERIF);
+document.documentElement.style.setProperty('--sans', SANS);
 
 export const $ = id => document.getElementById(id);
 
