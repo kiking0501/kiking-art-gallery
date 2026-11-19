@@ -1,0 +1,157 @@
+/* =====================================================================
+   Page styles: everything that floats over the 3D view.
+   Colours and fonts are set once here, in :root.
+   ===================================================================== */
+:root{
+  --ink:#f3eee5; --ink-dim:#b9b1a4;                    /* text on dark panels */
+  --glass:rgba(22,19,16,.74); --line:rgba(255,255,255,.12);
+  --gold:#cfae6c; --gold-ink:#1d1710; --radius:14px;
+  --serif:"Cormorant Garamond", Georgia, serif; --sans:Inter, system-ui, -apple-system, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#15120f;color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.glass{background:var(--glass);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.hidden{display:none!important}
+.btn{background:var(--gold);color:var(--gold-ink);border:0;padding:13px 26px;border-radius:999px;font-weight:600;font-size:14px;cursor:pointer;letter-spacing:.03em}
+.btn:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.5;cursor:default}
+
+/* ---------- the 3D view and its cursors ---------- */
+#stage{transition:opacity .15s linear;position:fixed;inset:0;touch-action:none}
+#stage canvas{display:block;width:100%;height:100%;cursor:grab}
+#stage.dragging canvas{cursor:grabbing}
+#stage.hovering canvas{cursor:pointer}
+#stage.zoomable canvas{cursor:zoom-in}            /* in front of a work: click to see it in full */
+
+/* ---------- top left: title and room ---------- */
+#hud{position:fixed;left:18px;top:16px;padding:12px 18px;pointer-events:none;max-width:min(60vw,420px)}
+#hud .t{font-family:var(--serif);font-size:22px;font-weight:600;letter-spacing:.02em;line-height:1.1}
+#hud .r{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-top:5px}
+
+/* ---------- navigation bar ---------- */
+#bar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);display:flex;gap:4px;padding:6px;align-items:center}
+#bar button,#bar a.barlink{background:none;border:0;padding:9px 13px;border-radius:10px;cursor:pointer;font-size:13px;display:flex;gap:7px;align-items:center;white-space:nowrap;color:var(--ink);text-decoration:none}
+#bar button:hover,#bar a.barlink:hover{background:rgba(255,255,255,.09)}
+#bar button.on{background:var(--gold);color:var(--gold-ink)}
+#bar .sep{width:1px;height:22px;background:var(--line);margin:0 4px}
+#bar svg{width:17px;height:17px;flex:none}
+/* Tour button: ▶ when stopped, ❙❙ while touring; during a stop it fills up from the left
+   (--progress goes 0 → 1, set by js/visitor/tour.js) to show when the tour moves on */
+#bTour{position:relative;overflow:hidden}
+#bTour > *{position:relative}
+#bTour .i-pause{display:none}
+#bTour.touring .i-play{display:none}
+#bTour.touring .i-pause{display:block}
+#bTour .cd{font-variant-numeric:tabular-nums;font-weight:600;min-width:1ch;color:var(--gold)}
+#bTour .cd:empty{display:none}
+#bTour::before{content:'';position:absolute;left:0;top:0;bottom:0;width:calc(var(--progress, 0) * 100%);background:rgba(207,174,108,.42);pointer-events:none}
+@media (max-width:720px){ #bar .lbl{display:none} #bar button,#bar a.barlink{padding:10px} #hud .t{font-size:18px} }
+
+/* ---------- artwork card (white) ---------- */
+#info{position:fixed;left:18px;bottom:84px;width:min(380px,calc(100vw - 36px));padding:18px 20px 16px;transition:opacity .35s, transform .35s;
+  background:rgba(252,250,246,.97);color:#1f1b17;border-color:rgba(0,0,0,.08);box-shadow:0 12px 40px rgba(0,0,0,.28)}
+#info.off{opacity:0;transform:translateY(12px);pointer-events:none}
+/* the card's text in the museum's lettering (Cormorant Garamond), like the wall labels and the full-picture caption */
+#info .count,#info h2,#info .meta,#info .desc,#info a,#info .credit{font-family:var(--serif)}
+#info .count{font-size:13px;font-weight:600;letter-spacing:.16em;color:#9a7634;text-transform:uppercase;padding-right:24px}
+#info h2{font-weight:600;font-size:30px;line-height:1.05;margin:6px 0 4px}
+#info .meta{color:#6b6359;font-size:17px;font-style:italic;font-weight:500}
+#info .desc{font-size:17px;line-height:1.45;margin-top:10px;color:#3a342d;max-height:30vh;overflow:auto}
+#info a{display:inline-block;margin-top:12px;color:#8a6623;font-size:17px;font-weight:600;letter-spacing:.02em;text-decoration:none;border-bottom:1px solid rgba(138,102,35,.35)}
+#info .credit{font-size:14px;font-style:italic;color:#8a8278;margin-top:12px}
+#info .credit:empty{display:none}
+#info .x{position:absolute;right:10px;top:10px;background:none;border:0;color:#8a8278;cursor:pointer;font-size:18px;padding:4px 8px}
+#info .x:hover{color:#1f1b17}
+
+/* ---------- map panel ---------- */
+#map{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);padding:10px 12px 12px;width:min(1240px,calc(100vw - 24px));z-index:7}
+#map .mwrap{overflow-x:auto;overflow-y:hidden}
+#map canvas{display:block;margin:0 auto;border-radius:6px}
+#map .cap{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim);margin:0 2px 8px;display:flex;justify-content:space-between;gap:12px}
+#map .cap span:first-child{color:var(--gold)}
+#map .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#fff;vertical-align:middle;margin:0 2px 1px 4px}
+body.mapopen #watch, body.mapopen #farewell, body.mapopen #linkbox{display:none}
+body.mapopen #info{bottom:calc(var(--mapH, 200px) + 88px)}
+
+/* ---------- room banner and tooltip ---------- */
+#banner{position:fixed;left:50%;top:18%;transform:translate(-50%,0);text-align:center;pointer-events:none;transition:opacity .9s,transform .9s;z-index:5;text-shadow:0 2px 24px rgba(0,0,0,.6)}
+#banner.off{opacity:0;transform:translate(-50%,10px)}
+#banner .n{font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
+#banner .t{font-family:var(--serif);font-weight:600;font-size:clamp(34px,5vw,60px);line-height:1.05;margin-top:8px;max-width:80vw}
+#banner .m{font-size:13px;color:#e8e1d5;margin-top:10px;letter-spacing:.06em}
+#tip{position:fixed;pointer-events:none;padding:6px 10px;font-size:12px;border-radius:8px;transform:translate(14px,14px);white-space:nowrap}
+#toast{position:fixed;top:18px;left:50%;transform:translateX(-50%);padding:10px 16px;font-size:13px;z-index:40;max-width:calc(100vw - 40px)}
+
+/* ---------- full picture ---------- */
+#lightbox{position:fixed;inset:0;z-index:70;background:rgba(8,7,6,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;cursor:zoom-out}
+#lightbox img{max-width:94vw;max-height:calc(100vh - 130px);object-fit:contain;box-shadow:0 30px 120px rgba(0,0,0,.8);background:#111}
+#lightbox .cap{text-align:center;margin-top:16px;max-width:80vw}
+/* caption in the museum's lettering (Cormorant Garamond), like the gold titles on the walls */
+#lightbox .cap{font-family:var(--serif)}
+#lightbox .t{font-size:30px;font-weight:600;letter-spacing:.01em}
+#lightbox .m{color:var(--ink-dim);font-size:18px;font-style:italic;font-weight:500;margin-top:2px}
+#lightbox img{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none;transform-origin:50% 50%;will-change:transform}
+#lightbox img.linked{cursor:pointer}
+#lightbox.zoomed img{cursor:grab}
+#lightbox.zoomed.panning img{cursor:grabbing}
+#lightbox .cap{position:relative;z-index:1;transition:opacity .2s}
+#lightbox.zoomed .cap{opacity:0;pointer-events:none}   /* out of the way while zoomed in */
+#lightbox .zh{font-size:14px;font-style:italic;color:var(--ink-dim);margin-top:6px;letter-spacing:.02em}
+#lightbox .zoom{position:absolute;right:18px;bottom:18px;display:flex;gap:4px;z-index:2;background:rgba(30,26,22,.8);border:1px solid var(--line);border-radius:10px;padding:4px}
+#lightbox .zoom button{background:none;border:0;color:var(--ink);font:inherit;font-size:15px;min-width:34px;height:30px;border-radius:7px;cursor:pointer}
+#lightbox .zoom button:hover{background:rgba(255,255,255,.1)}
+#lightbox .go{display:inline-block;margin-top:10px;color:var(--gold);font-size:17px;font-weight:600;letter-spacing:.02em;text-decoration:none;border-bottom:1px solid rgba(207,174,108,.4)}
+#lightbox .x{position:absolute;right:18px;top:12px;background:none;border:0;color:#fff;font-size:26px;cursor:pointer}
+
+/* ---------- film player ---------- */
+#theater{position:fixed;inset:0;z-index:60;background:rgba(4,4,6,.94);display:flex;align-items:center;justify-content:center;padding:20px}
+#theater .box{width:min(94vw,calc(80vh * 16 / 9));position:relative}
+#theater .frame{width:100%;aspect-ratio:16/9;background:#000;border-radius:6px;overflow:hidden;box-shadow:0 30px 120px rgba(0,0,0,.8)}
+#theater .frame iframe,#theater .frame video{width:100%;height:100%;border:0;display:block;background:#000}
+#theater .cap{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-top:14px;flex-wrap:wrap}
+#theater .t{font-family:var(--serif);font-size:26px;font-weight:600}
+#theater .m{color:var(--ink-dim);font-size:13px;margin-top:2px}
+#theater .links{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+#theater .links a{color:var(--gold);font-size:14px;text-decoration:none;border-bottom:1px solid rgba(207,174,108,.4)}
+#theater .links button{background:rgba(255,255,255,.08);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+#theater .links button.on{background:var(--gold);color:var(--gold-ink)}
+#theater .ext{position:relative;width:100%;height:100%;background:#000}
+#theater .ext img{width:100%;height:100%;object-fit:cover;filter:brightness(.42) blur(1px);display:block}
+#theater .ext .ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;text-align:center}
+#theater .ext .btn{font-size:18px;padding:16px 30px;text-decoration:none}
+#theater .ext .note{font-size:13px;color:#e6dfd3;max-width:460px;line-height:1.5}
+#theater .x{position:absolute;right:-6px;top:-44px;background:none;border:0;color:#fff;font-size:24px;cursor:pointer}
+#watch{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);z-index:6;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+
+/* ---------- link boxes (last room, kiosks) ---------- */
+#farewell,#linkbox{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);padding:16px 26px;text-align:center;z-index:6}
+#linkbox{z-index:8}
+#farewell .t,#linkbox .t{font-family:var(--serif);font-size:22px;font-weight:600;margin-bottom:10px}
+#farewell .u,#linkbox .u{font-size:11px;color:var(--ink-dim);margin-top:8px;letter-spacing:.08em}
+#farewell .btn,#linkbox .btn{display:inline-block;text-decoration:none}
+#farewellBack{display:block;margin:12px auto 0;background:transparent;color:var(--ink);border:1px solid var(--line)}
+#farewellBack:hover{background:rgba(255,255,255,.08)}
+/* black fade used when jumping back to the entrance */
+#fade{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .45s;z-index:60}
+#fade.on{opacity:1;pointer-events:auto}
+#lkL{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+#linkbox .x{position:absolute;right:6px;top:4px;background:none;border:0;color:var(--ink-dim);cursor:pointer;font-size:16px}
+
+/* ---------- entry card and help ---------- */
+.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(12,10,8,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:20;padding:20px}
+.card{max-width:520px;width:100%;padding:34px 34px 28px;text-align:center;max-height:calc(100vh - 40px);overflow:auto}
+.card h1{font-family:var(--serif);font-weight:600;font-size:clamp(34px,6vw,52px);line-height:1;margin:0 0 8px;text-wrap:balance}
+.card h1 .l1,.card h1 .l2{display:block;white-space:nowrap}
+.card h1 .l2{font-size:.62em;font-weight:500;letter-spacing:.08em;margin-top:.22em}
+.card .sub{color:var(--ink-dim);letter-spacing:.12em;text-transform:uppercase;font-size:12px}
+.card .rule{width:60px;height:1px;background:var(--gold);margin:22px auto}
+.card .actions{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.avatar{width:104px;height:104px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 14px;box-shadow:0 6px 30px rgba(0,0,0,.4)}
+.galink{color:var(--gold);font-size:13px;letter-spacing:.04em;text-decoration:none;border-bottom:1px solid rgba(207,174,108,.4);padding-bottom:1px}
+.keys{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;text-align:left;font-size:13px;color:#ddd5c8;margin:0 auto;max-width:400px}
+.keys b{font-weight:500;color:var(--ink);white-space:nowrap}
+kbd{font-family:var(--sans);font-size:11px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 6px;background:rgba(255,255,255,.06)}
+#loadmsg{font-size:12px;color:var(--ink-dim);min-height:16px}   /* "Hanging artwork 12 of 95…", between the button and the gallery link */
+.hint{font-size:12px;color:var(--ink-dim);margin-top:16px;line-height:1.5}
+@media (max-height:720px){ .card{padding:22px 26px 18px} .card h1{font-size:34px} .card .rule{margin:12px auto} .avatar{width:68px;height:68px;margin-bottom:8px} .keys{gap:5px 14px} }

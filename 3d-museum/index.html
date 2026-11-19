@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Kiking's Art · Online Museum</title>
+<link rel="icon" href="../resource/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/museum.css">
+<!-- The 3D library (three.js), loaded from a public CDN. -->
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<!-- The 3D view fills the page; everything else floats on top of it. -->
+<div id="stage"></div>
+
+<!-- Top left: museum title and the room you are in -->
+<div id="hud" class="glass"><div class="t" id="hudTitle"></div><div class="r" id="hudRoom">—</div></div>
+
+<!-- Map panel (opened by the Map button) -->
+<div id="map" class="glass hidden"><div class="cap"><span>Museum map</span><span>Click a room to go there · <i class="dot"></i> you are here</span></div><div class="mwrap"><canvas id="mapc"></canvas></div></div>
+
+<!-- Card describing the artwork you are looking at -->
+<div id="info" class="glass off">
+  <button class="x" id="infoX" aria-label="Close">✕</button>
+  <div class="count" id="infoCount"></div>
+  <h2 id="infoTitle"></h2>
+  <div class="meta" id="infoMeta"></div>
+  <div class="desc" id="infoDesc"></div>
+  <a id="infoLink" target="_blank" rel="noopener">View original post ↗</a>
+  <div class="credit" id="infoCredit"></div>
+</div>
+
+<!-- Pop-ups -->
+<div id="theater" class="hidden"><div class="box"><button class="x" id="thX" aria-label="Close">✕</button><div class="frame" id="thFrame"></div><div class="cap"><div><div class="t" id="thTitle"></div><div class="m" id="thMeta"></div></div><div class="links" id="thLinks"></div></div></div></div>
+<button id="watch" class="btn hidden">▶ Watch the film</button>
+<div id="farewell" class="glass hidden"><div class="t">Thank you for your visit</div><a id="farewellLink" class="btn" target="_blank" rel="noopener" href="#">Continue to the original gallery ↗</a><div class="u" id="farewellUrl"></div><button class="btn ghost" id="farewellBack">↺ Back to the entrance</button></div>
+<div id="fade"></div>
+<div id="banner" class="off"><div class="n" id="bannerN"></div><div class="t" id="bannerT"></div><div class="m" id="bannerM"></div></div>
+<div id="tip" class="glass hidden"></div>
+<div id="lightbox" class="hidden"><button class="x" id="lbX" aria-label="Close">✕</button><div class="zoom"><button id="lbOut" title="Zoom out (−)">−</button><button id="lbFit" title="Fit to screen (0)">Fit</button><button id="lbIn" title="Zoom in (+)">+</button></div><img id="lbImg" alt="" draggable="false"><div class="cap"><div class="t" id="lbT"></div><div class="m" id="lbM"></div><a class="go hidden" id="lbGo" target="_blank" rel="noopener" href="#"></a><div class="zh">Scroll or pinch to zoom · drag to move around</div></div></div>
+<div id="linkbox" class="glass hidden"><button class="x" id="lkX" aria-label="Close">✕</button><div class="t" id="lkT"></div><div id="lkL"></div><div class="u" id="lkU"></div></div>
+<div id="toast" class="glass hidden"><span id="toastMsg"></span></div>
+
+<!-- Navigation bar -->
+<div id="bar" class="glass">
+  <button id="bPrev" title="Previous artwork ( [ )"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <button id="bTour" title="Start the guided tour (T)"><svg class="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg><svg class="i-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg><span class="lbl">Tour</span><span class="cd" id="tourCd"></span></button>
+  <button id="bNext" title="Next artwork ( ] or Space )"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+  <span class="sep"></span>
+  <button id="bMap" title="Museum map: rooms and where you are (M)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg><span class="lbl">Map</span></button>
+  <button id="bHelp" title="Getting around"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 015 0c0 1.7-2.5 2-2.5 3.5M12 17h.01"/></svg></button>
+  <a id="bGal" class="barlink" href="#" target="_blank" rel="noopener" title="Visit the original Art Gallery"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg><span class="lbl">Original Art Gallery</span></a>
+  <button id="bFull" title="Full screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+</div>
+
+<!-- Entry card (texts come from config/museum.js) -->
+<div id="intro" class="overlay">
+  <div class="card glass">
+    <img id="introAvatar" class="avatar hidden" alt="">
+    <div class="sub" id="introSub"></div>
+    <div class="rule" style="margin:16px auto 18px"></div>
+    <h1 id="introTitle"></h1>
+    <div class="rule"></div>
+    <div class="actions"><button class="btn" id="enter" disabled>Preparing the galleries…</button>
+      <div id="loadmsg"></div>
+      <a class="galink" id="introGal" href="#" target="_blank" rel="noopener"></a></div>
+    <div class="hint" id="introCredit"></div>
+  </div>
+</div>
+
+<!-- "Getting around" (the ? button) -->
+<div id="help" class="overlay hidden">
+  <div class="card glass" style="max-width:460px">
+    <h1 style="font-size:36px">Getting around</h1>
+    <div class="rule"></div>
+    <div class="keys">
+      <b>Drag</b><span>look around (touch: one finger)</span>
+      <b>Click floor</b><span>walk to that spot</span>
+      <b>Click picture</b><span>view it up close, with its label</span>
+      <b>Click again</b><span>see the full picture</span>
+      <b>Gold rings</b><span>viewing points: click to stand in front of a work</span>
+      <b>WASD / ↑↓</b><span>walk · ←→ or Q/E turn</span>
+      <b>Shift</b><span>walk faster</span>
+      <b>Scroll / pinch</b><span>zoom</span>
+      <b>Space or ]</b><span>next artwork · <kbd>[</kbd> previous</span>
+      <b>T</b><span>start / stop the guided tour</span>
+      <b>M</b><span>museum map</span>
+      <b>Esc</b><span>close panels</span>
+    </div>
+    <div style="margin-top:24px"><button class="btn" data-close>Got it</button></div>
+  </div>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
