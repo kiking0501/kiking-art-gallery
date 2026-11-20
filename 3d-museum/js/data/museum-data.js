@@ -5,7 +5,7 @@ import { albumPageText } from './gallery.js';
 import { DEFAULT_WALLS } from '../../config/look.js';
 
 const ROOM_KEYS = ['name', 'kind', 'description', 'wall', 'frame', 'mood', 'ceiling', 'gap', 'pairWithPrev', 'newRow',
-  'keepOrder', 'hangReverse', 'scatter', 'entryWall', 'link', 'linkLabel', 'label', 'stackHeight', 'swap', 'walls', 'fillInner'];
+  'keepOrder', 'hangReverse', 'scatter', 'entryWall', 'link', 'linkLabel', 'label', 'stackHeight', 'swap', 'walls', 'fillInner', 'nearHalf', 'table', 'moveAfter', 'span', 'openToPrev'];
 
 export async function buildMuseum(gallery, site, roomsConfig) {
   const { ROOMS = {}, EXTRA_ROOMS = [], WELCOME_ROOM, CLOSING_ROOM } = roomsConfig;
@@ -18,7 +18,9 @@ export async function buildMuseum(gallery, site, roomsConfig) {
     const out = { ...a, src: url(a.src) };
     if (out.instagram) out.link = out.instagram;           // config/rooms.js can give a picture `instagram: 'https://…'`
     if (a.video?.kind === 'file') out.video = { ...a.video, src: (a.video.src || []).map(url) };
+    if (a.video?.preview) out.video = { ...out.video, preview: a.video.preview.map(url) };
     for (const k of ['title', 'meta', 'description']) if (out[k]) out[k] = fix(out[k]);
+    if (!out.file && typeof a.src === 'string') out.file = a.src.split('/').pop();   // extras can be named by file too (walls, nearHalf)
     return out;
   };
   // A picture from album_items.json: "Title, 2024" becomes title "Title" and the year goes on the medium line.
@@ -63,6 +65,11 @@ export async function buildMuseum(gallery, site, roomsConfig) {
         rooms.push(roomFrom(ex, { id: ex.id, category: cat.name, artworks: (ex.artworks || []).map(artwork) }));
       }
     }
+  }
+  // `moveAfter` in config/rooms.js: a room placed right after another one
+  for (const r of rooms.filter(x => x.moveAfter)) {
+    const from = rooms.indexOf(r); rooms.splice(from, 1);
+    const to = rooms.findIndex(x => x.id === r.moveAfter); rooms.splice(to >= 0 ? to + 1 : from, 0, r);
   }
   if (CLOSING_ROOM) rooms.push(roomFrom(CLOSING_ROOM, { kind: 'closing', artworks: (CLOSING_ROOM.artworks || []).map(artwork) }));
 

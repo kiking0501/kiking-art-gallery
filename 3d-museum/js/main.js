@@ -10,7 +10,8 @@ import { renderer, scene, camera } from './world/renderer.js';
 import { generateSurfaces, preloadAll, updateLOD, streamPictures } from './world/textures.js';
 import { applySurfaces } from './world/materials.js';
 import { buildScene } from './world/scene.js';
-import { updateStands } from './world/artworks.js';
+import { updateStands, updateLabelLOD } from './world/artworks.js';
+import { startWarmup, stepWarmup } from './world/warmup.js';
 import { placeSkyLights, updateSpots, updateMood } from './world/lighting.js';
 import { loadGallery } from './data/gallery.js';
 import { buildMuseum } from './data/museum-data.js';
@@ -19,7 +20,7 @@ import { initInput, updateHover } from './visitor/input.js';
 import { updateTourProgress } from './visitor/tour.js';
 import { attract, startAttract, stopAttract, updateAttract } from './visitor/attract.js';
 import { checkRoomChange, setTitle } from './ui/hud.js';
-import { initInfoCard } from './ui/info-card.js';
+import { initInfoCard, placeInfo } from './ui/info-card.js';
 import { initTheater } from './ui/theater.js';
 import { initOverlays, setFarewell, toast, backToEntrance } from './ui/overlays.js';
 import { $, SERIF, SANS } from './util.js';
@@ -47,6 +48,7 @@ async function start() {
 
   // 3. the building
   buildScene(); buildNav(); spawn(); drawMapBase();
+  startWarmup(scene, camera);                          // shaders and textures get ready while the entry card is up
   const home = { x: me.x, z: me.z };
   // pictures arrive in the background, nearest first (to the welcome room and, meanwhile, to the drifting view)
   streamPictures(S.layout.arts, () => attract.on ? [home, me] : [me]);
@@ -67,9 +69,10 @@ async function start() {
     updateAttract(dt);
     updateMovement(dt);
     checkRoomChange();
-    lodT -= dt; if (lodT <= 0) { lodT = .25; updateLOD(S.layout.arts, me); placeSkyLights(); }
+    stepWarmup(attract.on ? 20 : 3);                    // a bigger share of each frame while the entry card is up
+    lodT -= dt; if (lodT <= 0) { lodT = .25; updateLOD(S.layout.arts, me); updateLabelLOD(me); placeSkyLights(); }
     updateStands(me); updateMood(dt); updateSpots(dt);
-    updateHover(t); drawMap(); updateTourProgress();
+    updateHover(t); drawMap(); updateTourProgress(); placeInfo();
     renderer.render(scene, camera);
   });
 

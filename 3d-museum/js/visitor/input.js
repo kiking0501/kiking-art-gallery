@@ -12,7 +12,7 @@ import { pickables } from '../world/scene.js';
 import { highlightSpot, showGlow } from '../world/floor-marks.js';
 import { walkTo, viewArt, goToRoom, arrivedAt, clampWalkable } from './movement.js';
 import { stopTour, toggleTour } from './tour.js';
-import { hideInfo } from '../ui/info-card.js';
+import { hideInfo, showInfo } from '../ui/info-card.js';
 import { openTheater } from '../ui/theater.js';
 import { toggleMap } from '../ui/map-panel.js';
 import { openLightbox, openKiosk, openFarewell, closeAll, lightboxKey } from '../ui/overlays.js';
@@ -41,21 +41,35 @@ function wallStandPoint(hit) {
   return { x: p.x + n.x * 2.2, z: p.z + n.z * 2.2, yaw: Math.atan2(n.x, n.z) };
 }
 
+// The viewing points of the wall texts and the map (S.layout.stops).
+const stopOf = o => o && o.userData.stopIdx !== undefined ? S.layout.stops?.[o.userData.stopIdx] || null : null;
+const atStop = st => !S.walk && Math.hypot(me.x - st.x, me.z - st.z) < .9;
+const goStop = st => { hideInfo(); walkTo(st.x, st.z, { yaw: st.yaw, pitch: st.pitch }); };
+let mapSrc = null, mapCanvas = null;
+function openMapFull(o) {                               // the wall map in the full-picture view (made once from its own drawing)
+  const c = o.userData.canvas; if (!c) return;
+  if (c !== mapCanvas) { mapCanvas = c; try { mapSrc = c.toDataURL('image/png'); } catch (e) { mapSrc = null; } }
+  if (mapSrc) openLightbox({ a: { src: mapSrc, title: 'Museum map', meta: S.museum?.title || '' } });
+}
+
 function handleClick(cx, cy) {
   if (!S.layout || !$('intro').classList.contains('hidden')) return;
   if (performance.now() - (S.enteredAt || 0) < 900) return;   // a double-click on "Enter the museum" lands here: ignore it
   const hit = pickAt(cx, cy); if (!hit) return;
   stopTour(); $('linkbox').classList.add('hidden');
   const o = hitTarget(hit), kind = o?.userData.kind;
+  if (kind === 'label' && o.userData.art !== undefined && arrivedAt(o.userData.art)) { showInfo(S.layout.arts[o.userData.art]); return; }   // standing at the work: its label (re)opens the details card
   if (o && o.userData.art !== undefined) {
     const i = o.userData.art, it = S.layout.arts[i];
     if (arrivedAt(i)) { if (it.kind === 'video') openTheater(it); else if (it.kind === 'kiosk') openKiosk(it); else openLightbox(it); return; }
     viewArt(i); if (it.kind === 'video') openTheater(it); return;
   }
   if (kind === 'spot') { viewArt(o.userData.spot); return; }
-  if (kind === 'mapboard' && hit.uv) {                   // the map on the welcome-room wall
-    const u = hit.uv.x, v = hit.uv.y, hitR = (o.userData.rects || []).find(q => u >= q.u0 && u <= q.u1 && v >= q.v0 && v <= q.v1);
-    if (hitR && S.layout.rooms[hitR.ri]) { hideInfo(); goToRoom(S.layout.rooms[hitR.ri]); return; }
+  const st = stopOf(o);
+  if (st) {                                              // a wall text or the map: first walk up to it
+    if (kind === 'stopspot' || !atStop(st)) { goStop(st); return; }
+    if (kind === 'mapboard') openMapFull(o);            // standing at the map: see it in full, like a picture
+    return;
   }
   if (kind === 'link') { openFarewell(true); return; }   // the sign in the last room
   hideInfo();
@@ -71,16 +85,20 @@ export function updateHover(t = 0) {
   let dest = null, text = '', zoom = false, pointer = false, spot = -1;
   if (mouse && !drag && mouse.type === 'mouse' && S.layout) {
     const hit = pickAt(mouse.x, mouse.y), o = hitTarget(hit), ai = o?.userData.art, kind = o?.userData.kind;
-    if (ai !== undefined && hit.distance < 40) {
+    if (kind === 'label' && ai !== undefined && arrivedAt(ai)) { pointer = true; text = 'ⓘ  Click for the details'; }
+    else if (ai !== undefined && hit.distance < 40) {
       const it = S.layout.arts[ai];
       if (arrivedAt(ai)) {
         zoom = it.kind !== 'video' && it.kind !== 'kiosk'; pointer = !zoom;
         text = it.kind === 'video' ? '▶  Click to watch' : it.kind === 'kiosk' ? (it.a.kiosk?.links ? 'Click to open ' + it.a.kiosk.links.map(l => l.label).join(' / ') + '  ↗' : 'Click to visit the website  ↗') : '⤢  Click to see the full picture';
       } else { pointer = true; text = (it.a.title || 'Untitled') + (it.a.meta ? ' · ' + it.a.meta : ''); dest = it.view; spot = ai; }
     } else if (kind === 'spot') { const it = S.layout.arts[o.userData.spot]; pointer = true; spot = o.userData.spot; dest = it.view; text = 'Viewing point · ' + (it.a.title || 'Untitled'); }
+    else if (stopOf(o) && (kind === 'stopspot' || !atStop(stopOf(o)))) { const st = stopOf(o); pointer = true; dest = st; text = (kind === 'stopspot' ? 'Viewing point · ' : '') + st.label; }
+    else if (kind === 'mapboard') { zoom = true; text = '⤢  Click to see the map in full'; }   // standing at the map
+    else if (stopOf(o)) { /* already standing at this wall text */ }
     else if (hit && (kind === 'floor' || kind === 'bench')) { pointer = true; dest = floorDest(hit.point.x, hit.point.z); }
     else if (hit && kind === 'wall' && hit.face) { const w = wallStandPoint(hit); pointer = true; dest = floorDest(w.x, w.z); }
-    else if (kind === 'mapboard' || kind === 'link') pointer = true;
+    else if (kind === 'link') pointer = true;
   }
   if (text) {
     tip.textContent = text; tip.style.left = mouse.x + 'px'; tip.style.top = mouse.y + 'px'; tip.classList.remove('hidden');

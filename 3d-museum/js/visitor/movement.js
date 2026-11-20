@@ -12,11 +12,13 @@ import { EYE, HALF_D, WALL_T, DOOR_W, FACE, R, ROT_R } from '../world/constants.
 
 /* ---------------- where you can walk ---------------- */
 function inRoomLocal(r, lx, lz) {
-  if ((r.rot || r.doorWest) && Math.abs(lx) < WALL_T / 2 + R + .1 && Math.abs(lz) < DOOR_W / 2 - R) return true;   // doorway to the previous room
+  if ((r.rot || r.doorWest) && Math.abs(lx) < WALL_T / 2 + R + .1 && (r.westDoors?.length ? r.westDoors : [0]).some(dz => Math.abs(lz - dz) < DOOR_W / 2 - R)) return true;   // doorway(s) to the previous room
   if (r.rot && r.inRow && Math.abs(lx - r.doors.lineX) < DOOR_W / 2 - R && Math.abs(lz) > r.doors.zE - .9 && Math.abs(lz) < r.slotLen / 2 + WALL_T / 2 + R + .1) return true;   // round room's doorways along the row
   if (r.sideDoor && Math.abs(lz - r.sideDoor * HALF_D) < WALL_T / 2 + R + .1 && Math.abs(lx - r.cx) < DOOR_W / 2 - R) return true;   // doorway to the partner room
   if (lx < r.ix0 + R || lx > r.ix1 - R) return false;
-  return r.rot ? Math.hypot(lx - r.cx, lz) <= ROT_R - R - .05 : Math.abs(lz) <= FACE - R;
+  if (r.rot) return Math.hypot(lx - r.cx, lz) <= ROT_R - R - .05;
+  if (r.open && lz * (r.row === 'A' ? 1 : -1) > 0) return Math.abs(lz) <= HALF_D + .05;   // open to the partner room: walk straight across
+  return Math.abs(lz) <= (r.face ?? FACE) - R;
 }
 export function walkable(x, z) {
   let ok = false;
@@ -33,7 +35,7 @@ export function clampWalkable(x, z) {
 }
 // Index of the room containing a point, or -1.
 export function roomAt(x, z) {
-  for (const r of S.layout.rooms) { if (!r) continue; const l = toL(r, x, z); if (l.x > r.ix0 - .05 && l.x < r.ix1 && (r.rot ? Math.hypot(l.x - r.cx, l.z) < ROT_R + .2 : Math.abs(l.z) < HALF_D)) return r.ri; }
+  for (const r of S.layout.rooms) { if (!r) continue; const l = toL(r, x, z); if (l.x > r.ix0 - .05 && l.x < r.ix1 && (r.rot ? Math.hypot(l.x - r.cx, l.z) < ROT_R + .2 : Math.abs(l.z) < (r.halfD ?? HALF_D))) return r.ri; }
   return -1;
 }
 
@@ -101,8 +103,8 @@ export function viewArt(i, fromTour = false) {
   if (!fromTour) stopTour();
   const it = arts[i]; S.viewing = i; S.fovTarget = 60;
   if (it.kind === 'sculpture' && !it.view) sculptView(it, me.z >= it.z ? 1 : -1);
-  showInfo(it);
-  walkTo(it.view.x, it.view.z, { yaw: it.view.yaw, pitch: it.view.pitch, onArrive: () => { if (tour.on) tour.wait = TOUR_PAUSE; } });
+  hideInfo();                                            // the details card opens only from the work's white label
+  walkTo(it.view.x, it.view.z, { yaw: it.view.yaw, pitch: it.view.pitch, onArrive: () => { if (tour.on) tour.wait = TOUR_PAUSE; if (S.viewing === i) showInfo(it); } });
 }
 // Walk into a room through its doorway.
 export function goToRoom(r) { const p = toW(r, r.ix0 + 2.4, 0); walkTo(p.x, p.z, { yaw: -Math.PI / 2 + r.theta, pitch: 0 }); }

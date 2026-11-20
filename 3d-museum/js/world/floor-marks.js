@@ -31,8 +31,12 @@ const spotGeo = new THREE.PlaneGeometry(SPOT_SIZE, SPOT_SIZE);
 const spotMeshes = [];
 
 // One ring per artwork that has a viewing point.
-export function buildSpots(arts) {
+export function buildSpots(arts, stops = []) {
   const group = new THREE.Group(); spotMeshes.length = 0;
+  stops.forEach((st, k) => {                             // the wall texts' and the map's viewing points
+    const m = new THREE.Mesh(spotGeo, spotMat); m.rotation.x = -Math.PI / 2; m.position.set(st.x, .016, st.z); m.renderOrder = 2;
+    m.userData.kind = 'stopspot'; m.userData.stopIdx = k; group.add(m);
+  });
   for (const it of arts) {
     if (!it.view) continue;
     const m = new THREE.Mesh(spotGeo, spotMat); m.rotation.x = -Math.PI / 2; m.position.set(it.view.x, .016, it.view.z); m.renderOrder = 2;

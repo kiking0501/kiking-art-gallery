@@ -18,14 +18,14 @@ export function placeSkyLights() {
     const { r, c } = e, md = MOODS[r.data.mood] || MOODS.standard, I = RENDER.skylightIntensity;
     if (r.rot) { l.intensity = I * md.sky * 13; l.width = l.height = 3.2; l.rotation.set(-Math.PI / 2, 0, 0); l.position.set(c.x, (r.rimY || 13.4) - .1, c.z); continue; }
     const swap = Math.abs(r.sin) > .5;
-    l.intensity = I * md.sky; l.width = swap ? D - 5.6 : r.inner - 3.6; l.height = swap ? r.inner - 3.6 : D - 5.6; l.rotation.set(-Math.PI / 2, 0, 0); l.position.set(c.x, WALL_H - .03, c.z);
+    l.intensity = I * md.sky; const RD = r.D || D; l.width = swap ? RD - 5.6 : r.inner - 3.6; l.height = swap ? r.inner - 3.6 : RD - 5.6; l.rotation.set(-Math.PI / 2, 0, 0); l.position.set(c.x, WALL_H - .03, c.z);
   }
 }
 
 function aimSpot(sp, ai) {
   const it = S.layout.arts[ai];
   const nx = it.nx ?? 0, nz = it.nz ?? -it.side;
-  if (it.kind === 'sculpture') { sp.position.set(it.x + nx * 1.2, it.rot ? 7.6 : WALL_H - .42, it.z + nz * 1.2); sp.target.position.set(it.x, .3, it.z); }
+  if (it.kind === 'sculpture') { sp.position.set(it.x + nx * 1.2, it.rot ? 7.6 : WALL_H - .42, it.z + nz * 1.2); sp.target.position.set(it.x, it.main ? it.plinthH + 1.4 : .3, it.z); }
   else { sp.position.set(it.x + nx * 1.5, (it.fixY ?? WALL_H) - .5, it.z + nz * 1.5); sp.target.position.set(it.x, it.y - .05, it.z); }
   sp.target.updateMatrixWorld();
   const dist = sp.position.distanceTo(sp.target.position);

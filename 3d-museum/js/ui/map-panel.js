@@ -25,12 +25,12 @@ function mapToWorld(px, py) { return { x: (px - PAD) / scale + S.layout.bbox.x0,
 function roomShape(g, r) {
   g.beginPath();
   if (r.rot) { const c = toW(r, r.cx, 0), [px, py] = mapXY(c.x, c.z); g.arc(px, py, ROT_R * scale, 0, 7); return; }
-  const pts = [[r.ix0, -FACE], [r.ix1, -FACE], [r.ix1, FACE], [r.ix0, FACE]].map(([lx, lz]) => { const p = toW(r, lx, lz); return mapXY(p.x, p.z); });
+  const F = r.face ?? FACE, pts = [[r.ix0, -F], [r.ix1, -F], [r.ix1, F], [r.ix0, F]].map(([lx, lz]) => { const p = toW(r, lx, lz); return mapXY(p.x, p.z); });
   g.moveTo(...pts[0]); for (const q of pts.slice(1)) g.lineTo(...q); g.closePath();
 }
 function labelBox(r) {
   if (r.rot) { const c = toW(r, r.cx, 0), [px, py] = mapXY(c.x, c.z), h = ROT_R * scale * .68; return [px - h, py - h, px + h, py + h]; }
-  const ps = [[r.ix0, -FACE], [r.ix1, FACE]].map(([lx, lz]) => { const p = toW(r, lx, lz); return mapXY(p.x, p.z); });
+  const ps = [[r.ix0, -(r.face ?? FACE)], [r.ix1, r.face ?? FACE]].map(([lx, lz]) => { const p = toW(r, lx, lz); return mapXY(p.x, p.z); });
   return [Math.min(ps[0][0], ps[1][0]), Math.min(ps[0][1], ps[1][1]), Math.max(ps[0][0], ps[1][0]), Math.max(ps[0][1], ps[1][1])];
 }
 
@@ -51,8 +51,8 @@ export function drawMapBase() {
   const door = (r, lx, lz, alongX) => { const a = toW(r, lx - (alongX ? DOOR_W / 2 : 0), lz - (alongX ? 0 : DOOR_W / 2)), b = toW(r, lx + (alongX ? DOOR_W / 2 : 0), lz + (alongX ? 0 : DOOR_W / 2)), [ax, ay] = mapXY(a.x, a.z), [bx, by] = mapXY(b.x, b.z); g.strokeStyle = 'rgba(217,184,113,.9)'; g.lineWidth = 3; g.beginPath(); g.moveTo(ax, ay); g.lineTo(bx, by); g.stroke(); };
   for (const r of rooms) {                               // doorways
     if (!r) continue;
-    if (r.doorWest || r.rot) door(r, 0, 0, false);
-    if (r.sideDoor) door(r, r.cx, r.sideDoor * HALF_D, true);
+    if (r.doorWest || r.rot) for (const dz of r.westDoors?.length ? r.westDoors : [0]) door(r, 0, dz, false);
+    if (r.sideDoor && !r.open) door(r, r.cx, r.sideDoor * HALF_D, true);
     if (r.rot && r.inRow) for (const sd of [-1, 1]) door(r, r.doors.lineX, sd * r.slotLen / 2, true);
   }
   g.globalAlpha = .55;                                   // works: gold lines, blue for screens, squares for displays

@@ -10,7 +10,7 @@ import { buildRotunda } from './rotunda.js';
 import { buildExhibit, clearExhibits } from './artworks.js';
 import { buildSpots } from './floor-marks.js';
 import { resetSpots } from './lighting.js';
-import { FLOOR_TILE } from './constants.js';
+import { FLOOR_TILE, EYE } from './constants.js';
 
 export const pickables = [];   // what mouse clicks can hit
 
@@ -43,8 +43,18 @@ export function buildScene() {
     wallGroup.add(rg); floorGroup.add(rfg);
     if (r.rot) buildRotunda(r, rg, rfg, extraPick); else { buildRoomShell(r, rg, rfg); buildCrossWalls(r, rg, rfg); }
   }
+  // viewing points in front of the wall texts and the map (clickable stops, not part of the tour)
+  const stops = S.layout.stops = [], p = new THREE.Vector3(), q = new THREE.Quaternion(), sc = new THREE.Vector3(), n = new THREE.Vector3();
+  wallGroup.updateMatrixWorld(true);
+  wallGroup.traverse(o => {
+    const sp = o.userData.stop; if (!sp || typeof sp !== 'object') return;
+    o.matrixWorld.decompose(p, q, sc); n.set(0, 0, 1).applyQuaternion(q); n.y = 0; n.normalize();
+    const d = sp.d * sc.x;
+    o.userData.stopIdx = stops.length;
+    stops.push({ x: p.x + n.x * d, z: p.z + n.z * d, yaw: Math.atan2(n.x, n.z), pitch: Math.atan2(p.y - EYE, d) * .8, label: sp.label, map: o.userData.kind === 'mapboard' });
+  });
   // the exhibits and their viewing points
   for (const it of arts) artGroup.add(buildExhibit(it));
-  const spotGroup = buildSpots(arts); world.add(spotGroup);
+  const spotGroup = buildSpots(arts, stops); world.add(spotGroup);
   pickables.push(floor, ...extraPick, wallGroup, artGroup, spotGroup);
 }

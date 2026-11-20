@@ -22,7 +22,7 @@ export function buildWallMap(hereL) {
   g.fillText('LEFT ROW  ·  ▲ AHEAD  ·  RIGHT ROW', W / 2, 184); spacing(g, '0px');
   const { x0, x1 } = layout.bbox, top = 250, bot = H - 120;
   let zMin = 0, zMax = 0;
-  for (const r of layout.rooms) { if (!r) continue; const pts = r.rot ? [[r.cx - ROT_R, 0], [r.cx + ROT_R, 0], [r.cx, ROT_R], [r.cx, -ROT_R]] : [[r.ix0, -FACE], [r.ix1, FACE]]; for (const [lx, lz] of pts) { const q = toW(r, lx, lz); zMin = Math.min(zMin, q.z); zMax = Math.max(zMax, q.z); } }
+  for (const r of layout.rooms) { if (!r) continue; const pts = r.rot ? [[r.cx - ROT_R, 0], [r.cx + ROT_R, 0], [r.cx, ROT_R], [r.cx, -ROT_R]] : [[r.ix0, -(r.face ?? FACE)], [r.ix1, r.face ?? FACE]]; for (const [lx, lz] of pts) { const q = toW(r, lx, lz); zMin = Math.min(zMin, q.z); zMax = Math.max(zMax, q.z); } }
   const sc = Math.min((bot - top) / (x1 - x0), 520 / Math.max(1, zMax - zMin)), y0 = bot - ((bot - top) - (x1 - x0) * sc) / 2;
   const P = (x, z) => [W / 2 + z * sc, y0 - (x - x0) * sc], PL = (r, lx, lz) => { const q = toW(r, lx, lz); return P(q.x, q.z); };
   const rects = [], uvRect = (bx0, by0, bx1, by1, ri) => rects.push({ u0: bx0 / W, u1: bx1 / W, v0: 1 - by1 / H, v1: 1 - by0 / H, ri });
@@ -42,7 +42,7 @@ export function buildWallMap(hereL) {
       g.beginPath(); g.arc(ctr[0], ctr[1], rad, 0, 7); g.fill(); g.stroke();
       bb = [ctr[0] - rad, ctr[1] - rad, ctr[0] + rad, ctr[1] + rad];
     } else {
-      const pts = [[r.ix0, -FACE], [r.ix1, -FACE], [r.ix1, FACE], [r.ix0, FACE]].map(([lx, lz]) => PL(r, lx, lz));
+      const F = r.face ?? FACE, pts = [[r.ix0, -F], [r.ix1, -F], [r.ix1, F], [r.ix0, F]].map(([lx, lz]) => PL(r, lx, lz));
       poly(pts); g.fill(); g.stroke(); ctr = PL(r, r.cx, 0);
       bb = [Math.min(...pts.map(q => q[0])), Math.min(...pts.map(q => q[1])), Math.max(...pts.map(q => q[0])), Math.max(...pts.map(q => q[1]))];
     }
@@ -59,8 +59,8 @@ export function buildWallMap(hereL) {
   const doorBar = (r, lx, lz, alongX) => { const A = PL(r, lx - (alongX ? DOOR_W / 2 : 0), lz - (alongX ? 0 : DOOR_W / 2)), B = PL(r, lx + (alongX ? DOOR_W / 2 : 0), lz + (alongX ? 0 : DOOR_W / 2)); g.strokeStyle = gold; g.lineWidth = 5; g.beginPath(); g.moveTo(...A); g.lineTo(...B); g.stroke(); };
   for (const r of layout.rooms) {
     if (!r) continue;
-    if (r.doorWest || r.rot) doorBar(r, 0, 0, false);
-    if (r.sideDoor) doorBar(r, r.cx, r.sideDoor * HALF_D, true);
+    if (r.doorWest || r.rot) for (const dz of r.westDoors?.length ? r.westDoors : [0]) doorBar(r, 0, dz, false);
+    if (r.sideDoor && !r.open) doorBar(r, r.cx, r.sideDoor * HALF_D, true);
     if (r.rot && r.inRow) for (const sd of [-1, 1]) doorBar(r, r.doors.lineX, sd * r.slotLen / 2, true);
   }
   // you are here
@@ -97,10 +97,10 @@ export function buildWallMap(hereL) {
     });
   }
   g.fillStyle = dim; g.font = `400 24px ${SANS}`; spacing(g, '4px'); g.textAlign = 'center';
-  g.fillText('CLICK A ROOM OR A NAME TO GO THERE', W / 2, H - 56); spacing(g, '0px');
+  g.fillText('YOU ARE HERE: THE WELCOME ROOM', W / 2, H - 56); spacing(g, '0px');
   const grp = new THREE.Group(), bw = 3.7, bh = bw * H / W;
   const frame = box(bw + .15, bh + .15, .06, stdMat('#1b1712', .45, .3)); frame.position.z = .03; grp.add(frame);
   const pl = plane(bw, bh, new THREE.MeshStandardMaterial({ map: canvasTex(c), roughness: .6, envMapIntensity: .4 }));
-  pl.position.z = .062; pl.userData.kind = 'mapboard'; pl.userData.rects = rects; grp.add(pl);
+  pl.position.z = .062; pl.userData.kind = 'mapboard'; pl.userData.rects = rects; pl.userData.stop = { label: 'Map of the museum', d: 4.4 }; pl.userData.canvas = c; grp.add(pl);
   return grp;
 }
