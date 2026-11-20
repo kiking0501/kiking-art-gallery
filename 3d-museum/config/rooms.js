@@ -186,6 +186,9 @@ export const ROOMS = {
       // sit = how far up the photo the piece's base is; lift = how high (metres) it floats above its drum or plinth.
       // tri: [[x, y], [x, y], [x, y]] fades the photo to a triangle instead (the Sierpinski piece).
       // cut: [from, to] fades away the top of the photo between these heights (where its background was dark).
+      // key: [from, to, colour] takes out the photo's dark background: pixels darker than `from` and with little
+      // colour go, brighter than `to` stay. keyEdge keeps it to the outside of the piece, never between its lines:
+      // [from, to] = the outer ring of a round outline; [width, 1] = a band this wide just inside a triangle's edges.
       'kiking_201606_blue_yellow_sculpture.jpg':  { sculpture: { type: 'stand', main: true, height: 12.6, soft: [.47, .6, .3, .25], cut: [.8, .835], sit: .39, lift: .8, focus: [.47, .6, .3, .25] } },
       'kiking_201606_intro.jpg':                  { scale: 1.7, wallAngle: 147 },   // on the chamber wall, just to the right of the doorway out: in view as you come in
       'kiking_201606_pyramid.jpg':                { sculpture: { type: 'stand', height: 4.4, tri: [[.515, .77], [.2, .395], [.8, .395]], sit: .4, lift: .3, focus: [.5, .58, .36, .3] } },

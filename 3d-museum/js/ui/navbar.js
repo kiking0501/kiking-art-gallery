@@ -13,6 +13,7 @@ export function initNavbar(galleryUrl) {
   // (the Map button is wired in map-panel.js)
   $('bHelp').onclick = () => $('help').classList.remove('hidden');
   $('bGal').href = galleryUrl || '#'; $('bGal').classList.toggle('hidden', !galleryUrl);
+  if (!document.fullscreenEnabled || !document.documentElement.requestFullscreen) $('bFull').style.display = 'none';   // e.g. iPhone Safari
   $('bFull').onclick = async () => {
     try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); }
     catch (e) { toast('Full screen is not available here.'); }

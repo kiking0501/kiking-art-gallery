@@ -1,6 +1,7 @@
 /* The visitor walking around: where the floor is walkable, finding a path
    (grid A* around walls and stands), automatic walks to an artwork, and the
    per-frame movement from keys or an automatic walk. */
+import * as THREE from 'three';
 import { S, me, tour } from '../state.js';
 import { clamp, lerpAngle } from '../util.js';
 import { camera } from '../world/renderer.js';
@@ -102,6 +103,10 @@ export function viewArt(i, fromTour = false) {
   i = ((i % arts.length) + arts.length) % arts.length;
   if (!fromTour) stopTour();
   const it = arts[i]; S.viewing = i; S.fovTarget = 60;
+  if (camera.aspect < 1.2 && it.view) {                  // a tall, narrow screen (a phone held upright): widen the view so the whole work fits across
+    const d = Math.hypot(it.view.x - it.x, it.view.z - it.z) || 3, half = Math.atan(((it.ow || it.w || 2) * .58) / d);
+    S.fovTarget = clamp(THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(half) / camera.aspect)), 60, 100);
+  }
   if (it.kind === 'sculpture' && !it.view) sculptView(it, me.z >= it.z ? 1 : -1);
   hideInfo();                                            // the details card opens only from the work's white label
   walkTo(it.view.x, it.view.z, { yaw: it.view.yaw, pitch: it.view.pitch, onArrive: () => { if (tour.on) tour.wait = TOUR_PAUSE; if (S.viewing === i) showInfo(it); } });

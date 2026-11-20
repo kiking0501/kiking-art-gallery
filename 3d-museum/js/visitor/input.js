@@ -138,7 +138,7 @@ export function initInput() {
     pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (pointers.size === 2) {                           // pinch to zoom
       const [a, b] = [...pointers.values()], d = Math.hypot(a.x - b.x, a.y - b.y);
-      if (pinch) S.fovTarget = clamp(S.fovTarget * pinch / d, 20, 75); pinch = d; return;
+      if (pinch) S.fovTarget = clamp(S.fovTarget * pinch / d, 20, 100); pinch = d; return;
     }
     if (!drag) return;
     if (!drag.moved && Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) > 6) { drag.moved = true; S.look = null; if (S.walk) S.walk.autoYaw = false; stopTour(); $('stage').classList.add('dragging'); }

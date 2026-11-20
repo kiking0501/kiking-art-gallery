@@ -6,7 +6,7 @@ import { mk, lum, shade, inkFor, wrapText, spacing, SERIF, SANS } from '../util.
 import { TEX } from './textures.js';
 import { stdMat, wallMat, skyMat, skySunMat, sunPatchMat, shadowMat, box, plane, wbox, mplane, textPlane, goldMat } from './materials.js';
 import { buildWallMap } from './wall-map.js';
-import { canvasTex } from './renderer.js';
+import { canvasTex, MOBILE } from './renderer.js';
 import { exNo, exTotal, two, roomStats, roomTag, annexLabel } from '../data/room-info.js';
 import { D, HALF_D, WALL_H, WALL_T, DOOR_W, DOOR_H, FACE, PLASTER_TILE } from './constants.js';
 
@@ -24,7 +24,7 @@ export function sideLabel(text, sub, ink) {
 // The exhibition's title, statistics and description in gold leaf, straight on the wall.
 export function exhibitionPanel(r) {
   const lightWall = lum(r.data.wall) > .32;
-  const c = mk(1536, 1322), g = c.getContext('2d'), L = 40; g.scale(.75, .75);   // drawn in 2048-wide units on a lighter canvas (less graphics memory)
+  const k = MOBILE ? .5 : .75, c = mk(Math.round(2048 * k), Math.round(1762 * k)), g = c.getContext('2d'), L = 40; g.scale(k, k);   // drawn in 2048-wide units on a lighter canvas (lighter still on phones)
   g.fillStyle = '#fff'; g.textAlign = 'left';
   g.font = `500 50px ${SANS}`; spacing(g, '16px'); g.globalAlpha = .85;
   const cat = r.cat ? r.cat.toUpperCase() + '  ·  ' : '';

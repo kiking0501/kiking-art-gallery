@@ -8,7 +8,7 @@
      buildCentrepiece  the large piece in the middle of a round room, on a marble drum */
 import * as THREE from 'three';
 import { clamp, mk, wrapText, spacing, SERIF, SANS } from '../util.js';
-import { canvasTex, renderer } from './renderer.js';
+import { canvasTex, renderer, MOBILE } from './renderer.js';
 import { TEX, SURF, contactShadow } from './textures.js';
 import { stdMat, lensMat, box, plane, textPlane } from './materials.js';
 import { isTheaterOpen } from '../ui/theater.js';
@@ -38,7 +38,7 @@ function drawLabel(c, a, it, cw, ch) {
 }
 function labelCanvas(a, it, w, h, cw) { const ch = Math.round(cw * h / w), c = mk(cw, ch); drawLabel(c.getContext('2d'), a, it, cw, ch); return c; }
 function label(a, it, w, h) {
-  const lo = canvasTex(labelCanvas(a, it, w, h, 512));
+  const lo = canvasTex(labelCanvas(a, it, w, h, MOBILE ? 384 : 512));
   const face = plane(w, h, new THREE.MeshStandardMaterial({ map: lo, roughness: .85, envMapIntensity: .3 }));
   labels.push({ face, a, it, w, h, lo, hi: null, pos: null });
   // a thin mounted card with a faint shadow, so its edges read crisply against the wall
@@ -55,7 +55,7 @@ export function updateLabelLOD(me) {
     if (!L.pos) { L.pos = new THREE.Vector3(); L.face.getWorldPosition(L.pos); }
     const d = Math.hypot(L.pos.x - me.x, L.pos.z - me.z);
     if (d < 7 && !L.hi && made < 3) {
-      L.hi = canvasTex(labelCanvas(L.a, L.it, L.w, L.h, 1536)); L.face.material.map = L.hi; made++;
+      L.hi = canvasTex(labelCanvas(L.a, L.it, L.w, L.h, MOBILE ? 1024 : 1536)); L.face.material.map = L.hi; made++;
     } else if (d > 10 && L.hi) { L.face.material.map = L.lo; L.hi.dispose(); L.hi = null; }
   }
 }
@@ -98,16 +98,17 @@ export function buildArtwork(it) {
 // Photo material whose background softly blurs and fades with distance, keeping the focus area (the piece itself).
 // `soft` [x, y, w, h]: fade the photo out to a soft oval round the piece instead of its square edges.
 // `tri` [[x, y], [x, y], [x, y]] and the photo's aspect: fade it out to a soft-edged triangle instead.
-function standPhotoMat(tex, focus, soft, tri, aspect = 1, cut = null, sharp = 0) {
+function standPhotoMat(tex, focus, soft, tri, aspect = 1, cut = null, sharp = 0, key = null, keyEdge = null) {
   const t = Array.isArray(tri) && tri.length === 3 ? tri : null;
   const u = { uFocus: { value: new THREE.Vector4(...focus) }, uFade: { value: 0 }, uSoft: { value: new THREE.Vector4(...(soft || [0, 0, 0, 0])) },
     uTriA: { value: new THREE.Vector4(...(t ? [...t[0], ...t[1]] : [0, 0, 0, 0])) }, uTriB: { value: new THREE.Vector4(...(t ? [...t[2], .045, aspect] : [0, 0, 0, 0])) },
-    uCut: { value: new THREE.Vector2(...(Array.isArray(cut) ? cut : [0, 0])) }, uSharp: { value: +sharp || 0 } };
+    uCut: { value: new THREE.Vector2(...(Array.isArray(cut) ? cut : [0, 0])) }, uSharp: { value: +sharp || 0 },
+    uKey: { value: new THREE.Vector3(...(Array.isArray(key) ? key : [0, 0, 0])) }, uKeyEdge: { value: new THREE.Vector2(...(Array.isArray(keyEdge) ? keyEdge : [0, 0])) } };
   const m = new THREE.MeshBasicMaterial({ map: tex || null, transparent: true, depthWrite: false, toneMapped: false });   // true colours
   m.onBeforeCompile = sh => {
     Object.assign(sh.uniforms, u);
     sh.fragmentShader = sh.fragmentShader.replace('#include <common>', `#include <common>
-uniform vec4 uFocus; uniform float uFade; uniform vec4 uSoft; uniform vec4 uTriA; uniform vec4 uTriB; uniform vec2 uCut; uniform float uSharp;
+uniform vec4 uFocus; uniform float uFade; uniform vec4 uSoft; uniform vec4 uTriA; uniform vec4 uTriB; uniform vec2 uCut; uniform float uSharp; uniform vec3 uKey; uniform vec2 uKeyEdge;
 float sdTri(vec2 p, vec2 p0, vec2 p1, vec2 p2) {          // signed distance to a triangle (negative inside)
   vec2 e0 = p1 - p0, e1 = p2 - p1, e2 = p0 - p2, v0 = p - p0, v1 = p - p1, v2 = p - p2;
   vec2 q0 = v0 - e0 * clamp(dot(v0, e0) / dot(e0, e0), 0., 1.), q1 = v1 - e1 * clamp(dot(v1, e1) / dot(e1, e1), 0., 1.), q2 = v2 - e2 * clamp(dot(v2, e2) / dot(e2, e2), 0., 1.);
@@ -128,12 +129,23 @@ float sdTri(vec2 p, vec2 p0, vec2 p1, vec2 p2) {          // signed distance to 
           diffuseColor *= sampledDiffuseColor;
           vec2 e2 = min(vMapUv, 1. - vMapUv);
           diffuseColor.a *= smoothstep(0., .03, min(e2.x, e2.y)) * (1. - bg * uFade * .97);
-          if (uSoft.z > 0.) { float sd = length((vMapUv - uSoft.xy) / uSoft.zw); diffuseColor.a *= 1. - smoothstep(.75, 1.15, sd); }
+          float sd = uSoft.z > 0. ? length((vMapUv - uSoft.xy) / uSoft.zw) : 0.;
+          vec2 tk = vec2(uTriB.w, 1.); float td = uTriB.w > 0. ? sdTri(vMapUv * tk, uTriA.xy * tk, uTriA.zw * tk, uTriB.xy * tk) : 0.;
+          if (uSoft.z > 0.) diffuseColor.a *= 1. - smoothstep(.75, 1.15, sd);
+          if (uKey.y > 0.) {                               // the photo's dark background keyed out: dark, colourless pixels go, the piece stays
+            vec3 kc = pow(max(sampledDiffuseColor.rgb, vec3(0.)), vec3(1. / 2.2));
+            float kLum = dot(kc, vec3(.299, .587, .114)), kSat = max(kc.r, max(kc.g, kc.b)) - min(kc.r, min(kc.g, kc.b));
+            float kKeep = smoothstep(uKey.x, uKey.y, max(kLum * .85, kSat * uKey.z));
+            // only around the outside of the piece, never between its lines: the outer ring of a round outline,
+            // or a band just inside the edges of a triangle
+            float kEdge = uKeyEdge.y <= 0. ? 1. : uTriB.w > 0. ? smoothstep(-uKeyEdge.x, -uKeyEdge.x * .3, td) : smoothstep(uKeyEdge.x, uKeyEdge.y, sd);
+            diffuseColor.a *= 1. - kEdge * (1. - kKeep);
+          }
           if (uCut.y > 0.) diffuseColor.a *= 1. - smoothstep(uCut.x, uCut.y, vMapUv.y);   // the top of the photo trimmed away
-          if (uTriB.w > 0.) { vec2 k = vec2(uTriB.w, 1.); float td = sdTri(vMapUv * k, uTriA.xy * k, uTriA.zw * k, uTriB.xy * k); diffuseColor.a *= 1. - smoothstep(-.012, uTriB.z, td); }
+          if (uTriB.w > 0.) diffuseColor.a *= 1. - smoothstep(-.012, uTriB.z, td);
         #endif`);
   };
-  m.customProgramCacheKey = () => 'standPhoto4';
+  m.customProgramCacheKey = () => 'standPhoto6';
   return { m, u };
 }
 export function buildSculpture(it) {
@@ -143,7 +155,7 @@ export function buildSculpture(it) {
   const holder = new THREE.Group(); holder.position.set(it.x, 0, it.z);
   const g = new THREE.Group(); holder.add(g);            // this part turns to face the visitor
   const fl = plane(base + 1.2, base + 1.2, new THREE.MeshBasicMaterial({ map: TEX.wash, color: 0x000000, transparent: true, opacity: .45, depthWrite: false })); fl.rotation.x = -Math.PI / 2; fl.position.y = .004; holder.add(fl);
-  const { m, u } = standPhotoMat(it.entry?.small || it.entry?.tex, focus, sc.soft, sc.tri, it.entry?.aspect || w / h, sc.cut, sc.sharp); it.lodMats = [m];
+  const { m, u } = standPhotoMat(it.entry?.small || it.entry?.tex, focus, sc.soft, sc.tri, it.entry?.aspect || w / h, sc.cut, sc.sharp, sc.key, sc.keyEdge); it.lodMats = [m];
   const photo = plane(w, h, m);
   if (photoStand) {                                      // the stand in the photograph stands on the museum floor
     photo.position.y = h / 2 - clamp(+a.sculpture.ground || 0, 0, .5) * h;
@@ -184,7 +196,7 @@ export function buildCentrepiece(it) {
   const lb = plaque(a, it), la = Math.atan2(it.nx || -1, it.nz || 0); lb.position.set(Math.sin(la) * (rb + .012), plinthH * .55, Math.cos(la) * (rb + .012)); lb.rotation.y = la; holder.add(lb); it.labelObj = lb;
   // the photo: large, turned toward the visitor, fading out to a soft oval round the piece
   const g = new THREE.Group(); holder.add(g);
-  const { m, u } = standPhotoMat(it.entry?.small || it.entry?.tex, soft, soft, null, 1, sc.cut, sc.sharp ?? .55); it.lodMats = [m];
+  const { m, u } = standPhotoMat(it.entry?.small || it.entry?.tex, soft, soft, null, 1, sc.cut, sc.sharp ?? .55, sc.key, sc.keyEdge); it.lodMats = [m];
   const photo = plane(w, h, m); photo.position.y = plinthH + (+sc.lift || 0) - (+sc.sit || .4) * h + h / 2; photo.renderOrder = 1; g.add(photo);   // floating above the drum
   holder.traverse(o => { o.userData.art = it.index; });
   g.userData.fadeU = u; g.userData.fadeMin = 1;   // soft at any distance

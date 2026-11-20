@@ -31,7 +31,7 @@ function loadFull(a) {
     const img = new Image();
     if (!/^(data|blob):/.test(a.src)) img.crossOrigin = 'anonymous';
     img.onload = () => {
-      const big = Math.max(img.naturalWidth, img.naturalHeight), lim = Math.min(4096, renderer.capabilities.maxTextureSize);
+      const big = Math.max(img.naturalWidth, img.naturalHeight), lim = Math.min(MOBILE ? 2048 : 4096, renderer.capabilities.maxTextureSize);   // phones: at most 2048 px (graphics memory)
       if (big > lim) { const s = lim / big, c = mk(Math.round(img.naturalWidth * s), Math.round(img.naturalHeight * s)); c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); finish(c, true); }
       else finish(img, true);
     };

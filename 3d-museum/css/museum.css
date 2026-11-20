@@ -30,7 +30,7 @@ button{font:inherit;color:inherit}
 #hud .r{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-top:5px}
 
 /* ---------- navigation bar ---------- */
-#bar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);display:flex;gap:4px;padding:6px;align-items:center}
+#bar{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);display:flex;gap:4px;padding:6px;align-items:center}
 #bar button,#bar a.barlink{background:none;border:0;padding:9px 13px;border-radius:10px;cursor:pointer;font-size:13px;display:flex;gap:7px;align-items:center;white-space:nowrap;color:var(--ink);text-decoration:none}
 #bar button:hover,#bar a.barlink:hover{background:rgba(255,255,255,.09)}
 #bar button.on{background:var(--gold);color:var(--gold-ink)}
@@ -98,7 +98,7 @@ body.mapopen #info{bottom:calc(var(--mapH, 200px) + 88px)}
 
 /* ---------- full picture ---------- */
 #lightbox{position:fixed;inset:0;z-index:70;background:rgba(8,7,6,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;cursor:zoom-out}
-#lightbox img{max-width:94vw;max-height:calc(100vh - 130px);object-fit:contain;box-shadow:0 30px 120px rgba(0,0,0,.8);background:#111}
+#lightbox img{max-width:94vw;max-height:calc(100vh - 130px);max-height:calc(100dvh - 130px);object-fit:contain;box-shadow:0 30px 120px rgba(0,0,0,.8);background:#111}
 #lightbox .cap{text-align:center;margin-top:16px;max-width:80vw}
 /* caption in the museum's lettering (Cormorant Garamond), like the gold titles on the walls */
 #lightbox .cap{font-family:var(--serif)}
