@@ -4,7 +4,7 @@
 import * as THREE from 'three';
 import { S } from '../state.js';
 import { mk, spacing, SERIF, SANS } from '../util.js';
-import { canvasTex } from './renderer.js';
+import { canvasTex, MOBILE } from './renderer.js';
 import { stdMat, box, plane } from './materials.js';
 import { toW } from './layout.js';
 import { exNo, two, annexLabel } from '../data/room-info.js';
@@ -12,7 +12,7 @@ import { DOOR_W, HALF_D, FACE, ROT_R } from './constants.js';
 
 export function buildWallMap(hereL) {
   const layout = S.layout;
-  const W = 2048, H = 2100, c = mk(W, H), g = c.getContext('2d');
+  const W = 2048, H = 2100, mk2 = MOBILE ? .5 : 1, c = mk(Math.round(W * mk2), Math.round(H * mk2)), g = c.getContext('2d'); g.scale(mk2, mk2);   // drawn in 2048-wide units (half size on phones)
   const gold = '#d9b871', ink = '#f1ebe0', dim = 'rgba(241,235,224,.62)';
   g.fillStyle = '#10151f'; g.fillRect(0, 0, W, H);
   g.strokeStyle = 'rgba(217,184,113,.6)'; g.lineWidth = 4; g.strokeRect(24, 24, W - 48, H - 48);

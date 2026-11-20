@@ -47,4 +47,7 @@ addEventListener('resize', () => {
   for (const fn of resizeHooks) fn();
 });
 
-export function canvasTex(c, keep = false) { const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = MAX_ANISO; t.userData.keep = keep; return t; }
+export function canvasTex(c, keep = false, free = !keep && MOBILE) { const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = MAX_ANISO; t.userData.keep = keep; return free ? freeWhenUploaded(t) : t; }
+// Phones have little memory: once a drawn texture is on the graphics card, let its canvas go
+// (only for textures that are never redrawn).
+export function freeWhenUploaded(t) { t.onUpdate = () => { const im = t.image; if (im && im.width) t.image = { width: im.width, height: im.height }; t.onUpdate = null; }; return t; }

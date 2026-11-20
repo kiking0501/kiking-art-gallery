@@ -18,20 +18,21 @@ function paintMissing(a, why) {
 }
 
 // Loads one picture in full. Resolves with { tex, full, small, aspect, ok }.
-function loadFull(a) {
+function loadFull(a, withSmall = true) {
   return new Promise(resolve => {
     const finish = (source, ok) => {
       const w = source.naturalWidth || source.width, h = source.naturalHeight || source.height;
       const tex = new THREE.Texture(source); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = MAX_ANISO; tex.needsUpdate = true; tex.userData.keep = true;
       // a 320px copy for works far away (keeps graphics memory low)
+      if (!withSmall) { resolve({ tex, full: tex, aspect: w / h, ok }); return; }
       const sc = mk(Math.max(1, Math.round(w >= h ? 320 : 320 * w / h)), Math.max(1, Math.round(h >= w ? 320 : 320 * h / w))); sc.getContext('2d').drawImage(source, 0, 0, sc.width, sc.height);
-      resolve({ tex, full: tex, small: canvasTex(sc, true), aspect: w / h, ok });
+      resolve({ tex, full: tex, small: canvasTex(sc, true, MOBILE), aspect: w / h, ok });
     };
     if (!a.src) { finish(paintMissing(a, 'No picture given.'), false); return; }
     const img = new Image();
     if (!/^(data|blob):/.test(a.src)) img.crossOrigin = 'anonymous';
     img.onload = () => {
-      const big = Math.max(img.naturalWidth, img.naturalHeight), lim = Math.min(MOBILE ? 2048 : 4096, renderer.capabilities.maxTextureSize);   // phones: at most 2048 px (graphics memory)
+      const big = Math.max(img.naturalWidth, img.naturalHeight), lim = Math.min(MOBILE ? 1536 : 4096, renderer.capabilities.maxTextureSize);   // phones: at most 1536 px (memory)
       if (big > lim) { const s = lim / big, c = mk(Math.round(img.naturalWidth * s), Math.round(img.naturalHeight * s)); c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); finish(c, true); }
       else finish(img, true);
     };
@@ -133,6 +134,7 @@ export function streamPictures(arts, focus, parallel = 6) {   // focus() → poi
     loadFull(best.a).then(r => {
       Object.assign(best, r, { loaded: true });
       for (const it of users.get(best)) { it.near = false; for (const m of it.lodMats || []) m.map = best.small; }   // the LOD check upgrades it when near
+      if (MOBILE && best.full) { best.full.dispose(); best.full = null; best.tex = best.small; best.dropped = true; }   // phones: keep only the small copy until near
       users.delete(best); next();
     });
   };
@@ -140,16 +142,24 @@ export function streamPictures(arts, focus, parallel = 6) {   // focus() → poi
 }
 
 // Full-resolution pictures only for works near the visitor; distant ones use the small copy.
+const NEAR_IN = MOBILE ? 12 : 18, NEAR_OUT = MOBILE ? 16 : 24;   // metres: full pictures within these
 export function updateLOD(arts, me) {
   const used = new Set();
   for (const it of arts) {
+    const e = it.entry;
+    if (MOBILE && it.lodMats && e?.dropped && !e.full && !e.reloading) {   // phones: fetch the full picture again (from the cache) when near
+      if (Math.hypot(it.x - me.x, it.z - me.z) < NEAR_IN) { e.reloading = true; loadFull(e.a, false).then(r => { e.full = r.full; e.reloading = false; }); }
+      continue;
+    }
     if (!it.lodMats || !it.entry?.full) continue;
-    const d = Math.hypot(it.x - me.x, it.z - me.z); it.near = it.near ? d < 24 : d < 18;
+    const d = Math.hypot(it.x - me.x, it.z - me.z); it.near = it.near ? d < NEAR_OUT : d < NEAR_IN;
     const want = it.near ? it.entry.full : it.entry.small;
     for (const m of it.lodMats) if (m.map !== want) { m.map = want; if (m.emissiveMap) m.emissiveMap = want; }
     if (it.near) used.add(it.entry);
   }
-  for (const e of texCache.values()) { if (e.full && e.onGPU && !used.has(e)) { e.full.dispose(); e.onGPU = false; } }
+  for (const e of texCache.values()) {
+    if (e.full && e.onGPU && !used.has(e)) { e.full.dispose(); e.onGPU = false; if (MOBILE && e.small) { e.full = null; e.tex = e.small; e.dropped = true; } }   // phones: let the full image go too
+  }
   for (const e of used) e.onGPU = true;
 }
 
@@ -333,7 +343,7 @@ export function generateMarble() {
 }
 export function generateSurfaces() {
   const big = !MOBILE && !LOWTEX && renderer.capabilities.maxTextureSize >= 8192;
-  const fs = big ? 4096 : (LOWTEX ? 1024 : 2048), ps = big ? 2048 : 1024;
+  const fs = big ? 4096 : (LOWTEX || MOBILE ? 1024 : 2048), ps = big ? 2048 : 1024;   // phones: lighter floor textures
   SURF.floorA = genTexture(FLOOR_FS, fs, 0, true);
   SURF.floorN = genTexture(FLOOR_FS, fs, 1, false, 3.2 * fs / 4096);
   SURF.floorR = genTexture(FLOOR_FS, fs / 2, 2, false);

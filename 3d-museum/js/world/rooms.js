@@ -15,16 +15,18 @@ const SIDE_Z = DOOR_W / 2 + (D - DOOR_W) / 4;   // centre of the wall beside a d
 /* ---------------- lettering ---------------- */
 // The name of the room you are about to enter, above a doorway.
 export function sideLabel(text, sub, ink) {
-  return textPlane((g, cw, ch) => {
+  const k = MOBILE ? .5 : 1;                             // drawn in 1536-wide units; half size on phones (memory)
+  return textPlane((g) => {
+    const cw = 1536, ch = 200; g.scale(k, k);
     g.fillStyle = ink; g.textAlign = 'center'; g.textBaseline = 'middle'; g.font = `400 88px ${SERIF}`;
     spacing(g, '4px'); g.fillText(text, cw / 2, ch / 2 - 8, cw - 40);
     g.globalAlpha = .55; g.font = `400 30px ${SANS}`; spacing(g, '8px'); g.fillText(sub, cw / 2, ch - 22, cw - 40);
-  }, 1536, 200, 3.8, .495);
+  }, 1536 * k, 200 * k, 3.8, .495);
 }
 // The exhibition's title, statistics and description in gold leaf, straight on the wall.
 export function exhibitionPanel(r) {
   const lightWall = lum(r.data.wall) > .32;
-  const k = MOBILE ? .5 : .75, c = mk(Math.round(2048 * k), Math.round(1762 * k)), g = c.getContext('2d'), L = 40; g.scale(k, k);   // drawn in 2048-wide units on a lighter canvas (lighter still on phones)
+  const k = MOBILE ? .3 : .75, c = mk(Math.round(2048 * k), Math.round(1762 * k)), g = c.getContext('2d'), L = 40; g.scale(k, k);   // drawn in 2048-wide units on a lighter canvas (lighter still on phones)
   g.fillStyle = '#fff'; g.textAlign = 'left';
   g.font = `500 50px ${SANS}`; spacing(g, '16px'); g.globalAlpha = .85;
   const cat = r.cat ? r.cat.toUpperCase() + '  ·  ' : '';
